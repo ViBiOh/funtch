@@ -8,6 +8,15 @@ const MEDIA_TYPE_TEXT = 'text/plain';
 
 const CONTENT_TYPE_JSON = new RegExp(MEDIA_TYPE_JSON, 'i');
 
+function isJson(body) {
+  try {
+    JSON.parse(body);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 function contentHandler(response) {
   if (CONTENT_TYPE_JSON.test(response.headers.get(CONTENT_TYPE_HEADER))) {
     return response.json();
@@ -26,7 +35,7 @@ function errorHandler(response, getContent = contentHandler) {
   })));
 }
 
-function ajax(url, params = {}, error = errorHandler, content = contentHandler) {
+function doFetch(url, params = {}, error = errorHandler, content = contentHandler) {
   return fetch(url, params)
     .then(response => error(response, content))
     .then(content);
@@ -63,6 +72,13 @@ class FetchBuilder {
     return this.header(CONTENT_TYPE_HEADER, MEDIA_TYPE_TEXT);
   }
 
+  guessContentType(body) {
+    if (isJson(body)) {
+      return this.contentJson();
+    }
+    return this.contentText();
+  }
+
   acceptJson() {
     return this.header(ACCEPT_TYPE_HEADER, MEDIA_TYPE_JSON);
   }
@@ -74,6 +90,10 @@ class FetchBuilder {
   body(body) {
     if (typeof body !== 'undefined') {
       this.params.body = body;
+
+      if (!this.params.headers[CONTENT_TYPE_HEADER]) {
+        return this.guessContentType(body);
+      }
     }
 
     return this;
@@ -111,7 +131,7 @@ class FetchBuilder {
   }
 
   send() {
-    return ajax(this.url, this.params, this.errorHandler);
+    return doFetch(this.url, this.params, this.errorHandler);
   }
 }
 
