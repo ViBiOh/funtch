@@ -7,6 +7,22 @@ import Fetch from '../src/Fetch';
 describe('Fetch', () => {
   let stubFetch;
 
+  const textPromise = Promise.resolve({
+    status: 200,
+    headers: {
+      get: () => 'text/plain',
+    },
+    text: () => Promise.resolve(),
+  });
+
+  const jsonPromise = Promise.resolve({
+    status: 200,
+    headers: {
+      get: () => 'application/json',
+    },
+    json: () => Promise.resolve(),
+  });
+
   afterEach(() => {
     if (stubFetch) {
       stubFetch.restore();
@@ -118,13 +134,7 @@ describe('Fetch', () => {
   });
 
   it('should pass header', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'application/json',
-      },
-      json: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.url('/').header('custom', 'test').get()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -136,13 +146,7 @@ describe('Fetch', () => {
   });
 
   it('should pass auth', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'application/json',
-      },
-      json: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.url('/').auth('token').get()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -154,13 +158,7 @@ describe('Fetch', () => {
   });
 
   it('should pass contentType for json', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'application/json',
-      },
-      json: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => jsonPromise);
 
     return Fetch.url('/').contentJson().get()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -172,13 +170,7 @@ describe('Fetch', () => {
   });
 
   it('should pass contentType for text', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
-      text: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.url('/').contentText().get()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -190,13 +182,7 @@ describe('Fetch', () => {
   });
 
   it('should pass accept for json', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'application/json',
-      },
-      json: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => jsonPromise);
 
     return Fetch.url('/').acceptJson().get()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -208,13 +194,7 @@ describe('Fetch', () => {
   });
 
   it('should pass accept for text', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
-      text: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.url('/').acceptText().get()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -226,13 +206,7 @@ describe('Fetch', () => {
   });
 
   it('should pass body', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
-      text: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.url('/').body('Hello World').post()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -245,13 +219,7 @@ describe('Fetch', () => {
   });
 
   it('should pass json body', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'application/json',
-      },
-      json: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => jsonPromise);
 
     return Fetch.url('/').body(JSON.stringify({ hello: 'World' })).post()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -264,13 +232,7 @@ describe('Fetch', () => {
   });
 
   it('should not pass body if undefined', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
-      text: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.url('/').body().post()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -280,13 +242,7 @@ describe('Fetch', () => {
   });
 
   it('should guess json content', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'application/json',
-      },
-      json: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => jsonPromise);
 
     return Fetch.post('/', JSON.stringify({ hello: 'World' }))
       .then(() => expect(stubFetch.calledWith('/', {
@@ -299,13 +255,7 @@ describe('Fetch', () => {
   });
 
   it('should guess text content', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
-      text: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.post('/', '{hello":"World"}')
       .then(() => expect(stubFetch.calledWith('/', {
@@ -318,13 +268,7 @@ describe('Fetch', () => {
   });
 
   it('should not guess content if already defined', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
-      text: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.url('/').contentText().body('{"hello":"World"}').post()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -337,13 +281,7 @@ describe('Fetch', () => {
   });
 
   it('should send GET', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
-      text: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.get('/')
       .then(() => expect(stubFetch.calledWith('/', {
@@ -353,13 +291,7 @@ describe('Fetch', () => {
   });
 
   it('should send POST', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
-      text: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.post('/')
       .then(() => expect(stubFetch.calledWith('/', {
@@ -369,13 +301,7 @@ describe('Fetch', () => {
   });
 
   it('should send PUT', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
-      text: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.put('/')
       .then(() => expect(stubFetch.calledWith('/', {
@@ -385,13 +311,7 @@ describe('Fetch', () => {
   });
 
   it('should send PATCH', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
-      text: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.patch('/')
       .then(() => expect(stubFetch.calledWith('/', {
@@ -401,13 +321,7 @@ describe('Fetch', () => {
   });
 
   it('should send DELETE', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => Promise.resolve({
-      status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
-      text: () => Promise.resolve(),
-    }));
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
     return Fetch.delete('/')
       .then(() => expect(stubFetch.calledWith('/', {
