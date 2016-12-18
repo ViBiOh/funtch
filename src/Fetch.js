@@ -17,14 +17,14 @@ function isJson(body) {
   }
 }
 
-function contentHandler(response) {
+export function contentHandler(response) {
   if (CONTENT_TYPE_JSON.test(response.headers.get(CONTENT_TYPE_HEADER))) {
     return response.json();
   }
   return response.text();
 }
 
-function errorHandler(response, getContent = contentHandler) {
+export function errorHandler(response, getContent = contentHandler) {
   if (response.status < 400) {
     return response;
   }
@@ -87,6 +87,18 @@ class FetchBuilder {
     return this.header(ACCEPT_TYPE_HEADER, MEDIA_TYPE_TEXT);
   }
 
+  content(handler) {
+    this.contentHandler = handler;
+
+    return this;
+  }
+
+  error(handler) {
+    this.errorHandler = handler;
+
+    return this;
+  }
+
   body(body) {
     if (typeof body !== 'undefined') {
       this.params.body = body;
@@ -131,7 +143,7 @@ class FetchBuilder {
   }
 
   send() {
-    return doFetch(this.url, this.params, this.errorHandler);
+    return doFetch(this.url, this.params, this.errorHandler, this.contentHandler);
   }
 }
 
