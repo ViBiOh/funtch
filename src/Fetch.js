@@ -99,11 +99,11 @@ class FetchBuilder {
     return this;
   }
 
-  body(body) {
+  body(body, guess = true) {
     if (typeof body !== 'undefined') {
       this.params.body = body;
 
-      if (!this.params.headers[CONTENT_TYPE_HEADER]) {
+      if (!this.params.headers[CONTENT_TYPE_HEADER] && guess) {
         return this.guessContentType(body);
       }
     }
