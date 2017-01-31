@@ -280,6 +280,17 @@ describe('Fetch', () => {
       })).to.be.true);
   });
 
+  it('should not guess content if forbidden', () => {
+    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+
+    return Fetch.url('/').body('{"hello":"World"}', false).post()
+      .then(() => expect(stubFetch.calledWith('/', {
+        headers: {},
+        body: '{"hello":"World"}',
+        method: 'POST',
+      })).to.be.true);
+  });
+
   it('should send GET', () => {
     stubFetch = sinon.stub(global, 'fetch', () => textPromise);
 
