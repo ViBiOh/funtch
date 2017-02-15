@@ -84,7 +84,10 @@ describe('Fetch', () => {
 
     return Fetch.get('/')
       .then(() => expect(false).to.be.true)
-      .catch(data => expect(data.content).to.eql('Test Mocha Error'));
+      .catch((data) => {
+        expect(data.content).to.eql('Test Mocha Error');
+        expect(String(data)).to.eql('Test Mocha Error');
+      });
   });
 
   it('should return jsonError when 400 or more', () => {

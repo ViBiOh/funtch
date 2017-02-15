@@ -32,6 +32,7 @@ export function errorHandler(response, getContent = contentHandler) {
   return new Promise((resolve, reject) => getContent(response).then(content => reject({
     status: response.status,
     content,
+    toString: () => content,
   })));
 }
 
