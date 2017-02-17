@@ -103,9 +103,10 @@ describe('Fetch', () => {
 
     return Fetch.get('/')
       .then(() => expect(false).to.be.true)
-      .catch(data => expect(data.content).to.eql({
-        error: 'Test Mocha Error',
-      }));
+      .catch((data) => {
+        expect(data.content).to.eql({ error: 'Test Mocha Error' });
+        expect(String(data)).to.eql('{"error":"Test Mocha Error"}');
+      });
   });
 
   it('should return error when text fail', () => {
@@ -292,6 +293,39 @@ describe('Fetch', () => {
         body: '{"hello":"World"}',
         method: 'POST',
       })).to.be.true);
+  });
+
+  it('should use given content handler', () => {
+    global.fetch = () => Promise.resolve({
+      status: 204,
+    });
+
+    let result;
+    const customContentHandler = content => (result = content);
+
+    return Fetch.url('/').content(customContentHandler).get().then(() => {
+      expect(result).to.be.eql({
+        status: 204,
+      });
+    });
+  });
+
+  it('should use given error handler', () => {
+    global.fetch = () => Promise.resolve({
+      status: 404,
+      reason: 'Failed',
+    });
+
+    let result;
+    const customErrorHandler = (content) => {
+      result = content.reason;
+
+      return Promise.reject();
+    };
+
+    return Fetch.url('/').error(customErrorHandler).get()
+      .then(() => expect(false).to.be.true)
+      .catch(() => expect(result).to.be.eql('Failed'));
   });
 
   it('should send GET', () => {
