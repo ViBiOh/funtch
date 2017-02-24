@@ -39,6 +39,6 @@
     "sinon": "latest"
   },
   "dependencies": {
-    "whatwg-fetch": "latest"
+    "isomorphic-fetch": "latest"
   }
 }

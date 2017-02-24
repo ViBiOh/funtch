@@ -1,4 +1,4 @@
-import 'whatwg-fetch';
+import 'isomorphic-fetch';
 
 const CONTENT_TYPE_HEADER = 'Content-Type';
 const ACCEPT_TYPE_HEADER = 'Accept';
