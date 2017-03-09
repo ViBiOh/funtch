@@ -113,7 +113,7 @@ describe('Fetch', () => {
     global.fetch = () => Promise.resolve({
       status: 200,
       headers: {
-        get: () => 'test/plain',
+        get: () => 'text/plain',
       },
       text: () => Promise.reject(new Error('Mocha Text Error')),
     });
