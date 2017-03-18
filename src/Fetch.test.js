@@ -138,7 +138,7 @@ describe('Fetch', () => {
   });
 
   it('should pass header', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.url('/').header('custom', 'test').get()
       .then(() => expect(stubFetch.calledWith('/', {
