@@ -150,7 +150,7 @@ describe('Fetch', () => {
   });
 
   it('should pass auth', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.url('/').auth('token').get()
       .then(() => expect(stubFetch.calledWith('/', {
