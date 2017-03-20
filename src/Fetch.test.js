@@ -162,7 +162,7 @@ describe('Fetch', () => {
   });
 
   it('should pass contentType for json', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => jsonPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
     return Fetch.url('/').contentJson().get()
       .then(() => expect(stubFetch.calledWith('/', {
