@@ -174,7 +174,7 @@ describe('Fetch', () => {
   });
 
   it('should pass contentType for text', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.url('/').contentText().get()
       .then(() => expect(stubFetch.calledWith('/', {
