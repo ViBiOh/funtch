@@ -186,7 +186,7 @@ describe('Fetch', () => {
   });
 
   it('should pass accept for json', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => jsonPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
     return Fetch.url('/').acceptJson().get()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -198,7 +198,7 @@ describe('Fetch', () => {
   });
 
   it('should pass accept for text', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.url('/').acceptText().get()
       .then(() => expect(stubFetch.calledWith('/', {
