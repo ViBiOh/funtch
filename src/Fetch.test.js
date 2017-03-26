@@ -210,7 +210,7 @@ describe('Fetch', () => {
   });
 
   it('should pass body', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.url('/').body('Hello World').post()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -223,7 +223,7 @@ describe('Fetch', () => {
   });
 
   it('should pass json body', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => jsonPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
     return Fetch.url('/').body(JSON.stringify({ hello: 'World' })).post()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -236,7 +236,7 @@ describe('Fetch', () => {
   });
 
   it('should not pass body if undefined', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.url('/').body().post()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -246,7 +246,7 @@ describe('Fetch', () => {
   });
 
   it('should guess json content', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => jsonPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
     return Fetch.post('/', JSON.stringify({ hello: 'World' }))
       .then(() => expect(stubFetch.calledWith('/', {
@@ -259,7 +259,7 @@ describe('Fetch', () => {
   });
 
   it('should guess text content', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.post('/', '{hello":"World"}')
       .then(() => expect(stubFetch.calledWith('/', {
@@ -272,7 +272,7 @@ describe('Fetch', () => {
   });
 
   it('should not guess content if already defined', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.url('/').contentText().body('{"hello":"World"}').post()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -285,7 +285,7 @@ describe('Fetch', () => {
   });
 
   it('should not guess content if forbidden', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.url('/').body('{"hello":"World"}', false).post()
       .then(() => expect(stubFetch.calledWith('/', {
@@ -329,7 +329,7 @@ describe('Fetch', () => {
   });
 
   it('should send GET', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.get('/')
       .then(() => expect(stubFetch.calledWith('/', {
@@ -339,7 +339,7 @@ describe('Fetch', () => {
   });
 
   it('should send POST', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.post('/')
       .then(() => expect(stubFetch.calledWith('/', {
@@ -349,7 +349,7 @@ describe('Fetch', () => {
   });
 
   it('should send PUT', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.put('/')
       .then(() => expect(stubFetch.calledWith('/', {
@@ -359,7 +359,7 @@ describe('Fetch', () => {
   });
 
   it('should send PATCH', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.patch('/')
       .then(() => expect(stubFetch.calledWith('/', {
@@ -369,7 +369,7 @@ describe('Fetch', () => {
   });
 
   it('should send DELETE', () => {
-    stubFetch = sinon.stub(global, 'fetch', () => textPromise);
+    stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
     return Fetch.delete('/')
       .then(() => expect(stubFetch.calledWith('/', {
