@@ -6,7 +6,7 @@
   "scripts": {
     "eslint": "./node_modules/.bin/eslint --ext .js src/",
     "pretest": "npm run eslint",
-    "test": "./node_modules/.bin/nyc --reporter html --reporter text --reporter lcov --require babel-core/register ./node_modules/.bin/mocha \"src/**/*.test.js\"",
+    "test": "./node_modules/.bin/nyc --reporter html --reporter text --reporter lcov --require babel-core/register ./node_modules/.bin/ava",
     "coverage": "./node_modules/.bin/codecov -f ./coverage/lcov.info",
     "build:uglify": "./node_modules/.bin/babel ./src/Fetch.js | ./node_modules/.bin/uglifyjs -o index.js -c -mt --preamble //${npm_package_name}@${npm_package_version}",
     "build": "npm test && npm run build:uglify"
@@ -26,21 +26,28 @@
   },
   "homepage": "https://github.com/ViBiOh/js-fetch",
   "devDependencies": {
+    "ava": "latest",
     "babel-cli": "latest",
-    "babel-preset-es2015": "latest",
     "babel-eslint": "latest",
-    "chai": "latest",
+    "babel-preset-es2015": "latest",
     "codecov": "latest",
     "eslint": "latest",
     "eslint-config-airbnb": "latest",
     "eslint-plugin-import": "latest",
     "js-utils": "git+https://github.com/ViBiOh/js-utils.git",
-    "mocha": "latest",
     "nyc": "latest",
-    "uglify-js": "latest",
-    "sinon": "latest"
+    "sinon": "latest",
+    "uglify-js": "latest"
   },
   "dependencies": {
     "isomorphic-fetch": "latest"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.test.js"
+    ],
+    "require": [
+      "babel-register"
+    ]
   }
 }
