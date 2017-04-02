@@ -37,7 +37,7 @@ test('should return a promise', (t) => {
 
   const result = Fetch.get('/');
 
-  t.is(result instanceof Promise, true);
+  t.true(result instanceof Promise);
 });
 
 test('should return text when asked', (t) => {
@@ -80,7 +80,7 @@ test('should return error when 400 or more', (t) => {
   });
 
   return Fetch.get('/')
-    .then(() => t.is(false, true))
+    .then(() => t.true(false))
     .catch((data) => {
       t.is(data.content, 'Test Mocha Error');
       t.is(String(data), 'Test Mocha Error');
@@ -99,7 +99,7 @@ test('should return jsonError when 400 or more', (t) => {
   });
 
   return Fetch.get('/')
-    .then(() => t.is(false, true))
+    .then(() => t.true(false))
     .catch((data) => {
       t.deepEqual(data.content, { error: 'Test Mocha Error' });
       t.is(String(data), '{"error":"Test Mocha Error"}');
@@ -116,7 +116,7 @@ test('should return error when text fail', (t) => {
   });
 
   return Fetch.get('/')
-    .then(() => t.is(false, true))
+    .then(() => t.true(false))
     .catch(data => t.is(String(data), 'Error: Mocha Text Error'));
 });
 
@@ -130,7 +130,7 @@ test('should return error when json fail', (t) => {
   });
 
   return Fetch.get('/')
-    .then(() => t.is(false, true))
+    .then(() => t.true(false))
     .catch(data => t.is(String(data), 'Error: Mocha JSON Error'));
 });
 
@@ -321,7 +321,7 @@ test('should use given error handler', (t) => {
   };
 
   return Fetch.url('/').error(customErrorHandler).get()
-    .then(() => t.is(false, true))
+    .then(() => t.true(false))
     .catch(() => t.is(result, 'Failed'));
 });
 
