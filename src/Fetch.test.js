@@ -46,11 +46,11 @@ test('should return text when asked', (t) => {
     headers: {
       get: () => 'text/plain',
     },
-    text: () => Promise.resolve('Test Mocha'),
+    text: () => Promise.resolve('Test JS'),
   });
 
   return Fetch.get('/')
-    .then(data => t.is(data, 'Test Mocha'));
+    .then(data => t.is(data, 'Test JS'));
 });
 
 test('should return json when asked', (t) => {
@@ -60,13 +60,13 @@ test('should return json when asked', (t) => {
       get: () => 'application/json',
     },
     json: () => Promise.resolve({
-      result: 'Test Mocha',
+      result: 'Test JS',
     }),
   });
 
   return Fetch.get('/')
     .then(data => t.deepEqual(data, {
-      result: 'Test Mocha',
+      result: 'Test JS',
     }));
 });
 
@@ -76,14 +76,14 @@ test('should return error when 400 or more', (t) => {
     headers: {
       get: () => 'text/plain',
     },
-    text: () => Promise.resolve('Test Mocha Error'),
+    text: () => Promise.resolve('Test JS Error'),
   });
 
   return Fetch.get('/')
     .then(() => t.true(false))
     .catch((data) => {
-      t.is(data.content, 'Test Mocha Error');
-      t.is(String(data), 'Test Mocha Error');
+      t.is(data.content, 'Test JS Error');
+      t.is(String(data), 'Test JS Error');
     });
 });
 
@@ -94,15 +94,15 @@ test('should return jsonError when 400 or more', (t) => {
       get: () => 'application/json',
     },
     json: () => Promise.resolve({
-      error: 'Test Mocha Error',
+      error: 'Test JS Error',
     }),
   });
 
   return Fetch.get('/')
     .then(() => t.true(false))
     .catch((data) => {
-      t.deepEqual(data.content, { error: 'Test Mocha Error' });
-      t.is(String(data), '{"error":"Test Mocha Error"}');
+      t.deepEqual(data.content, { error: 'Test JS Error' });
+      t.is(String(data), '{"error":"Test JS Error"}');
     });
 });
 
@@ -112,12 +112,12 @@ test('should return error when text fail', (t) => {
     headers: {
       get: () => 'text/plain',
     },
-    text: () => Promise.reject(new Error('Mocha Text Error')),
+    text: () => Promise.reject(new Error('JS Text Error')),
   });
 
   return Fetch.get('/')
     .then(() => t.true(false))
-    .catch(data => t.is(String(data), 'Error: Mocha Text Error'));
+    .catch(data => t.is(String(data), 'Error: JS Text Error'));
 });
 
 test('should return error when json fail', (t) => {
@@ -126,12 +126,12 @@ test('should return error when json fail', (t) => {
     headers: {
       get: () => 'application/json',
     },
-    json: () => Promise.reject(new Error('Mocha JSON Error')),
+    json: () => Promise.reject(new Error('JS JSON Error')),
   });
 
   return Fetch.get('/')
     .then(() => t.true(false))
-    .catch(data => t.is(String(data), 'Error: Mocha JSON Error'));
+    .catch(data => t.is(String(data), 'Error: JS JSON Error'));
 });
 
 test.serial('should pass header', (t) => {
