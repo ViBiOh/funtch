@@ -4,7 +4,7 @@
   "description": "Fetch component",
   "main": "index.js",
   "scripts": {
-    "prettier": "./node_modules/.bin/prettier --print-width 100 --single-quote --trailing-comma all --color --write \"./app/**/*.{js,jsx}\"",
+    "prettier": "./node_modules/.bin/prettier --print-width 100 --single-quote --trailing-comma all --color --write \"./src/**/*.{js,jsx}\"",
     "eslint": "./node_modules/.bin/eslint --fix src/",
     "codestyle": "npm run prettier && npm run eslint",
     "pretest": "npm run codestyle",
