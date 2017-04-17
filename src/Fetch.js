@@ -29,17 +29,19 @@ export function errorHandler(response, getContent = contentHandler) {
     return response;
   }
 
-  return new Promise((resolve, reject) => getContent(response).then(content => reject({
-    status: response.status,
-    content,
-    toString: () => (typeof content === 'string' ? content : JSON.stringify(content)),
-  })));
+  return new Promise((resolve, reject) =>
+    getContent(response).then(content =>
+      reject({
+        status: response.status,
+        content,
+        toString: () => (typeof content === 'string' ? content : JSON.stringify(content)),
+      }),
+    ),
+  );
 }
 
 function doFetch(url, params = {}, error = errorHandler, content = contentHandler) {
-  return fetch(url, params)
-    .then(response => error(response, content))
-    .then(content);
+  return fetch(url, params).then(response => error(response, content)).then(content);
 }
 
 class FetchBuilder {

@@ -4,8 +4,10 @@
   "description": "Fetch component",
   "main": "index.js",
   "scripts": {
-    "eslint": "./node_modules/.bin/eslint --ext .js src/",
-    "pretest": "npm run eslint",
+    "prettier": "./node_modules/.bin/prettier --print-width 100 --single-quote --trailing-comma all --color --write \"./app/**/*.{js,jsx}\"",
+    "eslint": "./node_modules/.bin/eslint --fix src/",
+    "codestyle": "npm run prettier && npm run eslint",
+    "pretest": "npm run codestyle",
     "test": "./node_modules/.bin/nyc --reporter text --reporter lcov --require babel-core/register ./node_modules/.bin/ava",
     "coverage": "./node_modules/.bin/codecov -f ./coverage/lcov.info",
     "build:uglify": "./node_modules/.bin/babel ./src/Fetch.js | ./node_modules/.bin/uglifyjs -o index.js -c -mt --preamble //${npm_package_name}@${npm_package_version}",
@@ -36,6 +38,7 @@
     "eslint-plugin-import": "latest",
     "js-utils": "git+https://github.com/ViBiOh/js-utils.git",
     "nyc": "latest",
+    "prettier": "latest",
     "sinon": "latest",
     "uglify-js": "latest"
   },
