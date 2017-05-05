@@ -1,2 +1,3 @@
-//funtch@1.0.1
-"use strict";function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}var _funtch=require("./funtch"),_funtch2=_interopRequireDefault(_funtch);module.exports=_funtch2.default;
+const funtch = require('./browser');
+
+module.exports = funtch.default;

@@ -7,8 +7,19 @@
 
 ## Usage
 
+### ES6 Syntax
+
 ```
 import funtch from 'funtch';
+
+funtch.get('https://api.vibioh.fr/hello/funtch')
+  .then(console.log)
+```
+
+### CommonJS
+
+```
+const funtch = require('funtch');
 
 funtch.get('https://api.vibioh.fr/hello/funtch')
   .then(console.log)

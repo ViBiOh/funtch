@@ -1,6 +1,6 @@
 import test from 'ava';
 import sinon from 'sinon';
-import funtch from '../src/funtch';
+import funtch from './funtch';
 
 let stubFuntch;
 

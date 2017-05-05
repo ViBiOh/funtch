@@ -1,10 +1,11 @@
 {
   "name": "funtch",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "engines": {
     "node": ">=6"
   },
   "description": "FUNctional feTCH isomorphic",
+  "browser": "browser.js",
   "main": "index.js",
   "scripts": {
     "prettier": "./node_modules/.bin/prettier --print-width 100 --single-quote --trailing-comma all --color --write \"./src/**/*.js\"",
@@ -13,8 +14,9 @@
     "pretest": "npm run codestyle",
     "test": "./node_modules/.bin/nyc --reporter text --reporter lcov --require babel-core/register ./node_modules/.bin/ava",
     "coverage": "./node_modules/.bin/codecov -f ./coverage/lcov.info",
-    "build:uglify": "./node_modules/.bin/babel ./src/index.js | ./node_modules/.bin/uglifyjs -o index.js -c -mt --preamble //${npm_package_name}@${npm_package_version}",
-    "build": "npm test && npm run build:uglify"
+    "build:browser": "./node_modules/.bin/babel ./src/funtch.js | ./node_modules/.bin/uglifyjs -o browser.js -c -mt --preamble //${npm_package_name}@${npm_package_version}",
+    "build": "npm test && npm run build:browser",
+    "postbuild": "node cjs.test.js && ./node_modules/.bin/babel-node es6.test.js"
   },
   "repository": {
     "type": "git",
@@ -46,7 +48,6 @@
     "js-utils": "git+https://github.com/ViBiOh/js-utils.git",
     "nyc": "latest",
     "prettier": "latest",
-    "rollup": "^0.41.6",
     "sinon": "latest",
     "uglify-js": "latest"
   },
