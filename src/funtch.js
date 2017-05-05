@@ -44,7 +44,7 @@ function doFetch(url, params = {}, error = errorHandler, content = contentHandle
   return fetch(url, params).then(response => error(response, content)).then(content);
 }
 
-class FetchBuilder {
+class FuntchBuilder {
   constructor() {
     this.params = {
       headers: {},
@@ -150,28 +150,28 @@ class FetchBuilder {
   }
 }
 
-export default class Fetch {
+export default class funtch {
   static url(url) {
-    return new FetchBuilder().url(url);
+    return new FuntchBuilder().url(url);
   }
 
   static get(url) {
-    return new FetchBuilder().url(url).get();
+    return new FuntchBuilder().url(url).get();
   }
 
   static post(url, body) {
-    return new FetchBuilder().url(url).post(body);
+    return new FuntchBuilder().url(url).post(body);
   }
 
   static put(url, body) {
-    return new FetchBuilder().url(url).put(body);
+    return new FuntchBuilder().url(url).put(body);
   }
 
   static patch(url, body) {
-    return new FetchBuilder().url(url).patch(body);
+    return new FuntchBuilder().url(url).patch(body);
   }
 
   static delete(url) {
-    return new FetchBuilder().url(url).delete();
+    return new FuntchBuilder().url(url).delete();
   }
 }

@@ -1,8 +1,8 @@
 import test from 'ava';
 import sinon from 'sinon';
-import Fetch from '../src/Fetch';
+import funtch from '../src/funtch';
 
-let stubFetch;
+let stubFuntch;
 
 const textPromise = Promise.resolve({
   status: 200,
@@ -21,8 +21,8 @@ const jsonPromise = Promise.resolve({
 });
 
 test.afterEach(() => {
-  if (stubFetch) {
-    stubFetch.restore();
+  if (stubFuntch) {
+    stubFuntch.restore();
   }
 });
 
@@ -36,7 +36,7 @@ test('should return a promise', (t) => {
       text: () => Promise.resolve(''),
     });
 
-  const result = Fetch.get('/');
+  const result = funtch.get('/');
 
   t.true(result instanceof Promise);
 });
@@ -51,7 +51,7 @@ test('should return text when asked', (t) => {
       text: () => Promise.resolve('Test JS'),
     });
 
-  return Fetch.get('/').then(data => t.is(data, 'Test JS'));
+  return funtch.get('/').then(data => t.is(data, 'Test JS'));
 });
 
 test('should return json when asked', (t) => {
@@ -67,7 +67,7 @@ test('should return json when asked', (t) => {
         }),
     });
 
-  return Fetch.get('/').then(data =>
+  return funtch.get('/').then(data =>
     t.deepEqual(data, {
       result: 'Test JS',
     }),
@@ -84,7 +84,7 @@ test('should return error when 400 or more', (t) => {
       text: () => Promise.resolve('Test JS Error'),
     });
 
-  return Fetch.get('/').then(() => t.true(false)).catch((data) => {
+  return funtch.get('/').then(() => t.true(false)).catch((data) => {
     t.is(data.content, 'Test JS Error');
     t.is(String(data), 'Test JS Error');
   });
@@ -103,7 +103,7 @@ test('should return jsonError when 400 or more', (t) => {
         }),
     });
 
-  return Fetch.get('/').then(() => t.true(false)).catch((data) => {
+  return funtch.get('/').then(() => t.true(false)).catch((data) => {
     t.deepEqual(data.content, { error: 'Test JS Error' });
     t.is(String(data), '{"error":"Test JS Error"}');
   });
@@ -119,7 +119,8 @@ test('should return error when text fail', (t) => {
       text: () => Promise.reject(new Error('JS Text Error')),
     });
 
-  return Fetch.get('/')
+  return funtch
+    .get('/')
     .then(() => t.true(false))
     .catch(data => t.is(String(data), 'Error: JS Text Error'));
 });
@@ -134,17 +135,18 @@ test('should return error when json fail', (t) => {
       json: () => Promise.reject(new Error('JS JSON Error')),
     });
 
-  return Fetch.get('/')
+  return funtch
+    .get('/')
     .then(() => t.true(false))
     .catch(data => t.is(String(data), 'Error: JS JSON Error'));
 });
 
 test.serial('should pass header', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.url('/').header('custom', 'test').get().then(() =>
+  return funtch.url('/').header('custom', 'test').get().then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {
           custom: 'test',
         },
@@ -156,11 +158,11 @@ test.serial('should pass header', (t) => {
 });
 
 test.serial('should pass auth', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.url('/').auth('token').get().then(() =>
+  return funtch.url('/').auth('token').get().then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {
           Authorization: 'token',
         },
@@ -172,11 +174,11 @@ test.serial('should pass auth', (t) => {
 });
 
 test.serial('should pass contentType for json', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
-  return Fetch.url('/').contentJson().get().then(() =>
+  return funtch.url('/').contentJson().get().then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -188,11 +190,11 @@ test.serial('should pass contentType for json', (t) => {
 });
 
 test.serial('should pass contentType for text', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.url('/').contentText().get().then(() =>
+  return funtch.url('/').contentText().get().then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {
           'Content-Type': 'text/plain',
         },
@@ -204,11 +206,11 @@ test.serial('should pass contentType for text', (t) => {
 });
 
 test.serial('should pass accept for json', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
-  return Fetch.url('/').acceptJson().get().then(() =>
+  return funtch.url('/').acceptJson().get().then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {
           Accept: 'application/json',
         },
@@ -220,11 +222,11 @@ test.serial('should pass accept for json', (t) => {
 });
 
 test.serial('should pass accept for text', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.url('/').acceptText().get().then(() =>
+  return funtch.url('/').acceptText().get().then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {
           Accept: 'text/plain',
         },
@@ -236,11 +238,11 @@ test.serial('should pass accept for text', (t) => {
 });
 
 test.serial('should pass body', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.url('/').body('Hello World').post().then(() =>
+  return funtch.url('/').body('Hello World').post().then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {
           'Content-Type': 'text/plain',
         },
@@ -253,11 +255,11 @@ test.serial('should pass body', (t) => {
 });
 
 test.serial('should pass json body', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
-  return Fetch.url('/').body(JSON.stringify({ hello: 'World' })).post().then(() =>
+  return funtch.url('/').body(JSON.stringify({ hello: 'World' })).post().then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -270,11 +272,11 @@ test.serial('should pass json body', (t) => {
 });
 
 test.serial('should not pass body if undefined', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.url('/').body().post().then(() =>
+  return funtch.url('/').body().post().then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {},
         method: 'POST',
       }),
@@ -284,11 +286,11 @@ test.serial('should not pass body if undefined', (t) => {
 });
 
 test.serial('should guess json content', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
-  return Fetch.post('/', JSON.stringify({ hello: 'World' })).then(() =>
+  return funtch.post('/', JSON.stringify({ hello: 'World' })).then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -301,11 +303,11 @@ test.serial('should guess json content', (t) => {
 });
 
 test.serial('should guess text content', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.post('/', '{hello":"World"}').then(() =>
+  return funtch.post('/', '{hello":"World"}').then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {
           'Content-Type': 'text/plain',
         },
@@ -318,12 +320,12 @@ test.serial('should guess text content', (t) => {
 });
 
 test.serial('should not guess content if already defined', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
-  const result = Fetch.url('/').contentText().body('{"hello":"World"}').post();
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  const result = funtch.url('/').contentText().body('{"hello":"World"}').post();
 
   return result.then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {
           'Content-Type': 'text/plain',
         },
@@ -336,11 +338,11 @@ test.serial('should not guess content if already defined', (t) => {
 });
 
 test.serial('should not guess content if forbidden', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.url('/').body('{"hello":"World"}', false).post().then(() =>
+  return funtch.url('/').body('{"hello":"World"}', false).post().then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {},
         body: '{"hello":"World"}',
         method: 'POST',
@@ -361,7 +363,7 @@ test('should use given content handler', (t) => {
     result = content;
   };
 
-  return Fetch.url('/').content(customContentHandler).get().then(() => {
+  return funtch.url('/').content(customContentHandler).get().then(() => {
     t.deepEqual(result, {
       status: 204,
     });
@@ -382,7 +384,8 @@ test('should use given error handler', (t) => {
     return Promise.reject();
   };
 
-  return Fetch.url('/')
+  return funtch
+    .url('/')
     .error(customErrorHandler)
     .get()
     .then(() => t.true(false))
@@ -390,11 +393,11 @@ test('should use given error handler', (t) => {
 });
 
 test.serial('should send GET', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.get('/').then(() =>
+  return funtch.get('/').then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {},
         method: 'GET',
       }),
@@ -404,11 +407,11 @@ test.serial('should send GET', (t) => {
 });
 
 test.serial('should send POST', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.post('/').then(() =>
+  return funtch.post('/').then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {},
         method: 'POST',
       }),
@@ -418,11 +421,11 @@ test.serial('should send POST', (t) => {
 });
 
 test.serial('should send PUT', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.put('/').then(() =>
+  return funtch.put('/').then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {},
         method: 'PUT',
       }),
@@ -432,11 +435,11 @@ test.serial('should send PUT', (t) => {
 });
 
 test.serial('should send PATCH', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.patch('/').then(() =>
+  return funtch.patch('/').then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {},
         method: 'PATCH',
       }),
@@ -446,11 +449,11 @@ test.serial('should send PATCH', (t) => {
 });
 
 test.serial('should send DELETE', (t) => {
-  stubFetch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return Fetch.delete('/').then(() =>
+  return funtch.delete('/').then(() =>
     t.is(
-      stubFetch.calledWith('/', {
+      stubFuntch.calledWith('/', {
         headers: {},
         method: 'DELETE',
       }),
