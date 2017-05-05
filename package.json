@@ -1,8 +1,8 @@
 {
   "name": "funtch",
-  "version": "1.0.0",
-  "engines" : {
-    "node" : ">=6"
+  "version": "1.0.1",
+  "engines": {
+    "node": ">=6"
   },
   "description": "FUNctional feTCH isomorphic",
   "main": "index.js",
@@ -13,7 +13,7 @@
     "pretest": "npm run codestyle",
     "test": "./node_modules/.bin/nyc --reporter text --reporter lcov --require babel-core/register ./node_modules/.bin/ava",
     "coverage": "./node_modules/.bin/codecov -f ./coverage/lcov.info",
-    "build:uglify": "./node_modules/.bin/babel ./src/funtch.js | ./node_modules/.bin/uglifyjs -o index.js -c -mt --preamble //${npm_package_name}@${npm_package_version}",
+    "build:uglify": "./node_modules/.bin/babel ./src/index.js | ./node_modules/.bin/uglifyjs -o index.js -c -mt --preamble //${npm_package_name}@${npm_package_version}",
     "build": "npm test && npm run build:uglify"
   },
   "repository": {
@@ -46,6 +46,7 @@
     "js-utils": "git+https://github.com/ViBiOh/js-utils.git",
     "nyc": "latest",
     "prettier": "latest",
+    "rollup": "^0.41.6",
     "sinon": "latest",
     "uglify-js": "latest"
   },
