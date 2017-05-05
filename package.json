@@ -1,6 +1,9 @@
 {
   "name": "funtch",
   "version": "0.0.1",
+  "engines" : {
+    "node" : ">=6"
+  },
   "description": "FUNctional feTCH isomorphic",
   "main": "index.js",
   "scripts": {
@@ -18,10 +21,14 @@
     "url": "git://github.com/ViBiOh/funtch.git"
   },
   "keywords": [
-    "react",
-    "boilerplate"
+    "fetch",
+    "isomorphic",
+    "functional"
   ],
   "author": "Vincent Boutour",
+  "contributors": [
+    "Vincent Boutour (https://vibioh.fr)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ViBiOh/funtch/issues"
