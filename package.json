@@ -1,7 +1,7 @@
 {
-  "name": "js-fetch",
+  "name": "funtch",
   "version": "0.0.1",
-  "description": "Fetch component",
+  "description": "FUNctional feTCH isomorphic",
   "main": "index.js",
   "scripts": {
     "prettier": "./node_modules/.bin/prettier --print-width 100 --single-quote --trailing-comma all --color --write \"./src/**/*.js\"",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ViBiOh/js-fetch.git"
+    "url": "git://github.com/ViBiOh/funtch.git"
   },
   "keywords": [
     "react",
@@ -24,9 +24,9 @@
   "author": "Vincent Boutour",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ViBiOh/js-fetch/issues"
+    "url": "https://github.com/ViBiOh/funtch/issues"
   },
-  "homepage": "https://github.com/ViBiOh/js-fetch",
+  "homepage": "https://github.com/ViBiOh/funtch",
   "devDependencies": {
     "ava": "latest",
     "babel-cli": "latest",
