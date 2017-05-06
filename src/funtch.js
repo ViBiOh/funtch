@@ -8,6 +8,71 @@ const MEDIA_TYPE_TEXT = 'text/plain';
 
 const CONTENT_TYPE_JSON = new RegExp(MEDIA_TYPE_JSON, 'i');
 
+/**
+ * Read all headers from response
+ * @param  {Object} response Fetch response
+ * @return {Object} All headers in a key/value Map
+ */
+export function readHeaders(response) {
+  if (response.headers.raw) {
+    const entries = response.headers.raw();
+    return Object.keys(entries).reduce((previous, current) => {
+      // eslint-disable-next-line no-param-reassign
+      previous[current] = Array.isArray(entries[current])
+        ? entries[current].join(', ')
+        : entries[current];
+      return previous;
+    }, {});
+  }
+
+  const entries = Array.from(response.headers.entries());
+  return entries.reduce((previous, current) => {
+    // eslint-disable-next-line no-param-reassign
+    previous[current[0]] = current[1];
+    return previous;
+  }, {});
+}
+
+/**
+ * Read content from response
+ * @param  {Object} response Fetch response
+ * @return {Object} Content according to ContentType Header (text or JSON)
+ */
+export function readContent(response) {
+  if (CONTENT_TYPE_JSON.test(response.headers.get(CONTENT_TYPE_HEADER))) {
+    return response.json();
+  }
+  return response.text();
+}
+
+/**
+ * Identify and handle error from response
+ * @param  {Object} response   Fetch response
+ * @param  {Function} getContent Content reader of response
+ * @return {Promise<Object>} Promise with error description if HTTP status greater or equal 400,
+ * resonse otherwise
+ */
+export function errorHandler(response, getContent = readContent) {
+  if (response.status < 400) {
+    return response;
+  }
+
+  return new Promise((resolve, reject) =>
+    getContent(response).then((content) => {
+      reject({
+        status: response.status,
+        headers: readHeaders(response),
+        content,
+        toString: () => (typeof content === 'string' ? content : JSON.stringify(content)),
+      });
+    }),
+  );
+}
+
+function doFetch(url, params = {}, error = errorHandler, content = readContent) {
+  return fetch(url, params).then(response => error(response, content)).then(content);
+}
+
 function isJson(body) {
   try {
     JSON.parse(body);
@@ -15,33 +80,6 @@ function isJson(body) {
   } catch (e) {
     return false;
   }
-}
-
-export function contentHandler(response) {
-  if (CONTENT_TYPE_JSON.test(response.headers.get(CONTENT_TYPE_HEADER))) {
-    return response.json();
-  }
-  return response.text();
-}
-
-export function errorHandler(response, getContent = contentHandler) {
-  if (response.status < 400) {
-    return response;
-  }
-
-  return new Promise((resolve, reject) =>
-    getContent(response).then(content =>
-      reject({
-        status: response.status,
-        content,
-        toString: () => (typeof content === 'string' ? content : JSON.stringify(content)),
-      }),
-    ),
-  );
-}
-
-function doFetch(url, params = {}, error = errorHandler, content = contentHandler) {
-  return fetch(url, params).then(response => error(response, content)).then(content);
 }
 
 class FuntchBuilder {
@@ -91,7 +129,7 @@ class FuntchBuilder {
   }
 
   content(handler) {
-    this.contentHandler = handler;
+    this.readContent = handler;
 
     return this;
   }
@@ -146,10 +184,13 @@ class FuntchBuilder {
   }
 
   send() {
-    return doFetch(this.url, this.params, this.errorHandler, this.contentHandler);
+    return doFetch(this.url, this.params, this.errorHandler, this.readContent);
   }
 }
 
+/**
+ * funtch functional interface
+ */
 export default class funtch {
   static url(url) {
     return new FuntchBuilder().url(url);

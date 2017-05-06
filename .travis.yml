@@ -1,7 +1,11 @@
 language: node_js
 node_js: 7
 script: |
-  npm run build &&
-  npm run coverage
+  npm run build
+after_success: |
+  if [ "${TRAVIS_BRANCH}" == "master" ]; then
+    npm run coverage
+    curl -X POST --data-urlencode "gitUrl=git@github.com:ViBiOh/funtch.git" https://doc.esdoc.org/api/create
+  fi
 notifications:
   email: false

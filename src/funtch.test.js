@@ -74,12 +74,16 @@ test('should return json when asked', (t) => {
   );
 });
 
-test('should return error when 400 or more', (t) => {
+test('should return error when 400 or more with headers', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 400,
       headers: {
         get: () => 'text/plain',
+        raw: () => ({
+          'content-type': ['text/plain'],
+          'content-length': '19',
+        }),
       },
       text: () => Promise.resolve('Test JS Error'),
     });
@@ -87,6 +91,10 @@ test('should return error when 400 or more', (t) => {
   return funtch.get('/').then(() => t.true(false)).catch((data) => {
     t.is(data.content, 'Test JS Error');
     t.is(String(data), 'Test JS Error');
+    t.deepEqual(data.headers, {
+      'content-type': 'text/plain',
+      'content-length': '19',
+    });
   });
 });
 
@@ -96,6 +104,7 @@ test('should return jsonError when 400 or more', (t) => {
       status: 500,
       headers: {
         get: () => 'application/json',
+        raw: () => ({}),
       },
       json: () =>
         Promise.resolve({

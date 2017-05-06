@@ -14,9 +14,10 @@
     "pretest": "npm run codestyle",
     "test": "./node_modules/.bin/nyc --reporter text --reporter lcov --require babel-core/register ./node_modules/.bin/ava",
     "coverage": "./node_modules/.bin/codecov -f ./coverage/lcov.info",
+    "doc": "./node_modules/.bin/esdoc",
     "build:browser": "./node_modules/.bin/babel ./src/funtch.js | ./node_modules/.bin/uglifyjs -o browser.js -c -mt --preamble //${npm_package_name}@${npm_package_version}",
     "build": "npm test && npm run build:browser",
-    "postbuild": "node cjs.test.js && ./node_modules/.bin/babel-node es6.test.js"
+    "postbuild": "node example/cjs.test.js && ./node_modules/.bin/babel-node example/es6.test.js"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
     "babel-eslint": "latest",
     "babel-preset-es2015": "latest",
     "codecov": "latest",
+    "esdoc": "latest",
     "eslint": "latest",
     "eslint-config-airbnb": "latest",
     "eslint-plugin-import": "latest",
@@ -62,5 +64,32 @@
     "require": [
       "babel-register"
     ]
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "esdoc": {
+    "source": "./src",
+    "includes": [".js$"],
+    "excludes": [".test\\.js$"],
+    "destination": "./doc",
+    "experimentalProposal": {
+      "classProperties": true,
+      "objectRestSpread": true,
+      "decorators": true,
+      "doExpressions": true,
+      "functionBind": true,
+      "asyncGenerators": true,
+      "exportExtensions": true,
+      "dynamicImport": true
+    }
+  },
+  "eslintConfig": {
+    "extends": "airbnb/base",
+    "env": {
+      "browser": true
+    }
   }
 }
