@@ -68,22 +68,14 @@ test('should return error when 400 or more with headers', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 400,
-      headers: {
-        get: () => 'text/plain',
-        raw: () => ({
-          'content-type': ['text/plain'],
-          'content-length': '19',
-        }),
-      },
+      headers: new Map().set(CONTENT_TYPE_HEADER, MEDIA_TYPE_TEXT),
       text: () => Promise.resolve('Test JS Error'),
     });
 
-  return funtch.get('/').then(() => t.true(false)).catch((data) => {
+  return funtch.get('/').then(() => t.fail()).catch((data) => {
     t.is(data.content, 'Test JS Error');
-    t.is(String(data), 'Test JS Error');
     t.deepEqual(data.headers, {
-      'content-type': 'text/plain',
-      'content-length': '19',
+      [CONTENT_TYPE_HEADER]: 'text/plain',
     });
   });
 });
@@ -92,19 +84,15 @@ test('should return jsonError when 400 or more', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 500,
-      headers: {
-        get: () => 'application/json',
-        raw: () => ({}),
-      },
+      headers: new Map().set(CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON),
       json: () =>
         Promise.resolve({
           error: 'Test JS Error',
         }),
     });
 
-  return funtch.get('/').then(() => t.true(false)).catch((data) => {
+  return funtch.get('/').then(() => t.fail()).catch((data) => {
     t.deepEqual(data.content, { error: 'Test JS Error' });
-    t.is(String(data), '{"error":"Test JS Error"}');
   });
 });
 
@@ -118,7 +106,7 @@ test('should return error when text fail', (t) => {
 
   return funtch
     .get('/')
-    .then(() => t.true(false))
+    .then(() => t.fail())
     .catch(data => t.is(String(data), 'Error: JS Text Error'));
 });
 
@@ -132,7 +120,7 @@ test('should return error when json fail', (t) => {
 
   return funtch
     .get('/')
-    .then(() => t.true(false))
+    .then(() => t.fail())
     .catch(data => t.is(String(data), 'Error: JS JSON Error'));
 });
 
@@ -383,7 +371,7 @@ test('should use given error handler', (t) => {
     .url('/')
     .error(customErrorHandler)
     .get()
-    .then(() => t.true(false))
+    .then(() => t.fail())
     .catch(() => t.is(result, 'Failed'));
 });
 

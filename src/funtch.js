@@ -78,7 +78,6 @@ export function errorHandler(response, content = readContent) {
         status: response.status,
         headers: readHeaders(response),
         content: data,
-        toString: () => (typeof data === 'string' ? data : JSON.stringify(data)),
       });
     }),
   );
