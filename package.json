@@ -1,6 +1,6 @@
 {
   "name": "funtch",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "engines": {
     "node": ">=6"
   },
@@ -72,8 +72,12 @@
   },
   "esdoc": {
     "source": "./src",
-    "includes": [".js$"],
-    "excludes": [".test\\.js$"],
+    "includes": [
+      ".js$"
+    ],
+    "excludes": [
+      ".test\\.js$"
+    ],
     "destination": "./doc",
     "experimentalProposal": {
       "classProperties": true,
