@@ -69,7 +69,7 @@ export function readContent(response) {
  */
 export function errorHandler(response, content = readContent) {
   if (response.status < 400) {
-    return response;
+    return Promise.resolve(response);
   }
 
   return new Promise((resolve, reject) =>

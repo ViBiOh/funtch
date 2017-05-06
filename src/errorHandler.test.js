@@ -1,12 +1,12 @@
 import test from 'ava';
 import { errorHandler } from './funtch';
 
-test('should do nothing if response status is lower than 400', (t) => {
+test('should do nothing else that wrap into Promise if response status is lower than 400', (t) => {
   const initialPromise = {
     status: 200,
   };
 
-  t.is(errorHandler(initialPromise), initialPromise);
+  return errorHandler(initialPromise).then(result => t.is(result, initialPromise));
 });
 
 test('should reject promise with content if bad status', t =>
