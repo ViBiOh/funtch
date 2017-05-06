@@ -1,10 +1,25 @@
 import 'isomorphic-fetch';
 
-const CONTENT_TYPE_HEADER = 'Content-Type';
 const ACCEPT_TYPE_HEADER = 'Accept';
 const AUTHORIZATION_HEADER = 'Authorization';
-const MEDIA_TYPE_JSON = 'application/json';
-const MEDIA_TYPE_TEXT = 'text/plain';
+
+/**
+ * ContentType header name.
+ * @type {String}
+ */
+export const CONTENT_TYPE_HEADER = 'Content-Type';
+
+/**
+ * JSON Media Type
+ * @type {String}
+ */
+export const MEDIA_TYPE_JSON = 'application/json';
+
+/**
+ * Plain text Media Type
+ * @type {String}
+ */
+export const MEDIA_TYPE_TEXT = 'text/plain';
 
 const CONTENT_TYPE_JSON = new RegExp(MEDIA_TYPE_JSON, 'i');
 
@@ -34,9 +49,9 @@ export function readHeaders(response) {
 }
 
 /**
- * Read content from response
+ * Read content from response according to ContentType Header (text or JSON)
  * @param  {Object} response Fetch response
- * @return {Object} Content according to ContentType Header (text or JSON)
+ * @return {Promise<Object>} Promise with content in corresponding shape
  */
 export function readContent(response) {
   if (CONTENT_TYPE_JSON.test(response.headers.get(CONTENT_TYPE_HEADER))) {
@@ -48,22 +63,22 @@ export function readContent(response) {
 /**
  * Identify and handle error from response
  * @param  {Object} response   Fetch response
- * @param  {Function} getContent Content reader of response
+ * @param  {Function} content Content reader of response
  * @return {Promise<Object>} Promise with error description if HTTP status greater or equal 400,
  * resonse otherwise
  */
-export function errorHandler(response, getContent = readContent) {
+export function errorHandler(response, content = readContent) {
   if (response.status < 400) {
     return response;
   }
 
   return new Promise((resolve, reject) =>
-    getContent(response).then((content) => {
+    content(response).then((data) => {
       reject({
         status: response.status,
         headers: readHeaders(response),
-        content,
-        toString: () => (typeof content === 'string' ? content : JSON.stringify(content)),
+        content: data,
+        toString: () => (typeof data === 'string' ? data : JSON.stringify(data)),
       });
     }),
   );
@@ -89,30 +104,59 @@ class FuntchBuilder {
     };
   }
 
+  /**
+   * Define url of request
+   * @param  {String} url URL of request
+   * @return {Object} instance
+   */
   url(url) {
     this.url = url;
 
     return this;
   }
 
+  /**
+   * Add header to request
+   * @param  {String} key   Header's name
+   * @param  {String} value Header's value
+   * @return {Object} instance
+   */
   header(key, value) {
     this.params.headers[key] = value;
 
     return this;
   }
 
+  /**
+   * Add Authorization header
+   * @param  {String} value Authorization's value
+   * @return {Object} instance
+   */
   auth(value) {
     return this.header(AUTHORIZATION_HEADER, value);
   }
 
+  /**
+   * Define ContentType Header to JSON
+   * @return {Object} instance
+   */
   contentJson() {
     return this.header(CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON);
   }
 
+  /**
+   * Define ContentType Header to text/plain
+   * @return {Object} instance
+   */
   contentText() {
     return this.header(CONTENT_TYPE_HEADER, MEDIA_TYPE_TEXT);
   }
 
+  /**
+   * Guess and define ContentType Header for given body
+   * @param  {Object} body Body to analyze
+   * @return {Object} instance
+   */
   guessContentType(body) {
     if (isJson(body)) {
       return this.contentJson();
@@ -120,31 +164,57 @@ class FuntchBuilder {
     return this.contentText();
   }
 
+  /**
+   * Define Accept Header to JSON
+   * @return {Object} instance
+   */
   acceptJson() {
     return this.header(ACCEPT_TYPE_HEADER, MEDIA_TYPE_JSON);
   }
 
+  /**
+   * Define Accept Header to text/plain
+   * @return {Object} instance
+   */
   acceptText() {
     return this.header(ACCEPT_TYPE_HEADER, MEDIA_TYPE_TEXT);
   }
 
+  /**
+   * Set content reader for request
+   * @param  {Function} handler Function that will receive response Promise
+   * and should return a Promise with content
+   * @return {Object} instance
+   */
   content(handler) {
     this.readContent = handler;
 
     return this;
   }
 
+  /**
+   * Set error handler for request
+   * @param  {Function} handler Function that will receive response Promise and readContent method
+   * and should check and handle if response in an error or not. Should return Promise.
+   * @return {Object} instance
+   */
   error(handler) {
     this.errorHandler = handler;
 
     return this;
   }
 
+  /**
+   * Set body of request
+   * @param  {Object}  body  Request's body, should not be `undefined`
+   * @param  {Boolean} guess Indicate if ContentType Header is added or not
+   * @return {Object} instance
+   */
   body(body, guess = true) {
     if (typeof body !== 'undefined') {
       this.params.body = body;
 
-      if (!this.params.headers[CONTENT_TYPE_HEADER] && guess) {
+      if (guess && !this.params.headers[CONTENT_TYPE_HEADER]) {
         return this.guessContentType(body);
       }
     }
@@ -152,11 +222,19 @@ class FuntchBuilder {
     return this;
   }
 
+  /**
+   * Perform GET request with fetch
+   * @return {Promise} Reponse's promise
+   */
   get() {
     this.params.method = 'GET';
     return this.send();
   }
 
+  /**
+   * Perform POST request with fetch
+   * @return {Promise} Reponse's promise
+   */
   post(body) {
     this.body(body);
 
@@ -164,6 +242,10 @@ class FuntchBuilder {
     return this.send();
   }
 
+  /**
+   * Perform PUT request with fetch
+   * @return {Promise} Reponse's promise
+   */
   put(body) {
     this.body(body);
 
@@ -171,6 +253,10 @@ class FuntchBuilder {
     return this.send();
   }
 
+  /**
+   * Perform PATCH request with fetch
+   * @return {Promise} Reponse's promise
+   */
   patch(body) {
     this.body(body);
 
@@ -178,11 +264,19 @@ class FuntchBuilder {
     return this.send();
   }
 
+  /**
+   * Perform DELETE request with fetch
+   * @return {Promise} Reponse's promise
+   */
   delete() {
     this.params.method = 'DELETE';
     return this.send();
   }
 
+  /**
+   * Perform fetch call with instance params.
+   * @return {Promise} Reponse's promise
+   */
   send() {
     return doFetch(this.url, this.params, this.errorHandler, this.readContent);
   }
@@ -192,26 +286,62 @@ class FuntchBuilder {
  * funtch functional interface
  */
 export default class funtch {
+  /**
+   * Create builder with given URL.
+   * @param  {String} url Requested URL
+   * @return {FuntchBuilder} Builder for configuring behavior
+   */
   static url(url) {
     return new FuntchBuilder().url(url);
   }
 
+  /**
+   * Perform a GET request with fetch for given URL
+   * @param  {String} url Requested URL
+   * @return {Promise} Fetch result
+   */
   static get(url) {
     return new FuntchBuilder().url(url).get();
   }
 
+  /**
+   * Perform a POST request with fetch for given URL and body.
+   * Adding ContentType header if not defined according to body type (text or json)
+   * @param  {String} url Requested URL
+   * @param  {Object} body Body sent with request
+   * @return {Promise} Fetch result
+   */
   static post(url, body) {
     return new FuntchBuilder().url(url).post(body);
   }
 
+  /**
+   * Perform a PUT request with fetch for given URL and body.
+   * Adding ContentType header if not defined according to body type (text or json)
+   * @param  {String} url Requested URL
+   * @param  {Object} body Body sent with request
+   * @return {Promise} Fetch result
+   */
   static put(url, body) {
     return new FuntchBuilder().url(url).put(body);
   }
 
+  /**
+   * Perform a PATCH request with fetch for given URL and body.
+   * Adding ContentType header if not defined according to body type (text or json)
+   * @param  {String} url Requested URL
+   * @param  {Object} body Body sent with request
+   * @return {Promise} Fetch result
+   */
   static patch(url, body) {
     return new FuntchBuilder().url(url).patch(body);
   }
 
+  /**
+   * Perform a DELETE request with fetch for given URL
+   * @param  {String} url Requested URL
+   * @return {Promise} Fetch result
+   */
   static delete(url) {
     return new FuntchBuilder().url(url).delete();
   }

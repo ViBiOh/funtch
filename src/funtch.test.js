@@ -1,22 +1,18 @@
 import test from 'ava';
 import sinon from 'sinon';
-import funtch from './funtch';
+import funtch, { CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON, MEDIA_TYPE_TEXT } from './funtch';
 
 let stubFuntch;
 
 const textPromise = Promise.resolve({
   status: 200,
-  headers: {
-    get: () => 'text/plain',
-  },
+  headers: new Map().set(CONTENT_TYPE_HEADER, MEDIA_TYPE_TEXT),
   text: () => Promise.resolve(),
 });
 
 const jsonPromise = Promise.resolve({
   status: 200,
-  headers: {
-    get: () => 'application/json',
-  },
+  headers: new Map().set(CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON),
   json: () => Promise.resolve(),
 });
 
@@ -30,9 +26,7 @@ test('should return a promise', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
-      headers: {
-        get: () => '',
-      },
+      headers: new Map(),
       text: () => Promise.resolve(''),
     });
 
@@ -45,9 +39,7 @@ test('should return text when asked', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
+      headers: new Map().set(CONTENT_TYPE_HEADER, MEDIA_TYPE_TEXT),
       text: () => Promise.resolve('Test JS'),
     });
 
@@ -58,9 +50,7 @@ test('should return json when asked', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
-      headers: {
-        get: () => 'application/json',
-      },
+      headers: new Map().set(CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON),
       json: () =>
         Promise.resolve({
           result: 'Test JS',
@@ -122,9 +112,7 @@ test('should return error when text fail', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
-      headers: {
-        get: () => 'text/plain',
-      },
+      headers: new Map().set(CONTENT_TYPE_HEADER, MEDIA_TYPE_TEXT),
       text: () => Promise.reject(new Error('JS Text Error')),
     });
 
@@ -138,9 +126,7 @@ test('should return error when json fail', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
-      headers: {
-        get: () => 'application/json',
-      },
+      headers: new Map().set(CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON),
       json: () => Promise.reject(new Error('JS JSON Error')),
     });
 

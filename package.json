@@ -16,7 +16,7 @@
     "coverage": "./node_modules/.bin/codecov -f ./coverage/lcov.info",
     "doc": "./node_modules/.bin/esdoc",
     "build:browser": "./node_modules/.bin/babel ./src/funtch.js | ./node_modules/.bin/uglifyjs -o browser.js -c -mt --preamble //${npm_package_name}@${npm_package_version}",
-    "build": "npm test && npm run build:browser",
+    "build": "npm test && npm run build:browser && npm run doc",
     "postbuild": "node example/cjs.test.js && ./node_modules/.bin/babel-node example/es6.test.js"
   },
   "repository": {

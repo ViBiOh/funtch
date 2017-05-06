@@ -7,5 +7,5 @@ module.exports = funtch => {
   /**
    * Simple GET with error
    */
-  funtch.post('https://api.vibioh.fr').catch(console.error);
+  funtch.post('https://api.vibioh.fr/').catch(console.error);
 };
