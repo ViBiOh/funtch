@@ -54,3 +54,37 @@ By default, **funtch** will reject promise with an object describing error if HT
   content: '404 page not found',
 }
 ```
+
+## Custom error handler
+
+By default, **fetch** return a valid Promise without considering http status. **Funtch** error handler is called first, in this way, you can identify an error response and `reject` the Promise. By default, if HTTP status is greather or equal than 400, it's considered as error.
+
+You can easyly override default error handler by calling `error()` on the builder. The error handler method [accept a response and return a Promise](https://doc.esdoc.org/github.com/ViBiOh/funtch/function/index.html#static-function-errorHandler). You can reimplement it completely or adding behavior of the default one.
+
+Below an example that add a `toString()` behavior.
+
+```js
+import funtch, { errorHandler } from 'funtch';
+
+function errorWithToString(response) {
+  return new Promise((resolve, reject) =>
+    errorHandler(response).then(resolve).catch(err =>
+      reject({
+        ...err,
+        toString: () => {
+          if (typeof err.content === 'string') {
+            return err.content;
+          }
+          return JSON.stringify(err.content);
+        },
+      }),
+    ),
+  );
+}
+
+funtch
+  .url('https://api.github.com')
+  .error(errorWithToString)
+  .get()
+  .catch(err => console.log(String(err)));
+```
