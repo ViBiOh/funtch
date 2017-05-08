@@ -55,7 +55,45 @@ By default, **funtch** will reject promise with an object describing error if HT
 }
 ```
 
-## Custom error handler
+## Customization
+
+### Custom content handler
+
+By default, **fetch** expose only two methods for reading content : `text()` and `json()`. Instead of juggling with these methods, **funtch** return content by examining Content-Type header and call one of the two methods.
+
+You can easily override default content handler by calling `content()` on the build. The content handler method [accept a reponse and return a Promise](https://doc.esdoc.org/github.com/ViBiOh/funtch/function/index.html#static-function-readContent). Method is also passed to error handler method, in order to read content while identifying error.
+
+Below an example that parse XML response.
+
+```js
+import funtch, { CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER } from 'funtch';
+
+const contentTypeJsonRegex = new RegExp(funtch.MEDIA_TYPE_JSON, 'i');
+const contentTypeXmlRegex = /application\/xml/i;
+
+function xmlContent(response) {
+  if (contentTypeJsonRegex.test(response.headers.get(funtch.CONTENT_TYPE_HEADER))) {
+    return response.json();
+  }
+
+  return new Promise(resolve => {
+    response.text().then(data => {
+      if (contentTypeXmlRegex.test(response.headers.get(funtch.CONTENT_TYPE_HEADER))) {
+        resolve(new DOMParser().parseFromString(data, 'text/xml'));
+      }
+      resolve(data);
+    });
+  });
+}
+
+funtch
+  .url('https://api.github.com')
+  .content(xmlContent)
+  .get();
+```
+
+
+### Custom error handler
 
 By default, **fetch** return a valid Promise without considering http status. **Funtch** error handler is called first, in this way, you can identify an error response and `reject` the Promise. By default, if HTTP status is greather or equal than 400, it's considered as error.
 
