@@ -47,7 +47,7 @@
     "eslint": "latest",
     "eslint-config-airbnb": "latest",
     "eslint-plugin-import": "latest",
-    "js-utils": "git+https://github.com/ViBiOh/js-utils.git",
+    "js-utils": "ViBiOh/js-utils",
     "nyc": "latest",
     "prettier": "latest",
     "sinon": "latest",
