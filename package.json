@@ -44,6 +44,10 @@
     "babel-preset-es2015": "latest",
     "codecov": "latest",
     "esdoc": "latest",
+    "esdoc-coverage-plugin": "latest",
+    "esdoc-ecmascript-proposal-plugin": "latest",
+    "esdoc-jsx-plugin": "latest",
+    "esdoc-publish-html-plugin": "latest",
     "eslint": "latest",
     "eslint-config-airbnb": "latest",
     "eslint-plugin-import": "latest",
@@ -79,16 +83,30 @@
       ".test\\.js$"
     ],
     "destination": "./doc",
-    "experimentalProposal": {
-      "classProperties": true,
-      "objectRestSpread": true,
-      "decorators": true,
-      "doExpressions": true,
-      "functionBind": true,
-      "asyncGenerators": true,
-      "exportExtensions": true,
-      "dynamicImport": true
-    }
+    "plugins": [
+      {
+        "name": "esdoc-ecmascript-proposal-plugin",
+        "option": {
+          "classProperties": true,
+          "objectRestSpread": true,
+          "decorators": true,
+          "doExpressions": true,
+          "functionBind": true,
+          "asyncGenerators": true,
+          "exportExtensions": true,
+          "dynamicImport": true
+        }
+      },
+      {
+        "name": "esdoc-publish-html-plugin"
+      },
+      {
+        "name": "esdoc-coverage-plugin",
+        "option": {
+          "enable": true
+        }
+      }
+    ]
   },
   "eslintConfig": {
     "extends": "airbnb/base",
