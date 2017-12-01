@@ -42,7 +42,7 @@ export function readHeaders(response) {
 
   const entries = Array.from(response.headers.entries());
   return entries.reduce((previous, current) => {
-    // eslint-disable-next-line no-param-reassign
+    // eslint-disable-next-line no-param-reassign, prefer-destructuring
     previous[current[0]] = current[1];
     return previous;
   }, {});
@@ -74,17 +74,19 @@ export function errorHandler(response, content = readContent) {
 
   return new Promise((resolve, reject) =>
     content(response).then((data) => {
+      // eslint-disable-next-line prefer-promise-reject-errors
       reject({
         status: response.status,
         headers: readHeaders(response),
         content: data,
       });
-    }),
-  );
+    }));
 }
 
 function doFetch(url, params = {}, error = errorHandler, content = readContent) {
-  return fetch(url, params).then(response => error(response, content)).then(content);
+  return fetch(url, params)
+    .then(response => error(response, content))
+    .then(content);
 }
 
 function isJson(body) {

@@ -41,7 +41,7 @@
     "ava": "latest",
     "babel-cli": "latest",
     "babel-eslint": "latest",
-    "babel-preset-es2015": "latest",
+    "babel-preset-env": "latest",
     "codecov": "latest",
     "esdoc": "latest",
     "esdoc-coverage-plugin": "latest",
@@ -71,7 +71,17 @@
   },
   "babel": {
     "presets": [
-      "es2015"
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "> 1%",
+              "last 2 versions"
+            ]
+          }
+        }
+      ]
     ]
   },
   "esdoc": {

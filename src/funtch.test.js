@@ -60,8 +60,7 @@ test('should return json when asked', (t) => {
   return funtch.get('/').then(data =>
     t.deepEqual(data, {
       result: 'Test JS',
-    }),
-  );
+    }));
 });
 
 test('should return error when 400 or more with headers', (t) => {
@@ -72,12 +71,15 @@ test('should return error when 400 or more with headers', (t) => {
       text: () => Promise.resolve('Test JS Error'),
     });
 
-  return funtch.get('/').then(() => t.fail()).catch((data) => {
-    t.is(data.content, 'Test JS Error');
-    t.deepEqual(data.headers, {
-      [CONTENT_TYPE_HEADER]: 'text/plain',
+  return funtch
+    .get('/')
+    .then(() => t.fail())
+    .catch((data) => {
+      t.is(data.content, 'Test JS Error');
+      t.deepEqual(data.headers, {
+        [CONTENT_TYPE_HEADER]: 'text/plain',
+      });
     });
-  });
 });
 
 test('should return jsonError when 400 or more', (t) => {
@@ -91,9 +93,12 @@ test('should return jsonError when 400 or more', (t) => {
         }),
     });
 
-  return funtch.get('/').then(() => t.fail()).catch((data) => {
-    t.deepEqual(data.content, { error: 'Test JS Error' });
-  });
+  return funtch
+    .get('/')
+    .then(() => t.fail())
+    .catch((data) => {
+      t.deepEqual(data.content, { error: 'Test JS Error' });
+    });
 });
 
 test('should return error when text fail', (t) => {
@@ -127,145 +132,172 @@ test('should return error when json fail', (t) => {
 test.serial('should pass header', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return funtch.url('/').header('custom', 'test').get().then(() =>
-    t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          custom: 'test',
-        },
-        method: 'GET',
-      }),
-      true,
-    ),
-  );
+  return funtch
+    .url('/')
+    .header('custom', 'test')
+    .get()
+    .then(() =>
+      t.is(
+        stubFuntch.calledWith('/', {
+          headers: {
+            custom: 'test',
+          },
+          method: 'GET',
+        }),
+        true,
+      ));
 });
 
 test.serial('should pass auth', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return funtch.url('/').auth('token').get().then(() =>
-    t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          Authorization: 'token',
-        },
-        method: 'GET',
-      }),
-      true,
-    ),
-  );
+  return funtch
+    .url('/')
+    .auth('token')
+    .get()
+    .then(() =>
+      t.is(
+        stubFuntch.calledWith('/', {
+          headers: {
+            Authorization: 'token',
+          },
+          method: 'GET',
+        }),
+        true,
+      ));
 });
 
 test.serial('should pass contentType for json', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
-  return funtch.url('/').contentJson().get().then(() =>
-    t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'GET',
-      }),
-      true,
-    ),
-  );
+  return funtch
+    .url('/')
+    .contentJson()
+    .get()
+    .then(() =>
+      t.is(
+        stubFuntch.calledWith('/', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'GET',
+        }),
+        true,
+      ));
 });
 
 test.serial('should pass contentType for text', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return funtch.url('/').contentText().get().then(() =>
-    t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        method: 'GET',
-      }),
-      true,
-    ),
-  );
+  return funtch
+    .url('/')
+    .contentText()
+    .get()
+    .then(() =>
+      t.is(
+        stubFuntch.calledWith('/', {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+          method: 'GET',
+        }),
+        true,
+      ));
 });
 
 test.serial('should pass accept for json', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
-  return funtch.url('/').acceptJson().get().then(() =>
-    t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          Accept: 'application/json',
-        },
-        method: 'GET',
-      }),
-      true,
-    ),
-  );
+  return funtch
+    .url('/')
+    .acceptJson()
+    .get()
+    .then(() =>
+      t.is(
+        stubFuntch.calledWith('/', {
+          headers: {
+            Accept: 'application/json',
+          },
+          method: 'GET',
+        }),
+        true,
+      ));
 });
 
 test.serial('should pass accept for text', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return funtch.url('/').acceptText().get().then(() =>
-    t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          Accept: 'text/plain',
-        },
-        method: 'GET',
-      }),
-      true,
-    ),
-  );
+  return funtch
+    .url('/')
+    .acceptText()
+    .get()
+    .then(() =>
+      t.is(
+        stubFuntch.calledWith('/', {
+          headers: {
+            Accept: 'text/plain',
+          },
+          method: 'GET',
+        }),
+        true,
+      ));
 });
 
 test.serial('should pass body', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return funtch.url('/').body('Hello World').post().then(() =>
-    t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        body: 'Hello World',
-        method: 'POST',
-      }),
-      true,
-    ),
-  );
+  return funtch
+    .url('/')
+    .body('Hello World')
+    .post()
+    .then(() =>
+      t.is(
+        stubFuntch.calledWith('/', {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+          body: 'Hello World',
+          method: 'POST',
+        }),
+        true,
+      ));
 });
 
 test.serial('should pass json body', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
-  return funtch.url('/').body(JSON.stringify({ hello: 'World' })).post().then(() =>
-    t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: '{"hello":"World"}',
-        method: 'POST',
-      }),
-      true,
-    ),
-  );
+  return funtch
+    .url('/')
+    .body(JSON.stringify({ hello: 'World' }))
+    .post()
+    .then(() =>
+      t.is(
+        stubFuntch.calledWith('/', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: '{"hello":"World"}',
+          method: 'POST',
+        }),
+        true,
+      ));
 });
 
 test.serial('should not pass body if undefined', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return funtch.url('/').body().post().then(() =>
-    t.is(
-      stubFuntch.calledWith('/', {
-        headers: {},
-        method: 'POST',
-      }),
-      true,
-    ),
-  );
+  return funtch
+    .url('/')
+    .body()
+    .post()
+    .then(() =>
+      t.is(
+        stubFuntch.calledWith('/', {
+          headers: {},
+          method: 'POST',
+        }),
+        true,
+      ));
 });
 
 test.serial('should guess json content', (t) => {
@@ -281,8 +313,7 @@ test.serial('should guess json content', (t) => {
         method: 'POST',
       }),
       true,
-    ),
-  );
+    ));
 });
 
 test.serial('should guess text content', (t) => {
@@ -298,13 +329,16 @@ test.serial('should guess text content', (t) => {
         method: 'POST',
       }),
       true,
-    ),
-  );
+    ));
 });
 
 test.serial('should not guess content if already defined', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
-  const result = funtch.url('/').contentText().body('{"hello":"World"}').post();
+  const result = funtch
+    .url('/')
+    .contentText()
+    .body('{"hello":"World"}')
+    .post();
 
   return result.then(() =>
     t.is(
@@ -316,23 +350,25 @@ test.serial('should not guess content if already defined', (t) => {
         method: 'POST',
       }),
       true,
-    ),
-  );
+    ));
 });
 
 test.serial('should not guess content if forbidden', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
-  return funtch.url('/').body('{"hello":"World"}', false).post().then(() =>
-    t.is(
-      stubFuntch.calledWith('/', {
-        headers: {},
-        body: '{"hello":"World"}',
-        method: 'POST',
-      }),
-      true,
-    ),
-  );
+  return funtch
+    .url('/')
+    .body('{"hello":"World"}', false)
+    .post()
+    .then(() =>
+      t.is(
+        stubFuntch.calledWith('/', {
+          headers: {},
+          body: '{"hello":"World"}',
+          method: 'POST',
+        }),
+        true,
+      ));
 });
 
 test('should use given content handler', (t) => {
@@ -346,11 +382,15 @@ test('should use given content handler', (t) => {
     result = content;
   };
 
-  return funtch.url('/').content(customContentHandler).get().then(() => {
-    t.deepEqual(result, {
-      status: 204,
+  return funtch
+    .url('/')
+    .content(customContentHandler)
+    .get()
+    .then(() => {
+      t.deepEqual(result, {
+        status: 204,
+      });
     });
-  });
 });
 
 test('should use given error handler', (t) => {
@@ -385,8 +425,7 @@ test.serial('should send GET', (t) => {
         method: 'GET',
       }),
       true,
-    ),
-  );
+    ));
 });
 
 test.serial('should send POST', (t) => {
@@ -399,8 +438,7 @@ test.serial('should send POST', (t) => {
         method: 'POST',
       }),
       true,
-    ),
-  );
+    ));
 });
 
 test.serial('should send PUT', (t) => {
@@ -413,8 +451,7 @@ test.serial('should send PUT', (t) => {
         method: 'PUT',
       }),
       true,
-    ),
-  );
+    ));
 });
 
 test.serial('should send PATCH', (t) => {
@@ -427,8 +464,7 @@ test.serial('should send PATCH', (t) => {
         method: 'PATCH',
       }),
       true,
-    ),
-  );
+    ));
 });
 
 test.serial('should send DELETE', (t) => {
@@ -441,6 +477,5 @@ test.serial('should send DELETE', (t) => {
         method: 'DELETE',
       }),
       true,
-    ),
-  );
+    ));
 });
