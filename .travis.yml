@@ -7,5 +7,9 @@ after_success: |
     npm run coverage
     curl -X POST --data-urlencode "gitUrl=git@github.com:ViBiOh/funtch.git" https://doc.esdoc.org/api/create
   fi
+deploy:
+  provider: npm
+  email: ${NPM_EMAIL}
+  api_key: ${NPM_TOKEN}
 notifications:
   email: false

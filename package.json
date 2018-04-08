@@ -1,6 +1,6 @@
 {
   "name": "funtch",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "engines": {
     "node": ">=6"
   },
@@ -64,24 +64,13 @@
     "files": [
       "src/**/*.test.js"
     ],
-    "concurrency": 4,
     "require": [
       "babel-register"
     ]
   },
   "babel": {
     "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "browsers": [
-              "> 1%",
-              "last 2 versions"
-            ]
-          }
-        }
-      ]
+      "env"
     ]
   },
   "esdoc": {
@@ -92,7 +81,7 @@
     "excludes": [
       ".test\\.js$"
     ],
-    "destination": "./doc",
+    "destination": "./esdoc",
     "plugins": [
       {
         "name": "esdoc-ecmascript-proposal-plugin",
