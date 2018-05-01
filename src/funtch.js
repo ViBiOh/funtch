@@ -1,7 +1,16 @@
 import 'isomorphic-fetch';
 
-const ACCEPT_TYPE_HEADER = 'Accept';
-const AUTHORIZATION_HEADER = 'Authorization';
+/**
+ * Accept header name.
+ * @type {String}
+ */
+export const ACCEPT_TYPE_HEADER = 'Accept';
+
+/**
+ * Authorization header name.
+ * @type {String}
+ */
+export const AUTHORIZATION_HEADER = 'Authorization';
 
 /**
  * ContentType header name.
@@ -21,6 +30,10 @@ export const MEDIA_TYPE_JSON = 'application/json';
  */
 export const MEDIA_TYPE_TEXT = 'text/plain';
 
+/**
+ * RegExp for checking if content type reference JSON.
+ * @type {RegExp}
+ */
 const CONTENT_TYPE_JSON = new RegExp(MEDIA_TYPE_JSON, 'i');
 
 /**
@@ -83,12 +96,25 @@ export function errorHandler(response, content = readContent) {
     }));
 }
 
+/**
+ * Perform fetch operation from given params.
+ * @param  {String}   url     URL to fetch
+ * @param  {Object}   params  URL Query params in a key/value form
+ * @param  {Function} error   Error handling method, first called method with raw response.
+ * @param  {Function} content Content handling method, called with output of error handling
+ * @return {Promise}          Promise of fetching to bind to.
+ */
 function doFetch(url, params = {}, error = errorHandler, content = readContent) {
   return fetch(url, params)
     .then(response => error(response, content))
     .then(content);
 }
 
+/**
+ * Check if content is JSON by trying to parse it
+ * @param  {String}  body Content to test
+ * @return {Boolean}      True if JSON, false otherwise
+ */
 function isJson(body) {
   try {
     JSON.parse(body);
@@ -98,6 +124,9 @@ function isJson(body) {
   }
 }
 
+/**
+ * Builder of fetch call with a functionnal design.
+ */
 class FuntchBuilder {
   constructor() {
     this.params = {
