@@ -1,6 +1,6 @@
 {
   "name": "funtch",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "engines": {
     "node": ">=6"
   },
