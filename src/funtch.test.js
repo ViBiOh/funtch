@@ -22,7 +22,7 @@ test.afterEach(() => {
   }
 });
 
-test('should return a promise', (t) => {
+test('should return a promise', t => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
@@ -35,7 +35,7 @@ test('should return a promise', (t) => {
   t.true(result instanceof Promise);
 });
 
-test('should return text when asked', (t) => {
+test('should return text when asked', t => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
@@ -46,7 +46,7 @@ test('should return text when asked', (t) => {
   return funtch.get('/').then(data => t.is(data, 'Test JS'));
 });
 
-test('should return json when asked', (t) => {
+test('should return json when asked', t => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
@@ -60,10 +60,11 @@ test('should return json when asked', (t) => {
   return funtch.get('/').then(data =>
     t.deepEqual(data, {
       result: 'Test JS',
-    }));
+    }),
+  );
 });
 
-test('should return error when 400 or more with headers', (t) => {
+test('should return error when 400 or more with headers', t => {
   global.fetch = () =>
     Promise.resolve({
       status: 400,
@@ -74,7 +75,7 @@ test('should return error when 400 or more with headers', (t) => {
   return funtch
     .get('/')
     .then(() => t.fail())
-    .catch((data) => {
+    .catch(data => {
       t.is(data.content, 'Test JS Error');
       t.deepEqual(data.headers, {
         [CONTENT_TYPE_HEADER]: 'text/plain',
@@ -82,7 +83,7 @@ test('should return error when 400 or more with headers', (t) => {
     });
 });
 
-test('should return jsonError when 400 or more', (t) => {
+test('should return jsonError when 400 or more', t => {
   global.fetch = () =>
     Promise.resolve({
       status: 500,
@@ -96,12 +97,12 @@ test('should return jsonError when 400 or more', (t) => {
   return funtch
     .get('/')
     .then(() => t.fail())
-    .catch((data) => {
+    .catch(data => {
       t.deepEqual(data.content, { error: 'Test JS Error' });
     });
 });
 
-test('should return error when text fail', (t) => {
+test('should return error when text fail', t => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
@@ -115,7 +116,7 @@ test('should return error when text fail', (t) => {
     .catch(data => t.is(String(data), 'Error: JS Text Error'));
 });
 
-test('should return error when json fail', (t) => {
+test('should return error when json fail', t => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
@@ -129,7 +130,7 @@ test('should return error when json fail', (t) => {
     .catch(data => t.is(String(data), 'Error: JS JSON Error'));
 });
 
-test.serial('should pass header', (t) => {
+test.serial('should pass header', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -145,10 +146,11 @@ test.serial('should pass header', (t) => {
           method: 'GET',
         }),
         true,
-      ));
+      ),
+    );
 });
 
-test.serial('should pass auth', (t) => {
+test.serial('should pass auth', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -164,10 +166,11 @@ test.serial('should pass auth', (t) => {
           method: 'GET',
         }),
         true,
-      ));
+      ),
+    );
 });
 
-test.serial('should pass contentType for json', (t) => {
+test.serial('should pass contentType for json', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   return funtch
@@ -183,10 +186,11 @@ test.serial('should pass contentType for json', (t) => {
           method: 'GET',
         }),
         true,
-      ));
+      ),
+    );
 });
 
-test.serial('should pass contentType for text', (t) => {
+test.serial('should pass contentType for text', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -202,10 +206,11 @@ test.serial('should pass contentType for text', (t) => {
           method: 'GET',
         }),
         true,
-      ));
+      ),
+    );
 });
 
-test.serial('should pass accept for json', (t) => {
+test.serial('should pass accept for json', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   return funtch
@@ -221,10 +226,11 @@ test.serial('should pass accept for json', (t) => {
           method: 'GET',
         }),
         true,
-      ));
+      ),
+    );
 });
 
-test.serial('should pass accept for text', (t) => {
+test.serial('should pass accept for text', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -240,10 +246,11 @@ test.serial('should pass accept for text', (t) => {
           method: 'GET',
         }),
         true,
-      ));
+      ),
+    );
 });
 
-test.serial('should pass body', (t) => {
+test.serial('should pass body', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -260,10 +267,11 @@ test.serial('should pass body', (t) => {
           method: 'POST',
         }),
         true,
-      ));
+      ),
+    );
 });
 
-test.serial('should pass json body', (t) => {
+test.serial('should pass json body', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   return funtch
@@ -280,10 +288,11 @@ test.serial('should pass json body', (t) => {
           method: 'POST',
         }),
         true,
-      ));
+      ),
+    );
 });
 
-test.serial('should not pass body if undefined', (t) => {
+test.serial('should not pass body if undefined', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -297,10 +306,11 @@ test.serial('should not pass body if undefined', (t) => {
           method: 'POST',
         }),
         true,
-      ));
+      ),
+    );
 });
 
-test.serial('should guess json content', (t) => {
+test.serial('should guess json content', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   return funtch.post('/', JSON.stringify({ hello: 'World' })).then(() =>
@@ -313,10 +323,11 @@ test.serial('should guess json content', (t) => {
         method: 'POST',
       }),
       true,
-    ));
+    ),
+  );
 });
 
-test.serial('should guess text content', (t) => {
+test.serial('should guess text content', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.post('/', '{hello":"World"}').then(() =>
@@ -329,10 +340,11 @@ test.serial('should guess text content', (t) => {
         method: 'POST',
       }),
       true,
-    ));
+    ),
+  );
 });
 
-test.serial('should not guess content if already defined', (t) => {
+test.serial('should not guess content if already defined', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
   const result = funtch
     .url('/')
@@ -350,10 +362,11 @@ test.serial('should not guess content if already defined', (t) => {
         method: 'POST',
       }),
       true,
-    ));
+    ),
+  );
 });
 
-test.serial('should not guess content if forbidden', (t) => {
+test.serial('should not guess content if forbidden', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -368,17 +381,18 @@ test.serial('should not guess content if forbidden', (t) => {
           method: 'POST',
         }),
         true,
-      ));
+      ),
+    );
 });
 
-test('should use given content handler', (t) => {
+test('should use given content handler', t => {
   global.fetch = () =>
     Promise.resolve({
       status: 204,
     });
 
   let result;
-  const customContentHandler = (content) => {
+  const customContentHandler = content => {
     result = content;
   };
 
@@ -393,7 +407,7 @@ test('should use given content handler', (t) => {
     });
 });
 
-test('should use given error handler', (t) => {
+test('should use given error handler', t => {
   global.fetch = () =>
     Promise.resolve({
       status: 404,
@@ -401,7 +415,7 @@ test('should use given error handler', (t) => {
     });
 
   let result;
-  const customErrorHandler = (content) => {
+  const customErrorHandler = content => {
     result = content.reason;
 
     return Promise.reject();
@@ -415,7 +429,7 @@ test('should use given error handler', (t) => {
     .catch(() => t.is(result, 'Failed'));
 });
 
-test.serial('should send GET', (t) => {
+test.serial('should send GET', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.get('/').then(() =>
@@ -425,10 +439,11 @@ test.serial('should send GET', (t) => {
         method: 'GET',
       }),
       true,
-    ));
+    ),
+  );
 });
 
-test.serial('should send POST', (t) => {
+test.serial('should send POST', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.post('/').then(() =>
@@ -438,10 +453,11 @@ test.serial('should send POST', (t) => {
         method: 'POST',
       }),
       true,
-    ));
+    ),
+  );
 });
 
-test.serial('should send PUT', (t) => {
+test.serial('should send PUT', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.put('/').then(() =>
@@ -451,10 +467,11 @@ test.serial('should send PUT', (t) => {
         method: 'PUT',
       }),
       true,
-    ));
+    ),
+  );
 });
 
-test.serial('should send PATCH', (t) => {
+test.serial('should send PATCH', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.patch('/').then(() =>
@@ -464,10 +481,11 @@ test.serial('should send PATCH', (t) => {
         method: 'PATCH',
       }),
       true,
-    ));
+    ),
+  );
 });
 
-test.serial('should send DELETE', (t) => {
+test.serial('should send DELETE', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.delete('/').then(() =>
@@ -477,5 +495,6 @@ test.serial('should send DELETE', (t) => {
         method: 'DELETE',
       }),
       true,
-    ));
+    ),
+  );
 });

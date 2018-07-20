@@ -1,4 +1,5 @@
 import 'isomorphic-fetch';
+import { stringify } from 'js-utils';
 
 /**
  * Accept header name.
@@ -86,14 +87,16 @@ export function errorHandler(response, content = readContent) {
   }
 
   return new Promise((resolve, reject) =>
-    content(response).then((data) => {
+    // eslint-disable-next-line implicit-arrow-linebreak
+    content(response).then(data => {
       // eslint-disable-next-line prefer-promise-reject-errors
       reject({
         status: response.status,
         headers: readHeaders(response),
         content: data,
       });
-    }));
+    }),
+  );
 }
 
 /**
@@ -242,7 +245,14 @@ class FuntchBuilder {
    */
   body(body, guess = true) {
     if (typeof body !== 'undefined') {
-      this.params.body = body;
+      let payload = body;
+      if (typeof body === 'object') {
+        payload = stringify(body);
+      } else if (typeof body !== 'string') {
+        payload = String(body);
+      }
+
+      this.params.body = payload;
 
       if (guess && !this.params.headers[CONTENT_TYPE_HEADER]) {
         return this.guessContentType(body);

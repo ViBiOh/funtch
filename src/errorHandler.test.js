@@ -1,7 +1,7 @@
 import test from 'ava';
 import { errorHandler } from './funtch';
 
-test('should do nothing else that wrap into Promise if response status is lower than 400', (t) => {
+test('should do nothing else that wrap into Promise if response status is lower than 400', t => {
   const initialPromise = {
     status: 200,
   };
@@ -16,7 +16,7 @@ test('should reject promise with content if bad status', t =>
     text: () => Promise.resolve('Hello world'),
   })
     .then(() => t.fail())
-    .catch((data) => {
+    .catch(data => {
       t.is(data.content, 'Hello world');
       t.is(data.status, 400);
       t.deepEqual(data.headers, {

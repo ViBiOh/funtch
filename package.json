@@ -39,26 +39,26 @@
   "homepage": "https://github.com/ViBiOh/funtch",
   "devDependencies": {
     "ava": "latest",
-    "babel-cli": "latest",
-    "babel-eslint": "latest",
-    "babel-preset-env": "latest",
+    "babel-cli": "6.26.0",
+    "babel-preset-env": "1.7.0",
     "codecov": "latest",
     "esdoc": "latest",
     "esdoc-coverage-plugin": "latest",
     "esdoc-ecmascript-proposal-plugin": "latest",
     "esdoc-jsx-plugin": "latest",
     "esdoc-publish-html-plugin": "latest",
-    "eslint": "latest",
-    "eslint-config-airbnb": "latest",
-    "eslint-plugin-import": "latest",
-    "js-utils": "ViBiOh/js-utils",
+    "eslint": "5.1.0",
+    "eslint-config-airbnb-base": "13.0.0",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-import": "2.13.0",
     "nyc": "latest",
-    "prettier": "latest",
+    "prettier": "1.13.7",
     "sinon": "latest",
     "uglify-js": "latest"
   },
   "dependencies": {
-    "isomorphic-fetch": "latest"
+    "isomorphic-fetch": "latest",
+    "js-utils": "ViBiOh/js-utils"
   },
   "ava": {
     "files": [
@@ -108,9 +108,16 @@
     ]
   },
   "eslintConfig": {
-    "extends": "airbnb/base",
+    "extends": [
+      "airbnb-base",
+      "prettier"
+    ],
     "env": {
       "browser": true
     }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all"
   }
 }
