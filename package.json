@@ -15,9 +15,9 @@
     "test": "./node_modules/.bin/nyc --reporter text --reporter lcov --require babel-core/register ./node_modules/.bin/ava",
     "coverage": "./node_modules/.bin/codecov -f ./coverage/lcov.info",
     "doc": "./node_modules/.bin/esdoc",
-    "build:browser": "./node_modules/.bin/babel ./src/funtch.js | ./node_modules/.bin/uglifyjs -o browser.js -c -m",
-    "build": "npm test && npm run build:browser && npm run doc",
-    "postbuild": "node example/cjs.test.js && ./node_modules/.bin/babel-node example/es6.test.js"
+    "prebuild": "npm test",
+    "build": "./node_modules/.bin/babel ./src/funtch.js | ./node_modules/.bin/uglifyjs -o browser.js -c -m",
+    "postbuild": "npm run doc && node example/cjs.test.js && ./node_modules/.bin/babel-node example/es6.test.js"
   },
   "repository": {
     "type": "git",
@@ -57,8 +57,7 @@
     "uglify-js": "latest"
   },
   "dependencies": {
-    "isomorphic-fetch": "latest",
-    "js-utils": "ViBiOh/js-utils"
+    "isomorphic-fetch": "latest"
   },
   "ava": {
     "files": [

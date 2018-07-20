@@ -1,5 +1,4 @@
 import 'isomorphic-fetch';
-import { stringify } from 'js-utils';
 
 /**
  * Accept header name.
@@ -96,6 +95,35 @@ export function errorHandler(response, content = readContent) {
         content: data,
       });
     }),
+  );
+}
+
+/**
+ * Safe JSON.stringify
+ * @param  {Object}   obj      Object to serialize
+ * @param  {Function} replacer Replacer function
+ * @param  {String}   space    Space separator
+ * @return {String}            JSON value
+ */
+export function stringify(obj, replacer, space) {
+  const objectCache = [];
+  const whiteList = Array.isArray(replacer) ? replacer : false;
+
+  return JSON.stringify(
+    obj,
+    (key, value) => {
+      if (key !== '' && whiteList && whiteList.indexOf(key) === -1) {
+        return undefined;
+      }
+      if (typeof value === 'object' && value !== null) {
+        if (objectCache.indexOf(value) !== -1) {
+          return '[Circular]';
+        }
+        objectCache.push(value);
+      }
+      return value;
+    },
+    space,
   );
 }
 
