@@ -1,7 +1,6 @@
 language: node_js
 node_js: 10
-script: |
-  npm run build
+script: npm run build
 after_success: |
   if [ "${TRAVIS_BRANCH}" == "master" ]; then
     npm run coverage
@@ -9,7 +8,8 @@ after_success: |
   fi
 deploy:
   provider: npm
-  email: ${NPM_EMAIL}
-  api_key: ${NPM_TOKEN}
+  email: "${NPM_EMAIL}"
+  api_key:
+    secure: ixjR4qCw4OnpfYK+50zwXkONjLWwSSmYUKEzxEy1EzcDeyIA/DZOsSFxcTQHr8Vxcoiq24u9UzcYLMZhVvHOfl5sZp8q0yl1AjORMCA+YqVske9M2e+C32jq/j77ONq4IMMVbpVHv9Tt+BnWMsArwiA1mT77VEEO3vyCUEWiBcmyy2jBwr68ye5fbeYpRRqmHN5trbRJXBbHu6VrHwGdI73CwLwJuDjajQKopN3goLV+9QidS8G5I1NpKnI5Z5iQMINfAFZgu/l++Qj8S7aXr3IgRReFrUJdCcMu1xnRNsfODNohLZK3jqqlVAzYDJboWArMMREbX1YZUpWRhZVa/BMR8NYuLgDre2bncBh6kkZYJ08ouNR66H5gMOrsDr3qrCvH6E65F9dBnIIN8oVmvL4Hy+lPWM6q6/57MEhx7hbLOEzZFTFs/mWUMsY6j01LXO3wuyISCSzsQa56VVB78bZCFj4poMp/lRSBGXt7MoZe6SiOCI4LJ0ajnE8GUrQbVMf3fEBUa4baq8IdeBCx0cqRZkFZ7Z+bNljEA2+2zkmx29SKQ3uZbNA5tWnIjgHx3yjjCYozl8bGJncBeKKMUz7w6D55/76aZhGXZAmQ0+jVPfyAyUkPxLkrtZOQHy6hi2JAhIUG7iOVPCsX7qUM98lWYV7jmjuIYOZG4UAD2NQ=
 notifications:
   email: false
