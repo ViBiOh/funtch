@@ -255,7 +255,7 @@ class FuntchBuilder {
       this.params.body = payload;
 
       if (guess && !this.params.headers[CONTENT_TYPE_HEADER]) {
-        return this.guessContentType(body);
+        return this.guessContentType(payload);
       }
     }
 
