@@ -1,6 +1,6 @@
 {
   "name": "funtch",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "engines": {
     "node": ">=6"
   },
@@ -39,20 +39,20 @@
   "homepage": "https://github.com/ViBiOh/funtch",
   "devDependencies": {
     "ava": "latest",
-    "babel-cli": "6.26.0",
-    "babel-preset-env": "1.7.0",
+    "babel-cli": "latest",
+    "babel-preset-env": "latest",
     "codecov": "latest",
     "esdoc": "latest",
     "esdoc-coverage-plugin": "latest",
     "esdoc-ecmascript-proposal-plugin": "latest",
     "esdoc-jsx-plugin": "latest",
     "esdoc-publish-html-plugin": "latest",
-    "eslint": "5.1.0",
-    "eslint-config-airbnb-base": "13.0.0",
-    "eslint-config-prettier": "2.9.0",
-    "eslint-plugin-import": "2.13.0",
+    "eslint": "4",
+    "eslint-config-airbnb-base": "latest",
+    "eslint-config-prettier": "latest",
+    "eslint-plugin-import": "latest",
     "nyc": "latest",
-    "prettier": "1.13.7",
+    "prettier": "latest",
     "sinon": "latest",
     "uglify-js": "latest"
   },
