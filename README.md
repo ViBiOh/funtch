@@ -37,9 +37,43 @@ const funtch = require('funtch');
 funtch.get('https://api.github.com').then(data => doSomething(data))
 ```
 
+## API
+
+You can send HTTP requests from common verbs by invoking the following methods from `funtch`:
+
+| Methode name | Params | Description |
+| -- | -- | -- |
+| `get` | `url: String` | Perform a GET |
+| `post` | `url: String` <br /> `body: Any` | Perform a POST with given body and `Content-type` guessed from param |
+| `put` | `url: String` <br /> `body: Any` | Perform a PUT with given body and `Content-type` guessed from param |
+| `patch` | `url: String` <br /> `body: Any` | Perform a PATCH with given body and `Content-type` guessed from param |
+| `delete` | `url: String` | Perform a DELETE |
+
+If default pattern doesn't match your needs, you can build a step by step request by invoking `funtch.url(url: String)` and applying following methods:
+
+| Methode name | Params | Description |
+| -- | -- | -- |
+| `header` | `key: String` <br /> `value: String` | Add HTTP header |
+| `auth` | `value: String` | Add Authorization Header with given value |
+| `contentJson` | | Add `Content-type: application/json` header |
+| `contentText` | | Add `Content-type: test/plain` header |
+| `guessContentType` | `body: Any` | Guess content type by checking if body is a JSON. If true, content is set to JSON, otherwise to text |
+| `acceptJson` | | Add `Accept: application/json` header |
+| `acceptText` | | Add `Accept: text/plain` header |
+| `content` | | See [content handler](#custom-content-handler) |
+| `error` | | See [error handler](#error-handling) |
+| `body` | `body: Any` <br /> `guess: Boolean default true` | Set body content of request, and guessing content on the fly |
+| `get` | | Set method to `GET` and send request |
+| `post` | `body: Any` | Set method to `POST`, add body if provided with content guess and send request |
+| `put` | `body: Any` | Set method to `PUT`, add body if provided with content guess and send request |
+| `patch` | `body: Any` | Set method to `PATCH`, add body if provided with content guess and send request |
+| `delete` | | Set method to `DELETE` and send request |
+| `send` | | Send request as it |
+
+
 ## Error Handling
 
-By default, **funtch** will reject promise with an object describing error if HTTP status is greater or equal than 400. This object contains HTTP status, response headers and content (in plain text or JSON).
+By default, **funtch** will reject promise with an object describing error if HTTP status is greater or equal than 400. This object contains HTTP status, response headers and content (in plain text or JSON, according to [content handler](#custom-content-handler)).
 
 ```js
 {
