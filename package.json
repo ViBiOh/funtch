@@ -1,6 +1,6 @@
 {
   "name": "funtch",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "engines": {
     "node": ">=6"
   },
@@ -24,9 +24,15 @@
     "type": "git",
     "url": "git://github.com/ViBiOh/funtch.git"
   },
-  "keywords": ["fetch", "isomorphic", "functional"],
+  "keywords": [
+    "fetch",
+    "isomorphic",
+    "functional"
+  ],
   "author": "Vincent Boutour",
-  "contributors": ["Vincent Boutour (https://vibioh.fr)"],
+  "contributors": [
+    "Vincent Boutour (https://vibioh.fr)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ViBiOh/funtch/issues"
@@ -54,16 +60,26 @@
     "isomorphic-fetch": "latest"
   },
   "ava": {
-    "files": ["src/**/*.test.js"],
-    "require": ["babel-register"]
+    "files": [
+      "src/**/*.test.js"
+    ],
+    "require": [
+      "babel-register"
+    ]
   },
   "babel": {
-    "presets": ["env"]
+    "presets": [
+      "env"
+    ]
   },
   "esdoc": {
     "source": "./src",
-    "includes": [".js$"],
-    "excludes": [".test\\.js$"],
+    "includes": [
+      ".js$"
+    ],
+    "excludes": [
+      ".test\\.js$"
+    ],
     "destination": "./esdoc",
     "plugins": [
       {
@@ -79,12 +95,19 @@
           "dynamicImport": true
         }
       },
-      { "name": "esdoc-publish-html-plugin" },
-      { "name": "esdoc-coverage-plugin" }
+      {
+        "name": "esdoc-publish-html-plugin"
+      },
+      {
+        "name": "esdoc-coverage-plugin"
+      }
     ]
   },
   "eslintConfig": {
-    "extends": ["airbnb-base", "prettier"],
+    "extends": [
+      "airbnb-base",
+      "prettier"
+    ],
     "env": {
       "browser": true
     }
