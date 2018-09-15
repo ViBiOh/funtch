@@ -12,13 +12,12 @@
     "prettier": "prettier --print-width 100 --single-quote --trailing-comma all --color --write \"./src/**/*.js\"",
     "eslint": "eslint --fix \"./src/**/*.js\"",
     "codestyle": "npm run prettier && npm run eslint",
-    "pretest": "npm run codestyle",
     "test": "nyc --reporter text --reporter lcov --require babel-core/register ava",
     "coverage": "codecov -f ./coverage/lcov.info",
     "doc": "esdoc",
-    "prebuild": "npm test",
     "build": "babel ./src/funtch.js | uglifyjs -o browser.js -c -m",
-    "postbuild": "npm run doc && node example/cjs.test.js && babel-node example/es6.test.js"
+    "ci": "npm run codestyle && npm run test && npm run doc && npm run build",
+    "postbuild": "node example/cjs.test.js && babel-node example/es6.test.js"
   },
   "repository": {
     "type": "git",

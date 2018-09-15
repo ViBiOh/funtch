@@ -85,7 +85,7 @@ export function errorHandler(response, content = readContent) {
     return Promise.resolve(response);
   }
 
-  return new Promise((resolve, reject) =>
+  return new Promise((_, reject) =>
     // eslint-disable-next-line implicit-arrow-linebreak
     content(response).then(data => {
       // eslint-disable-next-line prefer-promise-reject-errors
@@ -274,6 +274,7 @@ class FuntchBuilder {
   body(body, guess = true) {
     if (typeof body !== 'undefined') {
       let payload = body;
+
       if (typeof body === 'object') {
         payload = stringify(body);
       } else if (typeof body !== 'string') {
@@ -291,12 +292,21 @@ class FuntchBuilder {
   }
 
   /**
+   * Set HTTP Method verb.
+   * @param  {String} method HTTP Method
+   * @return {Object} instance
+   */
+  method(method) {
+    this.params.method = method;
+    return this;
+  }
+
+  /**
    * Perform GET request with fetch
    * @return {Promise} Reponse's promise
    */
   get() {
-    this.params.method = 'GET';
-    return this.send();
+    return this.method('GET').send();
   }
 
   /**
@@ -304,10 +314,9 @@ class FuntchBuilder {
    * @return {Promise} Reponse's promise
    */
   post(body) {
-    this.body(body);
-
-    this.params.method = 'POST';
-    return this.send();
+    return this.body(body)
+      .method('POST')
+      .send();
   }
 
   /**
@@ -315,10 +324,9 @@ class FuntchBuilder {
    * @return {Promise} Reponse's promise
    */
   put(body) {
-    this.body(body);
-
-    this.params.method = 'PUT';
-    return this.send();
+    return this.body(body)
+      .method('PUT')
+      .send();
   }
 
   /**
@@ -326,10 +334,9 @@ class FuntchBuilder {
    * @return {Promise} Reponse's promise
    */
   patch(body) {
-    this.body(body);
-
-    this.params.method = 'PATCH';
-    return this.send();
+    return this.body(body)
+      .method('PATCH')
+      .send();
   }
 
   /**
@@ -337,8 +344,7 @@ class FuntchBuilder {
    * @return {Promise} Reponse's promise
    */
   delete() {
-    this.params.method = 'DELETE';
-    return this.send();
+    return this.method('DELETE').send();
   }
 
   /**

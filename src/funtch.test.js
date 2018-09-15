@@ -274,9 +274,43 @@ test.serial('should pass body', t => {
 test.serial('should pass json body', t => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
+  const obj = {
+    hello: 'World',
+    child: {
+      from: 'Test',
+    },
+  };
+
+  /**
+   * Checking if circular reference are handled.
+   */
+  obj.parent = null;
+  obj.child.parent = obj;
+
   return funtch
     .url('/')
-    .body(JSON.stringify({ hello: 'World' }))
+    .body(obj)
+    .post()
+    .then(() => {
+      t.is(
+        stubFuntch.calledWith('/', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: '{"hello":"World","child":{"from":"Test","parent":"[Circular]"},"parent":null}',
+          method: 'POST',
+        }),
+        true,
+      );
+    });
+});
+
+test.serial('should pass text body', t => {
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
+
+  return funtch
+    .url('/')
+    .body(8000)
     .post()
     .then(() =>
       t.is(
@@ -284,7 +318,7 @@ test.serial('should pass json body', t => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: '{"hello":"World"}',
+          body: '8000',
           method: 'POST',
         }),
         true,

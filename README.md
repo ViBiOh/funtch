@@ -68,8 +68,23 @@ If default pattern doesn't match your needs, you can build a step by step reques
 | `put` | `body: Any` | Set method to `PUT`, add body if provided with content guess and send request |
 | `patch` | `body: Any` | Set method to `PATCH`, add body if provided with content guess and send request |
 | `delete` | | Set method to `DELETE` and send request |
+| `method` | `method: String`| Set HTTP method to given value |
 | `send` | | Send request as it |
 
+All these method are chainable and once send, the result is a Promise.
+
+```js
+const fetchPromise = funtch
+  .url('https://api.github.com')
+  .auth('Basic SECRET')
+  .contentJson()
+  .acceptJson()
+  .post({ star: true});
+
+fetchPromise
+  .then(data => console.log(data))
+  .catch(err => console.error(data));
+```
 
 ## Error Handling
 
