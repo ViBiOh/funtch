@@ -46,7 +46,7 @@
     "esdoc-ecmascript-proposal-plugin": "latest",
     "esdoc-jsx-plugin": "latest",
     "esdoc-publish-html-plugin": "latest",
-    "eslint": "4",
+    "eslint": "5",
     "eslint-config-airbnb-base": "latest",
     "eslint-config-prettier": "latest",
     "eslint-plugin-import": "latest",
