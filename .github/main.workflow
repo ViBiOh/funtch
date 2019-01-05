@@ -1,6 +1,6 @@
 workflow "Publish packages" {
   on = "push"
-  resolves = ["GitHub Action for npm"]
+  resolves = ["Publish"]
 }
 
 action "Install" {
