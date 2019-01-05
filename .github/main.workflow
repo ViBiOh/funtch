@@ -14,9 +14,15 @@ action "Build" {
   args = "run ci"
 }
 
+action "Tag" {
+  uses = "actions/bin/filter@master"
+  needs = ["Build"]
+  args = "tag"
+}
+
 action "Publish" {
   uses = "actions/npm@master"
-  needs = ["Build"]
+  needs = ["Tag"]
   args = "publish"
   secrets = ["NPM_AUTH_TOKEN"]
 }
