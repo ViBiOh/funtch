@@ -59,7 +59,7 @@
     "uglify-js": "3.4.9"
   },
   "dependencies": {
-    "isomorphic-fetch": "latest"
+    "isomorphic-fetch": "2.2.1"
   },
   "ava": {
     "files": [
