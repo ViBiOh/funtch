@@ -52,11 +52,11 @@
     "eslint": "5.16.0",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-config-prettier": "4.1.0",
-    "eslint-plugin-import": "2.17.0",
-    "nyc": "13.3.0",
+    "eslint-plugin-import": "2.17.2",
+    "nyc": "14.0.0",
     "prettier": "1.17.0",
-    "sinon": "7.3.1",
-    "uglify-js": "3.5.4"
+    "sinon": "7.3.2",
+    "uglify-js": "3.5.5"
   },
   "dependencies": {
     "isomorphic-fetch": "2.2.1"
