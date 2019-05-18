@@ -51,12 +51,12 @@
     "esdoc-publish-html-plugin": "1.1.2",
     "eslint": "5.16.0",
     "eslint-config-airbnb-base": "13.1.0",
-    "eslint-config-prettier": "4.2.0",
+    "eslint-config-prettier": "4.3.0",
     "eslint-plugin-import": "2.17.2",
     "nyc": "14.1.1",
-    "prettier": "1.17.0",
+    "prettier": "1.17.1",
     "sinon": "7.3.2",
-    "uglify-js": "3.5.12"
+    "uglify-js": "3.5.13"
   },
   "dependencies": {
     "isomorphic-fetch": "2.2.1"
