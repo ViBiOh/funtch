@@ -37,9 +37,9 @@
   },
   "devDependencies": {
     "@babel/cli": "7.4.4",
-    "@babel/core": "7.4.4",
-    "@babel/node": "7.2.2",
-    "@babel/preset-env": "7.4.4",
+    "@babel/core": "7.4.5",
+    "@babel/node": "7.4.5",
+    "@babel/preset-env": "7.4.5",
     "@babel/preset-react": "7.0.0",
     "@babel/register": "7.4.4",
     "ava": "1.4.1",
@@ -52,11 +52,11 @@
     "eslint": "5.16.0",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-config-prettier": "4.3.0",
-    "eslint-plugin-import": "2.17.2",
+    "eslint-plugin-import": "2.17.3",
     "nyc": "14.1.1",
     "prettier": "1.17.1",
     "sinon": "7.3.2",
-    "uglify-js": "3.5.13"
+    "uglify-js": "3.5.15"
   },
   "dependencies": {
     "isomorphic-fetch": "2.2.1"
