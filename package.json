@@ -36,10 +36,10 @@
     "url": "https://github.com/ViBiOh/funtch/issues"
   },
   "devDependencies": {
-    "@babel/cli": "7.4.4",
-    "@babel/core": "7.4.5",
-    "@babel/node": "7.4.5",
-    "@babel/preset-env": "7.4.5",
+    "@babel/cli": "7.5.0",
+    "@babel/core": "7.5.0",
+    "@babel/node": "7.5.0",
+    "@babel/preset-env": "7.5.0",
     "@babel/preset-react": "7.0.0",
     "@babel/register": "7.4.4",
     "ava": "2.1.0",
@@ -50,7 +50,7 @@
     "esdoc-jsx-plugin": "1.0.0",
     "esdoc-publish-html-plugin": "1.1.2",
     "eslint": "6.0.1",
-    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-config-airbnb-base": "13.2.0",
     "eslint-config-prettier": "6.0.0",
     "eslint-plugin-import": "2.18.0",
     "nyc": "14.1.1",
