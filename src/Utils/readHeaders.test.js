@@ -1,6 +1,6 @@
 import test from 'ava';
-import { CONTENT_TYPE_HEADER, MEDIA_TYPE_TEXT } from './Constants';
-import { readHeaders } from './Utils';
+import { CONTENT_TYPE_HEADER, MEDIA_TYPE_TEXT } from '../Constants';
+import { readHeaders } from './index';
 
 test('should read raw if present', t =>
   t.deepEqual(

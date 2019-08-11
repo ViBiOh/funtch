@@ -5,8 +5,8 @@ import {
   CONTENT_TYPE_HEADER,
   MEDIA_TYPE_JSON,
   MEDIA_TYPE_TEXT,
-} from './Constants';
-import { readContent, errorHandler, stringify, isJson } from './Utils';
+} from '../Constants';
+import { readContent, errorHandler, stringify, isJson } from '../Utils/index';
 
 /**
  * Perform fetch operation from given params.

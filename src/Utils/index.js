@@ -1,4 +1,4 @@
-import { CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON } from './Constants';
+import { CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON } from '../Constants';
 
 /**
  * RegExp for checking if content type reference JSON.

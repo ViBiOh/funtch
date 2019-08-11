@@ -1,3 +1,3 @@
-const funtch = require('../index');
+const funtch = require('../bundle');
 
 require('./common.test.js')(funtch);

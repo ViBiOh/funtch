@@ -1,10 +1,10 @@
-module.exports = funtch => {
+module.exports = ({ funtch, readContent, errorHandler, MEDIA_TYPE_JSON, CONTENT_TYPE_HEADER }) => {
   /**
    * Simple GET
    */
   funtch
     .get('https://api.vibioh.fr/hello/funtch')
-    .then(data => console.log('Simple GET', data, '\n'));
+    .then(data => global.console.log('Simple GET', data, '\n'));
 
   /**
    * GET with custom content reader (e.g. prefixing, wrapping, deserialization)
@@ -18,27 +18,27 @@ module.exports = funtch => {
           payload: data,
         });
 
-      return new Promise(resolve => funtch.readContent(response).then(data => wrap(resolve, data)));
+      return new Promise(resolve => readContent(response).then(data => wrap(resolve, data)));
     })
     .get()
-    .then(data => console.log('GET with custom content reader', data, '\n'));
+    .then(data => global.console.log('GET with custom content reader', data, '\n'));
 
   /**
    * GET with custom content reader (e.g. prefixing, wrapping, deserialization)
    */
-  const contentTypeJsonRegex = new RegExp(funtch.MEDIA_TYPE_JSON, 'i');
+  const contentTypeJsonRegex = new RegExp(MEDIA_TYPE_JSON, 'i');
   const contentTypeXmlRegex = /application\/xml/i;
 
   funtch
     .url('https://vibioh.fr/sitemap.xml')
     .content(response => {
-      if (contentTypeJsonRegex.test(response.headers.get(funtch.CONTENT_TYPE_HEADER))) {
+      if (contentTypeJsonRegex.test(response.headers.get(CONTENT_TYPE_HEADER))) {
         return response.json();
       }
 
       return new Promise(resolve => {
         response.text().then(data => {
-          if (contentTypeXmlRegex.test(response.headers.get(funtch.CONTENT_TYPE_HEADER))) {
+          if (contentTypeXmlRegex.test(response.headers.get(CONTENT_TYPE_HEADER))) {
             resolve(new DOMParser().parseFromString(data, 'text/xml'));
           }
           resolve(data);
@@ -46,12 +46,12 @@ module.exports = funtch => {
       });
     })
     .get()
-    .then(data => console.log('GET with XML content reader', data, '\n'));
+    .then(data => global.console.log('GET with XML content reader', data, '\n'));
 
   /**
    * GET with error
    */
-  funtch.get('https://api.vibioh.fr/').catch(err => console.error('GET with error', err, '\n'));
+  funtch.get('https://api.vibioh.fr/').catch(err => global.console.error('GET with error', err, '\n'));
 
   /**
    * GET with custom error handler (e.g. perform a redirect)
@@ -60,11 +60,11 @@ module.exports = funtch => {
     .url('https://api.vibioh.fr/auth/')
     .error(response => {
       if (response.status === 401) {
-        console.log('Login required, redirection to /login');
+        global.console.log('Login required, redirection to /login');
       }
 
-      return funtch.errorHandler(response); // using default behavior for continuing process
+      return errorHandler(response); // using default behavior for continuing process
     })
     .get()
-    .catch(err => console.error('GET with custom error handler', err, '\n'));
+    .catch(err => global.console.error('GET with custom error handler', err, '\n'));
 };

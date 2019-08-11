@@ -1,3 +1,3 @@
-import funtch from '../index';
+import * as funtch from '../bundle';
 
 require('./common.test.js')(funtch);

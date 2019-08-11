@@ -1,12 +1,12 @@
-import Builder from './Builder';
+import Builder from './Builder/index';
 
-export * from './Constants.js';
-export * from './Utils.js';
+export * from './Utils/index';
+export * from './Constants';
 
 /**
  * funtch functional interface
  */
-export default class funtch {
+export class funtch {
   /**
    * Create builder with given URL.
    * @param  {String} url Requested URL

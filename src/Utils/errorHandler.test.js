@@ -1,5 +1,5 @@
 import test from 'ava';
-import { errorHandler } from './Utils';
+import { errorHandler } from './index';
 
 test('should do nothing else that wrap into Promise if response status is lower than 400', t => {
   const initialPromise = {

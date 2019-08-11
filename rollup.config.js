@@ -8,5 +8,6 @@ export default {
     file: 'bundle.js',
     format: 'umd',
   },
+  external: ['isomorphic-fetch'],
   plugins: [babel(), uglify()],
 };
