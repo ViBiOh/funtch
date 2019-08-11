@@ -1,7 +1,7 @@
 import test from 'ava';
 import sinon from 'sinon';
-import { CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON, MEDIA_TYPE_TEXT } from './Constants';
-import { funtch } from './funtch';
+import { CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON, MEDIA_TYPE_TEXT } from '../Constants';
+import funtch from './index';
 
 let stubFuntch;
 

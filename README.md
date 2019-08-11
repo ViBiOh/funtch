@@ -24,7 +24,7 @@ Full usage example in [example folder](./example/common.test.js)
 ### ES6
 
 ```js
-import { funtch } from 'funtch';
+import funtch from 'funtch';
 
 funtch.get('https://api.github.com').then(data => doSomething(data))
 ```
@@ -32,7 +32,7 @@ funtch.get('https://api.github.com').then(data => doSomething(data))
 ### CommonJS
 
 ```js
-const { funtch } = require('funtch');
+const funtch = require('funtch');
 
 funtch.get('https://api.github.com').then(data => doSomething(data))
 ```
@@ -115,7 +115,7 @@ You can easily override default content handler by calling `content()` on the bu
 Below an example that parse XML response.
 
 ```js
-import { funtch, MEDIA_TYPE_JSON, CONTENT_TYPE_HEADER } from 'funtch';
+import funtch { MEDIA_TYPE_JSON, CONTENT_TYPE_HEADER } from 'funtch';
 
 const contentTypeJsonRegex = new RegExp(MEDIA_TYPE_JSON, 'i');
 const contentTypeXmlRegex = /application\/xml/i;
@@ -151,7 +151,7 @@ You can easyly override default error handler by calling `error()` on the builde
 Below an example that add a `toString()` behavior.
 
 ```js
-import { funtch, errorHandler } from 'funtch';
+import funtch, { errorHandler } from 'funtch';
 
 function errorWithToString(response) {
   return new Promise((resolve, reject) =>
