@@ -5,7 +5,7 @@
     "node": ">=6"
   },
   "description": "FUNctional feTCH isomorphic",
-  "browser": "bundle.js",
+  "browser": "index.js",
   "main": "index.js",
   "homepage": "https://vibioh.github.io/funtch/",
   "scripts": {

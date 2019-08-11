@@ -4,7 +4,7 @@ const {
   errorHandler,
   MEDIA_TYPE_JSON,
   CONTENT_TYPE_HEADER,
-} = require('../bundle');
+} = require('../index');
 
 /**
  * Simple GET

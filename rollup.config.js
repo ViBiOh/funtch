@@ -5,7 +5,7 @@ export default {
   input: 'src/index.js',
   output: {
     name: 'funtch',
-    file: 'bundle.js',
+    file: 'index.js',
     format: 'umd',
     exports: 'named',
   },
