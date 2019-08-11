@@ -32,7 +32,7 @@ funtch.get('https://api.github.com').then(data => doSomething(data))
 ### CommonJS
 
 ```js
-const funtch = require('funtch');
+const funtch = require('funtch').default;
 
 funtch.get('https://api.github.com').then(data => doSomething(data))
 ```
