@@ -1,5 +1,5 @@
 import test from 'ava';
-import { stringify } from './funtch';
+import { stringify } from './Utils';
 
 test('should stringify a basic object', t => {
   const result = stringify({

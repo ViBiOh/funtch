@@ -1,5 +1,5 @@
 import test from 'ava';
-import { errorHandler } from './funtch';
+import { errorHandler } from './Utils';
 
 test('should do nothing else that wrap into Promise if response status is lower than 400', t => {
   const initialPromise = {

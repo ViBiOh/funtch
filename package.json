@@ -5,7 +5,7 @@
     "node": ">=6"
   },
   "description": "FUNctional feTCH isomorphic",
-  "browser": "browser.js",
+  "browser": "bundle.js",
   "main": "index.js",
   "homepage": "https://vibioh.github.io/funtch/",
   "scripts": {
@@ -14,7 +14,7 @@
     "codestyle": "npm run prettier && npm run eslint",
     "test": "nyc --reporter text --reporter lcov --require @babel/register ava --verbose",
     "doc": "esdoc -c esdoc.json",
-    "build": "babel ./src/funtch.js | uglifyjs -o browser.js -c -m",
+    "build": "rollup -c",
     "ci": "npm run codestyle && npm run test && npm run doc && npm run build",
     "postbuild": "node example/cjs.test.js && babel-node example/es6.test.js"
   },
@@ -50,12 +50,15 @@
     "esdoc-jsx-plugin": "1.0.0",
     "esdoc-publish-html-plugin": "1.1.2",
     "eslint": "6.1.0",
-    "eslint-config-airbnb-base": "13.2.0",
+    "eslint-config-airbnb-base": "14.0.0",
     "eslint-config-prettier": "6.0.0",
     "eslint-plugin-import": "2.18.2",
     "nyc": "14.1.1",
     "prettier": "1.18.2",
-    "sinon": "7.3.2",
+    "rollup": "1.19.4",
+    "rollup-plugin-babel": "4.3.3",
+    "rollup-plugin-uglify": "6.0.2",
+    "sinon": "7.4.1",
     "uglify-js": "3.6.0"
   },
   "dependencies": {

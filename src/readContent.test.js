@@ -1,5 +1,6 @@
 import test from 'ava';
-import { readContent, CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON } from './funtch';
+import { CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON } from './Constants';
+import { readContent } from './Utils';
 
 test('should read from json() if ContentType match', t =>
   readContent({

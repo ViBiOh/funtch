@@ -1,4 +1,4 @@
-const funtch = require('./browser');
+const funtch = require('./bundle');
 
 Object.keys(funtch).filter(key => key !== 'default').reduce((previous, current) => {
   // eslint-disable-next-line no-param-reassign
