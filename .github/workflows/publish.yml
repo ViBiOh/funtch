@@ -1,23 +1,16 @@
-name: Node.js Package
+name: Publish Package
 
 on:
   push:
+    branches:
+    - master
     tags:
-    - v.*
+    - v[0-9]+\.[0-9]+\.[0-9]+
+    paths:
+    - package.json
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          version: 12
-      - run: npm ci
-      - run: npm run ci
-
-  publish-npm:
-    needs: build
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
