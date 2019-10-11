@@ -4,6 +4,7 @@
 [![Doc Status](https://doc.esdoc.org/github.com/ViBiOh/funtch/badge.svg)](https://doc.esdoc.org/github.com/ViBiOh/funtch)
 [![codecov](https://codecov.io/gh/ViBiOh/funtch/branch/master/graph/badge.svg)](https://codecov.io/gh/ViBiOh/funtch)
 [![npm version](https://badge.fury.io/js/funtch.svg)](https://badge.fury.io/js/funtch)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=ViBiOh/funtch)](https://dependabot.com)
 
 [Fetch](https://fetch.spec.whatwg.org) based on [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) with functional and customizable behavior.
 
