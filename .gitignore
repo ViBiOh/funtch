@@ -1,3 +1,6 @@
+# scripts
+scripts/
+
 # Node Package Manager
 node_modules/
 **/npm-debug.log
