@@ -52,7 +52,7 @@
     "esdoc-publish-html-plugin": "1.1.2",
     "eslint": "6.6.0",
     "eslint-config-airbnb-base": "14.0.0",
-    "eslint-config-prettier": "6.5.0",
+    "eslint-config-prettier": "6.6.0",
     "eslint-plugin-import": "2.18.2",
     "nyc": "14.1.1",
     "prettier": "1.19.1",
