@@ -9,9 +9,9 @@
   "main": "index.js",
   "homepage": "https://vibioh.github.io/funtch/",
   "scripts": {
-    "prettier": "prettier --print-width 100 --single-quote --trailing-comma all --color --write \"./src/**/*.js\"",
-    "eslint": "eslint --fix \"./src/**/*.js\"",
-    "codestyle": "npm run prettier && npm run eslint",
+    "format": "prettier --print-width 100 --single-quote --trailing-comma all --color --write \"./src/**/*.js\"",
+    "lint": "eslint --fix \"./src/**/*.js\"",
+    "codestyle": "npm run format && npm run lint",
     "test": "nyc --reporter text --reporter lcov --require @babel/register ava --verbose",
     "doc": "esdoc -c esdoc.json",
     "build": "rollup -c",

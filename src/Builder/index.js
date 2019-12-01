@@ -16,7 +16,7 @@ import { readContent, errorHandler, stringify, isJson } from '../Utils/index';
  * @param  {Function} content Content handling method, called with output of error handling
  * @return {Promise}          Promise of fetching to bind to.
  */
-function doFetch(url, params = {}, error = errorHandler, content = readContent) {
+function doFetch(url, params, error = errorHandler, content = readContent) {
   return fetch(url, params)
     .then(response => error(response, content))
     .then(content);
@@ -26,10 +26,52 @@ function doFetch(url, params = {}, error = errorHandler, content = readContent) 
  * Builder of fetch call with a functionnal design.
  */
 export default class Builder {
-  constructor() {
+  constructor(options) {
     this.params = {
       headers: {},
     };
+
+    if (!options) {
+      return;
+    }
+
+    this.baseURL = options.baseURL;
+
+    if (options.headers) {
+      Object.entries(options.headers).forEach(([key, value]) => this.header(key, value));
+    }
+
+    if (options.auth) {
+      this.auth(options.auth);
+    }
+
+    if (options.contentJson) {
+      this.contentJson();
+    }
+
+    if (options.contentText) {
+      this.contentText();
+    }
+
+    if (options.acceptJson) {
+      this.acceptJson();
+    }
+
+    if (options.acceptText) {
+      this.acceptText();
+    }
+
+    if (options.method) {
+      this.method(options.method);
+    }
+
+    if (typeof options.contentHandler === 'function') {
+      this.content(options.contentHandler);
+    }
+
+    if (typeof options.errorHandler === 'function') {
+      this.error(options.errorHandler);
+    }
   }
 
   /**
@@ -38,7 +80,11 @@ export default class Builder {
    * @return {Object} instance
    */
   url(url) {
-    this.url = url;
+    if (this.baseURL) {
+      this.url = `${this.baseURL}${url}`;
+    } else {
+      this.url = url;
+    }
 
     return this;
   }

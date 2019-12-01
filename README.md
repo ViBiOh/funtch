@@ -87,6 +87,15 @@ fetchPromise
   .catch(err => console.error(data));
 ```
 
+You can create a pre-configured builder, in order to avoid repeating yourself, by passing an object to the `withDefault` method. `content` and `error` are named `contentHandler` and `errorHandler` respectively, all others properties have the same name as above.
+
+```js
+const funtcher = funtch.withDefault({ baseURL: 'https://api.github.com', auth: 'github SecretToken' });
+
+funtcher.get('/user/keys').then(data => doSomething(data))
+funtcher.post('/user/keys', 'my-ssh-key').then(data => doSomething(data))
+```
+
 ## Error Handling
 
 By default, **funtch** will reject promise with an object describing error if HTTP status is greater or equal than 400. This object contains HTTP status, response headers and content (in plain text or JSON, according to [content handler](#custom-content-handler)).

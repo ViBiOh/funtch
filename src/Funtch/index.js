@@ -5,6 +5,41 @@ import Builder from '../Builder/index';
  */
 export default class funtch {
   /**
+   * Create default behavior for all funtch builder
+   * @param  {Object} options Behavior options
+   * @return {Object} funtch with pre-configured buidder methods
+   */
+  static withDefault(options) {
+    function configuredBuilder() {
+      return new Builder(options);
+    }
+
+    return {
+      url: url => configuredBuilder().url(url),
+      get: url =>
+        configuredBuilder()
+          .url(url)
+          .get(),
+      post: (url, body) =>
+        configuredBuilder()
+          .url(url)
+          .post(body),
+      put: (url, body) =>
+        configuredBuilder()
+          .url(url)
+          .put(body),
+      patch: (url, body) =>
+        configuredBuilder()
+          .url(url)
+          .patch(body),
+      delete: url =>
+        configuredBuilder()
+          .url(url)
+          .delete(),
+    };
+  }
+
+  /**
    * Create builder with given URL.
    * @param  {String} url Requested URL
    * @return {Builder} Builder for configuring behavior

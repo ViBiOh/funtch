@@ -10,14 +10,14 @@ const {
  * Simple GET
  */
 funtch
-  .get('https://api.vibioh.fr/hello/funtch')
+  .get('https://api.github.com')
   .then(data => global.console.log('Simple GET', data, '\n'));
 
 /**
  * GET with custom content reader (e.g. prefixing, wrapping, deserialization)
  */
 funtch
-  .url('https://api.vibioh.fr/hello/funtch')
+  .url('https://api.github.com')
   .content(response => {
     const wrap = (resolve, data) =>
       resolve({
@@ -65,14 +65,14 @@ funtch
  * GET with error
  */
 funtch
-  .get('https://api.vibioh.fr/')
+  .get('https://api.github.com/notFound')
   .catch(err => global.console.error('GET with error', err, '\n'));
 
 /**
  * GET with custom error handler (e.g. perform a redirect)
  */
 funtch
-  .url('https://api.vibioh.fr/auth/')
+  .url('https://api.github.com/repositories/ViBiOh/infra')
   .error(response => {
     if (response.status === 401) {
       global.console.log('Login required, redirection to /login');
