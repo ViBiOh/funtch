@@ -1,6 +1,6 @@
 ---
 
-name: Publish Package
+name: Publish
 
 on:
   push:

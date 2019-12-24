@@ -1,6 +1,6 @@
 ---
 
-name: Build Package
+name: Build
 
 on:
   push:
