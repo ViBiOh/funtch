@@ -1,6 +1,6 @@
 # funtch - Functional Fetch
 
-[![Build Status](https://travis-ci.org/ViBiOh/funtch.svg?branch=master)](https://travis-ci.org/ViBiOh/funtch)
+[![CI Status](https://github.com/vibioh/funtch/workflows/build/badge.svg)]
 [![Doc Status](https://doc.esdoc.org/github.com/ViBiOh/funtch/badge.svg)](https://doc.esdoc.org/github.com/ViBiOh/funtch)
 [![codecov](https://codecov.io/gh/ViBiOh/funtch/branch/master/graph/badge.svg)](https://codecov.io/gh/ViBiOh/funtch)
 [![npm version](https://badge.fury.io/js/funtch.svg)](https://badge.fury.io/js/funtch)
