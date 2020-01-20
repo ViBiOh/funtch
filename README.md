@@ -57,7 +57,7 @@ If default pattern doesn't match your needs, you can build a step by step reques
 | `header` | `key: String` <br /> `value: String` | Add HTTP header |
 | `auth` | `value: String` | Add Authorization Header with given value |
 | `contentJson` | | Add `Content-type: application/json` header |
-| `contentText` | | Add `Content-type: test/plain` header |
+| `contentText` | | Add `Content-type: text/plain` header |
 | `guessContentType` | `body: Any` | Guess content type by checking if body is a JSON. If true, content is set to JSON, otherwise to text |
 | `acceptJson` | | Add `Accept: application/json` header |
 | `acceptText` | | Add `Accept: text/plain` header |
