@@ -39,7 +39,7 @@
     "@babel/cli": "7.8.3",
     "@babel/core": "7.8.3",
     "@babel/node": "7.8.3",
-    "@babel/preset-env": "7.8.2",
+    "@babel/preset-env": "7.8.3",
     "@babel/preset-react": "7.8.3",
     "@babel/register": "7.8.3",
     "ava": "3.0.0",
