@@ -5,6 +5,7 @@
 [![codecov](https://codecov.io/gh/ViBiOh/funtch/branch/master/graph/badge.svg)](https://codecov.io/gh/ViBiOh/funtch)
 [![npm version](https://badge.fury.io/js/funtch.svg)](https://badge.fury.io/js/funtch)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=ViBiOh/funtch)](https://dependabot.com)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ViBiOh_funtch&metric=alert_status)](https://sonarcloud.io/dashboard?id=ViBiOh_funtch)
 
 [Fetch](https://fetch.spec.whatwg.org) based on [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) with functional and customizable behavior.
 
