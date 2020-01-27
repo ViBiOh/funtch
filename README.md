@@ -20,7 +20,7 @@ npm i -S funtch
 
 Full documentation is [available here](https://doc.esdoc.org/github.com/ViBiOh/funtch).
 
-Full usage example in [example folder](./example/common.test.js)
+Full usage example in [example folder](./example/)
 
 ### ES6
 
