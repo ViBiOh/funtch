@@ -12,7 +12,7 @@
     "format": "prettier --print-width 100 --single-quote --trailing-comma all --color --write \"./src/**/*.js\"",
     "style": "eslint --fix \"./src/**/*.js\"",
     "codestyle": "npm run format && npm run style",
-    "test": "nyc --reporter text --reporter lcov --require @babel/register ava --verbose",
+    "test": "nyc --reporter text --reporter lcov ava --verbose --timeout=30s",
     "doc": "esdoc -c esdoc.json",
     "build": "rollup -c",
     "ci": "npm run codestyle && npm run test && npm run doc && npm run build && codecov",

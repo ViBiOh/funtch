@@ -13,12 +13,13 @@ const CONTENT_TYPE_JSON = new RegExp(MEDIA_TYPE_JSON, 'i');
  */
 export function readHeaders(response) {
   if (response.headers.raw) {
-    const entries = response.headers.raw();
-    return Object.keys(entries).reduce((previous, current) => {
+    const headers = response.headers.raw();
+
+    return Object.keys(headers).reduce((previous, current) => {
       // eslint-disable-next-line no-param-reassign
-      previous[current] = Array.isArray(entries[current])
-        ? entries[current].join(', ')
-        : entries[current];
+      previous[current] = Array.isArray(headers[current])
+        ? headers[current].join(', ')
+        : headers[current];
       return previous;
     }, {});
   }
