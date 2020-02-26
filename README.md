@@ -152,7 +152,6 @@ funtch
   .get();
 ```
 
-
 ### Custom error handler
 
 By default, **fetch** return a valid Promise without considering http status. **Funtch** error handler is called first, in this way, you can identify an error response and `reject` the Promise. By default, if HTTP status is greather or equal than 400, it's considered as error.
