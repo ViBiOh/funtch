@@ -8,7 +8,7 @@ endif
 ## help: Display list of commands
 .PHONY: help
 help: Makefile
-	@sed -n 's|^##||p' $< | column -t -s ':' | sed -e 's|^| |'
+	@sed -n 's|^##||p' $< | column -t -s ':' | sort
 
 .PHONY: init
 init:
