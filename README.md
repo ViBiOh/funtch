@@ -27,7 +27,7 @@ Full usage example in [example folder](./example/)
 ```js
 import funtch from 'funtch';
 
-funtch.get('https://api.github.com').then(data => doSomething(data))
+funtch.get('https://api.github.com').then((data) => doSomething(data));
 ```
 
 ### CommonJS
@@ -35,42 +35,42 @@ funtch.get('https://api.github.com').then(data => doSomething(data))
 ```js
 const funtch = require('funtch').default;
 
-funtch.get('https://api.github.com').then(data => doSomething(data))
+funtch.get('https://api.github.com').then((data) => doSomething(data));
 ```
 
 ## API
 
 You can send HTTP requests from common verbs by invoking the following methods from `funtch`:
 
-| Methode name | Params | Description |
-| -- | -- | -- |
-| `get` | `url: String` | Perform a GET |
-| `post` | `url: String` <br /> `body: Any` | Perform a POST with given body and `Content-type` guessed from param |
-| `put` | `url: String` <br /> `body: Any` | Perform a PUT with given body and `Content-type` guessed from param |
-| `patch` | `url: String` <br /> `body: Any` | Perform a PATCH with given body and `Content-type` guessed from param |
-| `delete` | `url: String` | Perform a DELETE |
+| Methode name | Params                           | Description                                                           |
+| ------------ | -------------------------------- | --------------------------------------------------------------------- |
+| `get`        | `url: String`                    | Perform a GET                                                         |
+| `post`       | `url: String` <br /> `body: Any` | Perform a POST with given body and `Content-type` guessed from param  |
+| `put`        | `url: String` <br /> `body: Any` | Perform a PUT with given body and `Content-type` guessed from param   |
+| `patch`      | `url: String` <br /> `body: Any` | Perform a PATCH with given body and `Content-type` guessed from param |
+| `delete`     | `url: String`                    | Perform a DELETE                                                      |
 
 If default pattern doesn't match your needs, you can build a step by step request by invoking `funtch.url(url: String)` and applying following methods:
 
-| Methode name | Params | Description |
-| -- | -- | -- |
-| `header` | `key: String` <br /> `value: String` | Add HTTP header |
-| `auth` | `value: String` | Add Authorization Header with given value |
-| `contentJson` | | Add `Content-type: application/json` header |
-| `contentText` | | Add `Content-type: text/plain` header |
-| `guessContentType` | `body: Any` | Guess content type by checking if body is a JSON. If true, content is set to JSON, otherwise to text |
-| `acceptJson` | | Add `Accept: application/json` header |
-| `acceptText` | | Add `Accept: text/plain` header |
-| `content` | | See [content handler](#custom-content-handler) |
-| `error` | | See [error handler](#error-handling) |
-| `body` | `body: Any` <br /> `guess: Boolean default true` | Set body content of request, and guessing content on the fly |
-| `get` | | Set method to `GET` and send request |
-| `post` | `body: Any` | Set method to `POST`, add body if provided with content guess and send request |
-| `put` | `body: Any` | Set method to `PUT`, add body if provided with content guess and send request |
-| `patch` | `body: Any` | Set method to `PATCH`, add body if provided with content guess and send request |
-| `delete` | | Set method to `DELETE` and send request |
-| `method` | `method: String`| Set HTTP method to given value |
-| `send` | | Send request as it |
+| Methode name       | Params                                           | Description                                                                                          |
+| ------------------ | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `header`           | `key: String` <br /> `value: String`             | Add HTTP header                                                                                      |
+| `auth`             | `value: String`                                  | Add Authorization Header with given value                                                            |
+| `contentJson`      |                                                  | Add `Content-type: application/json` header                                                          |
+| `contentText`      |                                                  | Add `Content-type: text/plain` header                                                                |
+| `guessContentType` | `body: Any`                                      | Guess content type by checking if body is a JSON. If true, content is set to JSON, otherwise to text |
+| `acceptJson`       |                                                  | Add `Accept: application/json` header                                                                |
+| `acceptText`       |                                                  | Add `Accept: text/plain` header                                                                      |
+| `content`          |                                                  | See [content handler](#custom-content-handler)                                                       |
+| `error`            |                                                  | See [error handler](#error-handling)                                                                 |
+| `body`             | `body: Any` <br /> `guess: Boolean default true` | Set body content of request, and guessing content on the fly                                         |
+| `get`              |                                                  | Set method to `GET` and send request                                                                 |
+| `post`             | `body: Any`                                      | Set method to `POST`, add body if provided with content guess and send request                       |
+| `put`              | `body: Any`                                      | Set method to `PUT`, add body if provided with content guess and send request                        |
+| `patch`            | `body: Any`                                      | Set method to `PATCH`, add body if provided with content guess and send request                      |
+| `delete`           |                                                  | Set method to `DELETE` and send request                                                              |
+| `method`           | `method: String`                                 | Set HTTP method to given value                                                                       |
+| `send`             |                                                  | Send request as it                                                                                   |
 
 All these method are chainable and once send, the result is a Promise.
 
@@ -80,20 +80,23 @@ const fetchPromise = funtch
   .auth('Basic SECRET')
   .contentJson()
   .acceptJson()
-  .post({ star: true});
+  .post({ star: true });
 
 fetchPromise
-  .then(data => console.log(data))
-  .catch(err => console.error(data));
+  .then((data) => console.log(data))
+  .catch((err) => console.error(data));
 ```
 
 You can create a pre-configured builder, in order to avoid repeating yourself, by passing an object to the `withDefault` method. `content` and `error` are named `contentHandler` and `errorHandler` respectively, all others properties have the same name as above.
 
 ```js
-const funtcher = funtch.withDefault({ baseURL: 'https://api.github.com', auth: 'github SecretToken' });
+const funtcher = funtch.withDefault({
+  baseURL: 'https://api.github.com',
+  auth: 'github SecretToken',
+});
 
-funtcher.get('/user/keys').then(data => doSomething(data))
-funtcher.post('/user/keys', 'my-ssh-key').then(data => doSomething(data))
+funtcher.get('/user/keys').then((data) => doSomething(data));
+funtcher.post('/user/keys', 'my-ssh-key').then((data) => doSomething(data));
 ```
 
 ## Error Handling
@@ -164,17 +167,19 @@ import funtch, { errorHandler } from 'funtch';
 
 function errorWithToString(response) {
   return new Promise((resolve, reject) =>
-    errorHandler(response).then(resolve).catch(err =>
-      reject({
-        ...err,
-        toString: () => {
-          if (typeof err.content === 'string') {
-            return err.content;
-          }
-          return JSON.stringify(err.content);
-        },
-      }),
-    ),
+    errorHandler(response)
+      .then(resolve)
+      .catch((err) =>
+        reject({
+          ...err,
+          toString: () => {
+            if (typeof err.content === 'string') {
+              return err.content;
+            }
+            return JSON.stringify(err.content);
+          },
+        }),
+      ),
   );
 }
 
@@ -182,5 +187,5 @@ funtch
   .url('https://api.github.com')
   .error(errorWithToString)
   .get()
-  .catch(err => console.log(String(err)));
+  .catch((err) => console.log(String(err)));
 ```

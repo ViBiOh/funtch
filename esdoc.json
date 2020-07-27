@@ -1,12 +1,7 @@
 {
   "source": "./src",
-  "includes": [
-    ".js$"
-  ],
-  "excludes": [
-    ".test\\.js$",
-    "esdoc/.*$"
-  ],
+  "includes": [".js$"],
+  "excludes": [".test\\.js$", "esdoc/.*$"],
   "destination": "./esdoc",
   "plugins": [
     {
