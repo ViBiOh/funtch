@@ -15,13 +15,13 @@ export function readHeaders(response) {
   if (response.headers.raw) {
     const headers = response.headers.raw();
 
-    return Object.keys(headers).reduce((previous, current) => {
-      // eslint-disable-next-line no-param-reassign
-      previous[current] = Array.isArray(headers[current])
-        ? headers[current].join(', ')
-        : headers[current];
-      return previous;
-    }, {});
+          return Object.keys(headers).reduce((previous, current) => {
+            // eslint-disable-next-line no-param-reassign
+            previous[current] = Array.isArray(headers[current])
+              ? headers[current].join(', ')
+              : headers[current];
+            return previous;
+          }, {});
   }
 
   const entries = Array.from(response.headers.entries());

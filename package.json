@@ -22,15 +22,9 @@
     "type": "git",
     "url": "git://github.com/ViBiOh/funtch.git"
   },
-  "keywords": [
-    "fetch",
-    "isomorphic",
-    "functional"
-  ],
+  "keywords": ["fetch", "isomorphic", "functional"],
   "author": "Vincent Boutour",
-  "contributors": [
-    "Vincent Boutour (https://vibioh.fr)"
-  ],
+  "contributors": ["Vincent Boutour (https://vibioh.fr)"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ViBiOh/funtch/issues"
@@ -66,11 +60,7 @@
     "isomorphic-fetch": "2.2.1"
   },
   "ava": {
-    "files": [
-      "src/**/*.test.js"
-    ],
-    "require": [
-      "@babel/register"
-    ]
+    "files": ["src/**/*.test.js"],
+    "require": ["@babel/register"]
   }
 }
