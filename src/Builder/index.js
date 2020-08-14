@@ -18,7 +18,7 @@ import { readContent, errorHandler, stringify, isJson } from '../Utils/index';
  */
 function doFetch(url, params, error = errorHandler, content = readContent) {
   return fetch(url, params)
-    .then(response => error(response, content))
+    .then((response) => error(response, content))
     .then(content);
 }
 
@@ -227,9 +227,7 @@ export default class Builder {
    * @return {Promise} Reponse's promise
    */
   post(body) {
-    return this.body(body)
-      .method('POST')
-      .send();
+    return this.body(body).method('POST').send();
   }
 
   /**
@@ -237,9 +235,7 @@ export default class Builder {
    * @return {Promise} Reponse's promise
    */
   put(body) {
-    return this.body(body)
-      .method('PUT')
-      .send();
+    return this.body(body).method('PUT').send();
   }
 
   /**
@@ -247,9 +243,7 @@ export default class Builder {
    * @return {Promise} Reponse's promise
    */
   patch(body) {
-    return this.body(body)
-      .method('PATCH')
-      .send();
+    return this.body(body).method('PATCH').send();
   }
 
   /**

@@ -15,13 +15,13 @@ export function readHeaders(response) {
   if (response.headers.raw) {
     const headers = response.headers.raw();
 
-          return Object.keys(headers).reduce((previous, current) => {
-            // eslint-disable-next-line no-param-reassign
-            previous[current] = Array.isArray(headers[current])
-              ? headers[current].join(', ')
-              : headers[current];
-            return previous;
-          }, {});
+    return Object.keys(headers).reduce((previous, current) => {
+      // eslint-disable-next-line no-param-reassign
+      previous[current] = Array.isArray(headers[current])
+        ? headers[current].join(', ')
+        : headers[current];
+      return previous;
+    }, {});
   }
 
   const entries = Array.from(response.headers.entries());
@@ -58,12 +58,12 @@ export function errorHandler(response, content = readContent) {
 
   return new Promise((_, reject) =>
     // eslint-disable-next-line implicit-arrow-linebreak
-    content(response).then(data => {
+    content(response).then((data) => {
       // eslint-disable-next-line prefer-promise-reject-errors
       reject({
         status: response.status,
         headers: readHeaders(response),
-        content: data,
+        message: data,
       });
     }),
   );

@@ -23,7 +23,7 @@ test.afterEach(() => {
   }
 });
 
-test('should return a promise', t => {
+test('should return a promise', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
@@ -36,7 +36,7 @@ test('should return a promise', t => {
   t.true(result instanceof Promise);
 });
 
-test('should return text when asked', t => {
+test('should return text when asked', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
@@ -44,10 +44,10 @@ test('should return text when asked', t => {
       text: () => Promise.resolve('Test JS'),
     });
 
-  return funtch.get('/').then(data => t.is(data, 'Test JS'));
+  return funtch.get('/').then((data) => t.is(data, 'Test JS'));
 });
 
-test('should return json when asked', t => {
+test('should return json when asked', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
@@ -58,14 +58,14 @@ test('should return json when asked', t => {
         }),
     });
 
-  return funtch.get('/').then(data =>
+  return funtch.get('/').then((data) =>
     t.deepEqual(data, {
       result: 'Test JS',
     }),
   );
 });
 
-test('should return error when 400 or more with headers', t => {
+test('should return error when 400 or more with headers', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 400,
@@ -76,15 +76,15 @@ test('should return error when 400 or more with headers', t => {
   return funtch
     .get('/')
     .then(() => t.fail())
-    .catch(data => {
-      t.is(data.content, 'Test JS Error');
+    .catch((data) => {
+      t.is(data.message, 'Test JS Error');
       t.deepEqual(data.headers, {
         [CONTENT_TYPE_HEADER]: 'text/plain',
       });
     });
 });
 
-test('should return jsonError when 400 or more', t => {
+test('should return jsonError when 400 or more', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 500,
@@ -98,12 +98,12 @@ test('should return jsonError when 400 or more', t => {
   return funtch
     .get('/')
     .then(() => t.fail())
-    .catch(data => {
-      t.deepEqual(data.content, { error: 'Test JS Error' });
+    .catch((data) => {
+      t.deepEqual(data.message, { error: 'Test JS Error' });
     });
 });
 
-test('should return error when text fail', t => {
+test('should return error when text fail', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
@@ -114,10 +114,10 @@ test('should return error when text fail', t => {
   return funtch
     .get('/')
     .then(() => t.fail())
-    .catch(data => t.is(String(data), 'Error: JS Text Error'));
+    .catch((data) => t.is(String(data), 'Error: JS Text Error'));
 });
 
-test('should return error when json fail', t => {
+test('should return error when json fail', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 200,
@@ -128,10 +128,10 @@ test('should return error when json fail', t => {
   return funtch
     .get('/')
     .then(() => t.fail())
-    .catch(data => t.is(String(data), 'Error: JS JSON Error'));
+    .catch((data) => t.is(String(data), 'Error: JS JSON Error'));
 });
 
-test.serial('should pass header', t => {
+test.serial('should pass header', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -151,7 +151,7 @@ test.serial('should pass header', t => {
     );
 });
 
-test.serial('should pass pre-configured header', t => {
+test.serial('should pass pre-configured header', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   const funtcher = funtch.withDefault({
@@ -173,7 +173,7 @@ test.serial('should pass pre-configured header', t => {
   );
 });
 
-test.serial('should pass auth', t => {
+test.serial('should pass auth', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -193,7 +193,7 @@ test.serial('should pass auth', t => {
     );
 });
 
-test.serial('should pass pre-configured auth', t => {
+test.serial('should pass pre-configured auth', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   const funtcher = funtch.withDefault({ auth: 'token' });
@@ -211,7 +211,7 @@ test.serial('should pass pre-configured auth', t => {
   );
 });
 
-test.serial('should pass contentType for json', t => {
+test.serial('should pass contentType for json', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   return funtch
@@ -231,7 +231,7 @@ test.serial('should pass contentType for json', t => {
     );
 });
 
-test.serial('should pass pre-configured JSON content type', t => {
+test.serial('should pass pre-configured JSON content type', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   const funtcher = funtch.withDefault({ contentJson: true });
@@ -249,7 +249,7 @@ test.serial('should pass pre-configured JSON content type', t => {
   );
 });
 
-test.serial('should pass contentType for text', t => {
+test.serial('should pass contentType for text', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -269,7 +269,7 @@ test.serial('should pass contentType for text', t => {
     );
 });
 
-test.serial('should pass pre-configured text content type', t => {
+test.serial('should pass pre-configured text content type', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   const funtcher = funtch.withDefault({ contentText: true });
@@ -287,7 +287,7 @@ test.serial('should pass pre-configured text content type', t => {
   );
 });
 
-test.serial('should pass accept for json', t => {
+test.serial('should pass accept for json', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   return funtch
@@ -307,7 +307,7 @@ test.serial('should pass accept for json', t => {
     );
 });
 
-test.serial('should pass pre-configured accept for json', t => {
+test.serial('should pass pre-configured accept for json', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   const funtcher = funtch.withDefault({ acceptJson: true });
@@ -325,7 +325,7 @@ test.serial('should pass pre-configured accept for json', t => {
   );
 });
 
-test.serial('should pass accept for text', t => {
+test.serial('should pass accept for text', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -345,7 +345,7 @@ test.serial('should pass accept for text', t => {
     );
 });
 
-test.serial('should pass pre-configured accept for text', t => {
+test.serial('should pass pre-configured accept for text', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   const funtcher = funtch.withDefault({ acceptText: true });
@@ -363,7 +363,7 @@ test.serial('should pass pre-configured accept for text', t => {
   );
 });
 
-test.serial('should pass body', t => {
+test.serial('should pass body', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.post('/', 'Hello World').then(() =>
@@ -380,7 +380,7 @@ test.serial('should pass body', t => {
   );
 });
 
-test.serial('should pass json body', t => {
+test.serial('should pass json body', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   const obj = {
@@ -410,7 +410,7 @@ test.serial('should pass json body', t => {
   });
 });
 
-test.serial('should pass text body', t => {
+test.serial('should pass text body', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   return funtch.post('/', 8000).then(() =>
@@ -427,7 +427,7 @@ test.serial('should pass text body', t => {
   );
 });
 
-test.serial('should not pass body if undefined', t => {
+test.serial('should not pass body if undefined', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -445,7 +445,7 @@ test.serial('should not pass body if undefined', t => {
     );
 });
 
-test.serial('should guess json content', t => {
+test.serial('should guess json content', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
 
   return funtch.post('/', JSON.stringify({ hello: 'World' })).then(() =>
@@ -462,7 +462,7 @@ test.serial('should guess json content', t => {
   );
 });
 
-test.serial('should guess text content', t => {
+test.serial('should guess text content', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.post('/', '{hello":"World"}').then(() =>
@@ -479,13 +479,9 @@ test.serial('should guess text content', t => {
   );
 });
 
-test.serial('should not guess content if already defined', t => {
+test.serial('should not guess content if already defined', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
-  const result = funtch
-    .url('/')
-    .contentText()
-    .body('{"hello":"World"}')
-    .post();
+  const result = funtch.url('/').contentText().body('{"hello":"World"}').post();
 
   return result.then(() =>
     t.is(
@@ -501,7 +497,7 @@ test.serial('should not guess content if already defined', t => {
   );
 });
 
-test.serial('should not guess content if forbidden', t => {
+test.serial('should not guess content if forbidden', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch
@@ -520,14 +516,14 @@ test.serial('should not guess content if forbidden', t => {
     );
 });
 
-test('should use given content handler', t => {
+test('should use given content handler', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 204,
     });
 
   let result;
-  const customContentHandler = content => {
+  const customContentHandler = (content) => {
     result = content;
   };
 
@@ -542,14 +538,14 @@ test('should use given content handler', t => {
     });
 });
 
-test('should use pre-configured content handler', t => {
+test('should use pre-configured content handler', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 204,
     });
 
   let result;
-  const customContentHandler = content => {
+  const customContentHandler = (content) => {
     result = content;
   };
 
@@ -562,7 +558,7 @@ test('should use pre-configured content handler', t => {
   });
 });
 
-test('should use given error handler', t => {
+test('should use given error handler', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 404,
@@ -570,7 +566,7 @@ test('should use given error handler', t => {
     });
 
   let result;
-  const customErrorHandler = content => {
+  const customErrorHandler = (content) => {
     result = content.reason;
 
     return Promise.reject();
@@ -584,7 +580,7 @@ test('should use given error handler', t => {
     .catch(() => t.is(result, 'Failed'));
 });
 
-test('should use pre-configured error handler', t => {
+test('should use pre-configured error handler', (t) => {
   global.fetch = () =>
     Promise.resolve({
       status: 404,
@@ -592,7 +588,7 @@ test('should use pre-configured error handler', t => {
     });
 
   let result;
-  const customErrorHandler = content => {
+  const customErrorHandler = (content) => {
     result = content.reason;
 
     return Promise.reject();
@@ -606,7 +602,7 @@ test('should use pre-configured error handler', t => {
     .catch(() => t.is(result, 'Failed'));
 });
 
-test.serial('should send GET', t => {
+test.serial('should send GET', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.get('/').then(() =>
@@ -620,7 +616,7 @@ test.serial('should send GET', t => {
   );
 });
 
-test.serial('should send pre-configured GET', t => {
+test.serial('should send pre-configured GET', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   const funtcher = funtch.withDefault({ headers: { 'X-Funtch-Value': 'GET' } });
@@ -636,7 +632,7 @@ test.serial('should send pre-configured GET', t => {
   );
 });
 
-test.serial('should send POST', t => {
+test.serial('should send POST', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.post('/').then(() =>
@@ -650,7 +646,7 @@ test.serial('should send POST', t => {
   );
 });
 
-test.serial('should send pre-configured POST', t => {
+test.serial('should send pre-configured POST', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   const funtcher = funtch.withDefault({
@@ -668,7 +664,7 @@ test.serial('should send pre-configured POST', t => {
   );
 });
 
-test.serial('should send PUT', t => {
+test.serial('should send PUT', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.put('/').then(() =>
@@ -682,7 +678,7 @@ test.serial('should send PUT', t => {
   );
 });
 
-test.serial('should send pre-configured PUT', t => {
+test.serial('should send pre-configured PUT', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   const funtcher = funtch.withDefault({ headers: { 'X-Funtch-Value': 'PUT' } });
@@ -698,7 +694,7 @@ test.serial('should send pre-configured PUT', t => {
   );
 });
 
-test.serial('should send PATCH', t => {
+test.serial('should send PATCH', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.patch('/').then(() =>
@@ -712,7 +708,7 @@ test.serial('should send PATCH', t => {
   );
 });
 
-test.serial('should send pre-configured PATCH', t => {
+test.serial('should send pre-configured PATCH', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   const funtcher = funtch.withDefault({
@@ -730,7 +726,7 @@ test.serial('should send pre-configured PATCH', t => {
   );
 });
 
-test.serial('should send DELETE', t => {
+test.serial('should send DELETE', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   return funtch.delete('/').then(() =>
@@ -744,7 +740,7 @@ test.serial('should send DELETE', t => {
   );
 });
 
-test.serial('should send pre-configured DELETE', t => {
+test.serial('should send pre-configured DELETE', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   const funtcher = funtch.withDefault({
@@ -762,7 +758,7 @@ test.serial('should send pre-configured DELETE', t => {
   );
 });
 
-test.serial('should send pre-configured method', t => {
+test.serial('should send pre-configured method', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   const funtcher = funtch.withDefault({
@@ -784,7 +780,7 @@ test.serial('should send pre-configured method', t => {
     );
 });
 
-test.serial('should send pre-configured URL', t => {
+test.serial('should send pre-configured URL', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
   const funtcher = funtch.withDefault({

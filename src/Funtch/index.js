@@ -15,27 +15,12 @@ export default class funtch {
     }
 
     return {
-      url: url => configuredBuilder().url(url),
-      get: url =>
-        configuredBuilder()
-          .url(url)
-          .get(),
-      post: (url, body) =>
-        configuredBuilder()
-          .url(url)
-          .post(body),
-      put: (url, body) =>
-        configuredBuilder()
-          .url(url)
-          .put(body),
-      patch: (url, body) =>
-        configuredBuilder()
-          .url(url)
-          .patch(body),
-      delete: url =>
-        configuredBuilder()
-          .url(url)
-          .delete(),
+      url: (url) => configuredBuilder().url(url),
+      get: (url) => configuredBuilder().url(url).get(),
+      post: (url, body) => configuredBuilder().url(url).post(body),
+      put: (url, body) => configuredBuilder().url(url).put(body),
+      patch: (url, body) => configuredBuilder().url(url).patch(body),
+      delete: (url) => configuredBuilder().url(url).delete(),
     };
   }
 
