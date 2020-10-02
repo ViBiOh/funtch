@@ -50,7 +50,7 @@
     "esdoc-ecmascript-proposal-plugin": "1.0.0",
     "esdoc-jsx-plugin": "1.0.0",
     "esdoc-publish-html-plugin": "1.1.2",
-    "eslint": "7.9.0",
+    "eslint": "7.10.0",
     "eslint-config-airbnb-base": "14.2.0",
     "eslint-config-prettier": "6.12.0",
     "eslint-plugin-import": "2.22.1",
