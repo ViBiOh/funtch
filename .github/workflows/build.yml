@@ -6,19 +6,27 @@ on:
     branches:
       - master
   pull_request:
+    branches:
+      - master
+
+env:
+  SCRIPTS_NO_INTERACTIVE: 'true'
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   build:
+    name: Javascript
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2-beta
         with:
-          node-version: 13
-
-      - run: npm ci
-
-      - run: npm run ci
-        env:
-          CODECOV_TOKEN: ${{secrets.codecov_token}}
+          node-version: '15'
+      - run: |
+          npm ci
+          npm run ci
+          git --no-pager diff && git diff --quiet
+      - uses: codecov/codecov-action@v1
