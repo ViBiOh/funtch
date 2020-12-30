@@ -11,14 +11,14 @@ const { JSDOM } = require('jsdom');
  * Simple GET
  */
 funtch
-  .get('https://goweb.vibioh.fr/hello/funtch')
+  .get('https://api.vibioh.fr/hello/funtch')
   .then(data => global.console.log('Simple GET', data, '\n'));
 
 /**
  * GET with custom content reader (e.g. prefixing, wrapping, deserialization)
  */
 funtch
-  .url('https://goweb.vibioh.fr/hello/funtch')
+  .url('https://api.vibioh.fr/hello/funtch')
   .content(response => {
     const wrap = (resolve, data) =>
       resolve({
@@ -66,14 +66,14 @@ funtch
  * GET with error
  */
 funtch
-  .get('https://goweb.vibioh.fr/')
+  .get('https://api.vibioh.fr/')
   .catch(err => global.console.error('GET with error', err, '\n'));
 
 /**
  * GET with custom error handler (e.g. perform a redirect)
  */
 funtch
-  .url('https://goweb.vibioh.fr/auth/')
+  .url('https://api.vibioh.fr/auth/')
   .error(response => {
     if (response.status === 401) {
       global.console.log('Login required, redirection to /login');
