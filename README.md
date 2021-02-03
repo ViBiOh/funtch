@@ -2,7 +2,7 @@
 
 [![CI Status](https://github.com/vibioh/funtch/workflows/Build/badge.svg)](https://github.com/ViBiOh/funtch/actions?query=workflow%3A%22Build%22)
 [![Doc Status](https://doc.esdoc.org/github.com/ViBiOh/funtch/badge.svg)](https://doc.esdoc.org/github.com/ViBiOh/funtch)
-[![codecov](https://codecov.io/gh/ViBiOh/funtch/branch/master/graph/badge.svg)](https://codecov.io/gh/ViBiOh/funtch)
+[![codecov](https://codecov.io/gh/ViBiOh/funtch/branch/main/graph/badge.svg)](https://codecov.io/gh/ViBiOh/funtch)
 [![npm version](https://badge.fury.io/js/funtch.svg)](https://badge.fury.io/js/funtch)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ViBiOh_funtch&metric=alert_status)](https://sonarcloud.io/dashboard?id=ViBiOh_funtch)
 
