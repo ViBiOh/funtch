@@ -16,10 +16,17 @@ import { readContent, errorHandler, stringify, isJson } from '../Utils/index';
  * @param  {Function} content Content handling method, called with output of error handling
  * @return {Promise}          Promise of fetching to bind to.
  */
-function doFetch(url, params, error = errorHandler, content = readContent) {
+function doFetch(url, params, onAbort, error = errorHandler, content = readContent) {
   return fetch(url, params)
     .then((response) => error(response, content))
-    .then(content);
+    .then(content)
+    .catch((e) => {
+      if (e.name === 'AbortError' && onAbort) {
+        onAbort(e);
+        return;
+      }
+      throw e;
+    });
 }
 
 /**
@@ -27,8 +34,11 @@ function doFetch(url, params, error = errorHandler, content = readContent) {
  */
 export default class Builder {
   constructor(options) {
+    this.controller = new AbortController();
+
     this.params = {
       headers: {},
+      signal: this.controller.signal,
     };
 
     if (!options) {
@@ -63,6 +73,10 @@ export default class Builder {
 
     if (options.method) {
       this.method(options.method);
+    }
+
+    if (options.onAbort) {
+      this.onAbort(options.onAbort);
     }
 
     if (typeof options.contentHandler === 'function') {
@@ -179,6 +193,17 @@ export default class Builder {
   }
 
   /**
+   * Set abort handler when request is aborted
+   * @param {Function} handler Function that will receive the error when request in aborted
+   * @return {Object} instance
+   */
+  onAbort(handler) {
+    this.abortHandler = handler;
+
+    return this;
+  }
+
+  /**
    * Set body of request
    * @param  {Object}  body  Request's body, should not be `undefined`
    * @param  {Boolean} guess Indicate if ContentType Header is added or not
@@ -259,6 +284,15 @@ export default class Builder {
    * @return {Promise} Reponse's promise
    */
   send() {
-    return doFetch(this.url, this.params, this.errorHandler, this.readContent);
+    return doFetch(this.url, this.params, this.abortHandler, this.errorHandler, this.readContent);
+  }
+
+  /**
+   * Abort request.
+   */
+  abort() {
+    if (this.controller) {
+      this.controller.abort();
+    }
   }
 }

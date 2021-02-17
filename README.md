@@ -25,17 +25,17 @@ Full usage example in [example folder](./example/)
 ### ES6
 
 ```js
-import funtch from "funtch";
+import funtch from 'funtch';
 
-funtch.get("https://api.github.com").then((data) => doSomething(data));
+funtch.get('https://api.github.com').then((data) => doSomething(data));
 ```
 
 ### CommonJS
 
 ```js
-const funtch = require("funtch").default;
+const funtch = require('funtch').default;
 
-funtch.get("https://api.github.com").then((data) => doSomething(data));
+funtch.get('https://api.github.com').then((data) => doSomething(data));
 ```
 
 ## API
@@ -52,10 +52,11 @@ You can send HTTP requests from common verbs by invoking the following methods f
 
 If default pattern doesn't match your needs, you can build a step by step request by invoking `funtch.url(url: String)` and applying following methods:
 
-| Methode name       | Params                                           | Description                                                                                          |
+| Method name        | Params                                           | Description                                                                                          |
 | ------------------ | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
 | `header`           | `key: String` <br /> `value: String`             | Add HTTP header                                                                                      |
 | `auth`             | `value: String`                                  | Add Authorization Header with given value                                                            |
+| `onAbort`          | `callback: func(error)`                          | Callback method when request is aborted                                                              |
 | `contentJson`      |                                                  | Add `Content-type: application/json` header                                                          |
 | `contentText`      |                                                  | Add `Content-type: text/plain` header                                                                |
 | `guessContentType` | `body: Any`                                      | Guess content type by checking if body is a JSON. If true, content is set to JSON, otherwise to text |
@@ -71,13 +72,14 @@ If default pattern doesn't match your needs, you can build a step by step reques
 | `delete`           |                                                  | Set method to `DELETE` and send request                                                              |
 | `method`           | `method: String`                                 | Set HTTP method to given value                                                                       |
 | `send`             |                                                  | Send request as it                                                                                   |
+| `abort`            |                                                  | Abort request                                                                                        |
 
 All these method are chainable and once send, the result is a Promise.
 
 ```js
 const fetchPromise = funtch
-  .url("https://api.github.com")
-  .auth("Basic SECRET")
+  .url('https://api.github.com')
+  .auth('Basic SECRET')
   .contentJson()
   .acceptJson()
   .post({ star: true });
@@ -91,12 +93,12 @@ You can create a pre-configured builder, in order to avoid repeating yourself, b
 
 ```js
 const funtcher = funtch.withDefault({
-  baseURL: "https://api.github.com",
-  auth: "github SecretToken",
+  baseURL: 'https://api.github.com',
+  auth: 'github SecretToken',
 });
 
-funtcher.get("/user/keys").then((data) => doSomething(data));
-funtcher.post("/user/keys", "my-ssh-key").then((data) => doSomething(data));
+funtcher.get('/user/keys').then((data) => doSomething(data));
+funtcher.post('/user/keys', 'my-ssh-key').then((data) => doSomething(data));
 ```
 
 ## Error Handling
@@ -163,7 +165,7 @@ You can easyly override default error handler by calling `error()` on the builde
 Below an example that add a `toString()` behavior.
 
 ```js
-import funtch, { errorHandler } from "funtch";
+import funtch, { errorHandler } from 'funtch';
 
 function errorWithToString(response) {
   return new Promise((resolve, reject) =>
@@ -173,18 +175,18 @@ function errorWithToString(response) {
         reject({
           ...err,
           toString: () => {
-            if (typeof err.content === "string") {
+            if (typeof err.content === 'string') {
               return err.content;
             }
             return JSON.stringify(err.content);
           },
-        })
-      )
+        }),
+      ),
   );
 }
 
 funtch
-  .url("https://api.github.com")
+  .url('https://api.github.com')
   .error(errorWithToString)
   .get()
   .catch((err) => console.log(String(err)));
