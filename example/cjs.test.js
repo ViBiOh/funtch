@@ -75,6 +75,19 @@ funtch
   .catch((err) => global.console.error('GET with error', err, '\n'));
 
 /**
+ * Aborted request
+ */
+const abortable = funtch
+  .url('https://httpbin.org/delay/3')
+  .onAbort((e) => global.console.error(e));
+
+abortable
+  .send()
+  .catch((err) => global.console.error('GET with error', err, '\n'));
+
+abortable.abort();
+
+/**
  * GET with custom error handler (e.g. perform a redirect)
  */
 funtch

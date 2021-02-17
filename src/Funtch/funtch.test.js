@@ -17,7 +17,7 @@ const jsonPromise = Promise.resolve({
   json: () => Promise.resolve(),
 });
 
-test.afterEach(() => {
+test.afterEach.always(() => {
   if (stubFuntch) {
     stubFuntch.restore();
   }
@@ -140,12 +140,15 @@ test.serial('should pass header', (t) => {
     .get()
     .then(() =>
       t.is(
-        stubFuntch.calledWith('/', {
-          headers: {
-            custom: 'test',
-          },
-          method: 'GET',
-        }),
+        stubFuntch.calledWith(
+          '/',
+          sinon.match({
+            headers: {
+              custom: 'test',
+            },
+            method: 'GET',
+          }),
+        ),
         true,
       ),
     );
@@ -162,12 +165,15 @@ test.serial('should pass pre-configured header', (t) => {
 
   return funtcher.get('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          custom: 'test',
-        },
-        method: 'GET',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {
+            custom: 'test',
+          },
+          method: 'GET',
+        }),
+      ),
       true,
     ),
   );
@@ -182,12 +188,15 @@ test.serial('should pass auth', (t) => {
     .get()
     .then(() =>
       t.is(
-        stubFuntch.calledWith('/', {
-          headers: {
-            Authorization: 'token',
-          },
-          method: 'GET',
-        }),
+        stubFuntch.calledWith(
+          '/',
+          sinon.match({
+            headers: {
+              Authorization: 'token',
+            },
+            method: 'GET',
+          }),
+        ),
         true,
       ),
     );
@@ -200,12 +209,15 @@ test.serial('should pass pre-configured auth', (t) => {
 
   return funtcher.get('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          Authorization: 'token',
-        },
-        method: 'GET',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {
+            Authorization: 'token',
+          },
+          method: 'GET',
+        }),
+      ),
       true,
     ),
   );
@@ -220,12 +232,15 @@ test.serial('should pass contentType for json', (t) => {
     .get()
     .then(() =>
       t.is(
-        stubFuntch.calledWith('/', {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          method: 'GET',
-        }),
+        stubFuntch.calledWith(
+          '/',
+          sinon.match({
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'GET',
+          }),
+        ),
         true,
       ),
     );
@@ -238,12 +253,15 @@ test.serial('should pass pre-configured JSON content type', (t) => {
 
   return funtcher.get('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'GET',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'GET',
+        }),
+      ),
       true,
     ),
   );
@@ -258,12 +276,15 @@ test.serial('should pass contentType for text', (t) => {
     .get()
     .then(() =>
       t.is(
-        stubFuntch.calledWith('/', {
-          headers: {
-            'Content-Type': 'text/plain',
-          },
-          method: 'GET',
-        }),
+        stubFuntch.calledWith(
+          '/',
+          sinon.match({
+            headers: {
+              'Content-Type': 'text/plain',
+            },
+            method: 'GET',
+          }),
+        ),
         true,
       ),
     );
@@ -276,12 +297,15 @@ test.serial('should pass pre-configured text content type', (t) => {
 
   return funtcher.get('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        method: 'GET',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+          method: 'GET',
+        }),
+      ),
       true,
     ),
   );
@@ -296,12 +320,15 @@ test.serial('should pass accept for json', (t) => {
     .get()
     .then(() =>
       t.is(
-        stubFuntch.calledWith('/', {
-          headers: {
-            Accept: 'application/json',
-          },
-          method: 'GET',
-        }),
+        stubFuntch.calledWith(
+          '/',
+          sinon.match({
+            headers: {
+              Accept: 'application/json',
+            },
+            method: 'GET',
+          }),
+        ),
         true,
       ),
     );
@@ -314,12 +341,15 @@ test.serial('should pass pre-configured accept for json', (t) => {
 
   return funtcher.get('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          Accept: 'application/json',
-        },
-        method: 'GET',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {
+            Accept: 'application/json',
+          },
+          method: 'GET',
+        }),
+      ),
       true,
     ),
   );
@@ -334,12 +364,15 @@ test.serial('should pass accept for text', (t) => {
     .get()
     .then(() =>
       t.is(
-        stubFuntch.calledWith('/', {
-          headers: {
-            Accept: 'text/plain',
-          },
-          method: 'GET',
-        }),
+        stubFuntch.calledWith(
+          '/',
+          sinon.match({
+            headers: {
+              Accept: 'text/plain',
+            },
+            method: 'GET',
+          }),
+        ),
         true,
       ),
     );
@@ -352,12 +385,15 @@ test.serial('should pass pre-configured accept for text', (t) => {
 
   return funtcher.get('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          Accept: 'text/plain',
-        },
-        method: 'GET',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {
+            Accept: 'text/plain',
+          },
+          method: 'GET',
+        }),
+      ),
       true,
     ),
   );
@@ -368,13 +404,16 @@ test.serial('should pass body', (t) => {
 
   return funtch.post('/', 'Hello World').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        body: 'Hello World',
-        method: 'POST',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+          body: 'Hello World',
+          method: 'POST',
+        }),
+      ),
       true,
     ),
   );
@@ -398,13 +437,16 @@ test.serial('should pass json body', (t) => {
 
   return funtch.post('/', obj).then(() => {
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: '{"hello":"World","child":{"from":"Test","parent":"[Circular]"},"parent":null}',
-        method: 'POST',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: '{"hello":"World","child":{"from":"Test","parent":"[Circular]"},"parent":null}',
+          method: 'POST',
+        }),
+      ),
       true,
     );
   });
@@ -415,13 +457,16 @@ test.serial('should pass text body', (t) => {
 
   return funtch.post('/', 8000).then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: '8000',
-        method: 'POST',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: '8000',
+          method: 'POST',
+        }),
+      ),
       true,
     ),
   );
@@ -436,10 +481,13 @@ test.serial('should not pass body if undefined', (t) => {
     .post()
     .then(() =>
       t.is(
-        stubFuntch.calledWith('/', {
-          headers: {},
-          method: 'POST',
-        }),
+        stubFuntch.calledWith(
+          '/',
+          sinon.match({
+            headers: {},
+            method: 'POST',
+          }),
+        ),
         true,
       ),
     );
@@ -450,13 +498,16 @@ test.serial('should guess json content', (t) => {
 
   return funtch.post('/', JSON.stringify({ hello: 'World' })).then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: '{"hello":"World"}',
-        method: 'POST',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: '{"hello":"World"}',
+          method: 'POST',
+        }),
+      ),
       true,
     ),
   );
@@ -467,13 +518,16 @@ test.serial('should guess text content', (t) => {
 
   return funtch.post('/', '{hello":"World"}').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        body: '{hello":"World"}',
-        method: 'POST',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+          body: '{hello":"World"}',
+          method: 'POST',
+        }),
+      ),
       true,
     ),
   );
@@ -485,13 +539,16 @@ test.serial('should not guess content if already defined', (t) => {
 
   return result.then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        body: '{"hello":"World"}',
-        method: 'POST',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+          body: '{"hello":"World"}',
+          method: 'POST',
+        }),
+      ),
       true,
     ),
   );
@@ -506,11 +563,14 @@ test.serial('should not guess content if forbidden', (t) => {
     .post()
     .then(() =>
       t.is(
-        stubFuntch.calledWith('/', {
-          headers: {},
-          body: '{"hello":"World"}',
-          method: 'POST',
-        }),
+        stubFuntch.calledWith(
+          '/',
+          sinon.match({
+            headers: {},
+            body: '{"hello":"World"}',
+            method: 'POST',
+          }),
+        ),
         true,
       ),
     );
@@ -607,10 +667,13 @@ test.serial('should send GET', (t) => {
 
   return funtch.get('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {},
-        method: 'GET',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {},
+          method: 'GET',
+        }),
+      ),
       true,
     ),
   );
@@ -623,10 +686,13 @@ test.serial('should send pre-configured GET', (t) => {
 
   return funtcher.get('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: { 'X-Funtch-Value': 'GET' },
-        method: 'GET',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: { 'X-Funtch-Value': 'GET' },
+          method: 'GET',
+        }),
+      ),
       true,
     ),
   );
@@ -637,10 +703,13 @@ test.serial('should send POST', (t) => {
 
   return funtch.post('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {},
-        method: 'POST',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {},
+          method: 'POST',
+        }),
+      ),
       true,
     ),
   );
@@ -655,10 +724,13 @@ test.serial('should send pre-configured POST', (t) => {
 
   return funtcher.post('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: { 'X-Funtch-Value': 'POST' },
-        method: 'POST',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: { 'X-Funtch-Value': 'POST' },
+          method: 'POST',
+        }),
+      ),
       true,
     ),
   );
@@ -669,10 +741,13 @@ test.serial('should send PUT', (t) => {
 
   return funtch.put('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {},
-        method: 'PUT',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {},
+          method: 'PUT',
+        }),
+      ),
       true,
     ),
   );
@@ -685,10 +760,13 @@ test.serial('should send pre-configured PUT', (t) => {
 
   return funtcher.put('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: { 'X-Funtch-Value': 'PUT' },
-        method: 'PUT',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: { 'X-Funtch-Value': 'PUT' },
+          method: 'PUT',
+        }),
+      ),
       true,
     ),
   );
@@ -699,10 +777,13 @@ test.serial('should send PATCH', (t) => {
 
   return funtch.patch('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {},
-        method: 'PATCH',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {},
+          method: 'PATCH',
+        }),
+      ),
       true,
     ),
   );
@@ -717,10 +798,13 @@ test.serial('should send pre-configured PATCH', (t) => {
 
   return funtcher.patch('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: { 'X-Funtch-Value': 'PATCH' },
-        method: 'PATCH',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: { 'X-Funtch-Value': 'PATCH' },
+          method: 'PATCH',
+        }),
+      ),
       true,
     ),
   );
@@ -731,10 +815,13 @@ test.serial('should send DELETE', (t) => {
 
   return funtch.delete('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: {},
-        method: 'DELETE',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: {},
+          method: 'DELETE',
+        }),
+      ),
       true,
     ),
   );
@@ -749,10 +836,13 @@ test.serial('should send pre-configured DELETE', (t) => {
 
   return funtcher.delete('/').then(() =>
     t.is(
-      stubFuntch.calledWith('/', {
-        headers: { 'X-Funtch-Value': 'DELETE' },
-        method: 'DELETE',
-      }),
+      stubFuntch.calledWith(
+        '/',
+        sinon.match({
+          headers: { 'X-Funtch-Value': 'DELETE' },
+          method: 'DELETE',
+        }),
+      ),
       true,
     ),
   );
@@ -771,10 +861,13 @@ test.serial('should send pre-configured method', (t) => {
     .send()
     .then(() =>
       t.is(
-        stubFuntch.calledWith('/', {
-          headers: { 'X-Funtch-Value': 'DELETE' },
-          method: 'DELETE',
-        }),
+        stubFuntch.calledWith(
+          '/',
+          sinon.match({
+            headers: { 'X-Funtch-Value': 'DELETE' },
+            method: 'DELETE',
+          }),
+        ),
         true,
       ),
     );
@@ -790,10 +883,13 @@ test.serial('should send pre-configured URL', (t) => {
 
   return funtcher.get('/hello/world').then(() =>
     t.is(
-      stubFuntch.calledWith('api.vibioh.fr/hello/world', {
-        headers: { 'X-Funtch-Value': 'GET' },
-        method: 'GET',
-      }),
+      stubFuntch.calledWith(
+        'api.vibioh.fr/hello/world',
+        sinon.match({
+          headers: { 'X-Funtch-Value': 'GET' },
+          method: 'GET',
+        }),
+      ),
       true,
     ),
   );
