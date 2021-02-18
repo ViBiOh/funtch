@@ -77,15 +77,12 @@ funtch
 /**
  * Aborted request
  */
-const abortable = funtch
-  .url('https://httpbin.org/delay/3')
-  .onAbort((e) => global.console.error(e));
+const fetchRequest = funtch
+  .url('https://api.vibioh.fr/delay/10')
+  .onAbort(() => global.console.warn('Aborted')); // 10 second delay
 
-abortable
-  .send()
-  .catch((err) => global.console.error('GET with error', err, '\n'));
-
-abortable.abort();
+fetchRequest.get();
+fetchRequest.abort(); // Request is canceled and will throw an error unless you have setted `onAbort(callback)`
 
 /**
  * GET with custom error handler (e.g. perform a redirect)

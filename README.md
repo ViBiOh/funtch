@@ -74,7 +74,7 @@ If default pattern doesn't match your needs, you can build a step by step reques
 | `send`             |                                                  | Send request as it                                                                                   |
 | `abort`            |                                                  | Abort request                                                                                        |
 
-All these method are chainable and once send, the result is a Promise.
+All these methods, except `abort`, are chainable and once send, the result is a Promise.
 
 ```js
 const fetchPromise = funtch
@@ -87,6 +87,17 @@ const fetchPromise = funtch
 fetchPromise
   .then((data) => console.log(data))
   .catch((err) => console.error(data));
+```
+
+Cancelable request can be done this way.
+
+```js
+const fetchRequest = funtch
+  .url('https://api.vibioh.fr/delay/10') // 10 seconds delay
+  .onAbort(() => console.warn('Aborted'));
+
+fetchRequest.get();
+fetchRequest.abort();
 ```
 
 You can create a pre-configured builder, in order to avoid repeating yourself, by passing an object to the `withDefault` method. `content` and `error` are named `contentHandler` and `errorHandler` respectively, all others properties have the same name as above.
@@ -103,7 +114,7 @@ funtcher.post('/user/keys', 'my-ssh-key').then((data) => doSomething(data));
 
 ## Error Handling
 
-By default, **funtch** will reject promise with an object describing error if HTTP status is greater or equal than 400. This object contains HTTP status, response headers and content (in plain text or JSON, according to [content handler](#custom-content-handler)).
+By default, **funtch** will rejects promise with an object describing error if HTTP status is greater or equal than 400. This object contains HTTP status, response headers and content (in plain text or JSON, according to [content handler](#custom-content-handler)).
 
 ```js
 {
@@ -123,9 +134,9 @@ By default, **funtch** will reject promise with an object describing error if HT
 
 ### Custom content handler
 
-By default, **fetch** expose only two methods for reading content : `text()` and `json()`. Instead of juggling with these methods, **funtch** return content by examining Content-Type header and call one of the two methods.
+By default, **fetch** exposes only two methods for reading content : `text()` and `json()`. Instead of juggling with these methods, **funtch** return content by examining Content-Type header and call one of the two methods.
 
-You can easily override default content handler by calling `content()` on the build. The content handler method [accept a reponse and return a Promise](https://doc.esdoc.org/github.com/ViBiOh/funtch/function/index.html#static-function-readContent). Method is also passed to error handler method, in order to read content while identifying error.
+You can easily override default content handler by calling `content()` on the build. The content handler method [accepts a reponse and return a Promise](https://doc.esdoc.org/github.com/ViBiOh/funtch/function/index.html#static-function-readContent). Method is also passed to error handler method, in order to read content while identifying error.
 
 Below an example that parse XML response.
 
@@ -158,9 +169,9 @@ funtch
 
 ### Custom error handler
 
-By default, **fetch** return a valid Promise without considering http status. **Funtch** error handler is called first, in this way, you can identify an error response and `reject` the Promise. By default, if HTTP status is greather or equal than 400, it's considered as error.
+By default, **fetch** returns a valid Promise without considering http status. **Funtch** error handler is called first, in this way, you can identify an error response and `reject` the Promise. By default, if HTTP status is greather or equal than 400, it's considered as error.
 
-You can easyly override default error handler by calling `error()` on the builder. The error handler method [accept a response and return a Promise](https://doc.esdoc.org/github.com/ViBiOh/funtch/function/index.html#static-function-errorHandler). You can reimplement it completely or adding behavior of the default one.
+You can easyly override default error handler by calling `error()` on the builder. The error handler method [accepts a response and return a Promise](https://doc.esdoc.org/github.com/ViBiOh/funtch/function/index.html#static-function-errorHandler). You can reimplement it completely or adding behavior of the default one.
 
 Below an example that add a `toString()` behavior.
 
