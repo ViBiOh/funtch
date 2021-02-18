@@ -11,7 +11,7 @@ import { readContent, errorHandler, stringify, isJson } from '../Utils/index';
 /**
  * Perform fetch operation from given params.
  * @param  {String}   url     URL to fetch
- * @param  {Object}   params  URL Query params in a key/value form
+ * @param  {Object}   params Fetch params
  * @param  {Function} error   Error handling method, first called method with raw response.
  * @param  {Function} content Content handling method, called with output of error handling
  * @return {Promise}          Promise of fetching to bind to.
@@ -30,12 +30,25 @@ function doFetch(url, params, onAbort, error = errorHandler, content = readConte
 }
 
 /**
+ * Encode given params into query string.
+ * @param {Object} params URL Query params as object
+ * @return {String} Query string encoded
+ */
+function encode(params) {
+  return Object.entries(params)
+    .filter(([, value]) => Boolean(value))
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join('&');
+}
+
+/**
  * Builder of fetch call with a functionnal design.
  */
 export default class Builder {
   constructor(options) {
     this.controller = new AbortController();
 
+    this.queryParams = {};
     this.params = {
       headers: {},
       signal: this.controller.signal,
@@ -75,6 +88,10 @@ export default class Builder {
       this.method(options.method);
     }
 
+    if (options.query) {
+      this.query(options.query);
+    }
+
     if (options.onAbort) {
       this.onAbort(options.onAbort);
     }
@@ -99,6 +116,20 @@ export default class Builder {
     } else {
       this.url = url;
     }
+
+    return this;
+  }
+
+  /**
+   * Define query params
+   * @param  {Object} query URL Params as Object / Map
+   * @return {Object} instance
+   */
+  query(query) {
+    this.queryParams = {
+      ...this.queryParams,
+      ...query,
+    };
 
     return this;
   }
@@ -241,10 +272,11 @@ export default class Builder {
 
   /**
    * Perform GET request with fetch
+   * @param  {Object} query URL Params as Object / Map
    * @return {Promise} Reponse's promise
    */
-  get() {
-    return this.method('GET').send();
+  get(query) {
+    return this.method('GET').query(query).send();
   }
 
   /**
@@ -284,7 +316,22 @@ export default class Builder {
    * @return {Promise} Reponse's promise
    */
   send() {
-    return doFetch(this.url, this.params, this.abortHandler, this.errorHandler, this.readContent);
+    let { url } = this;
+
+    if (this.queryParams) {
+      const queryString = encode(this.queryParams);
+      if (queryString) {
+        if (url.indexOf('?') === -1) {
+          url += '?';
+        } else {
+          url += '&';
+        }
+
+        url += queryString;
+      }
+    }
+
+    return doFetch(url, this.params, this.abortHandler, this.errorHandler, this.readContent);
   }
 
   /**

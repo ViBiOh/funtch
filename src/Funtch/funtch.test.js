@@ -154,6 +154,46 @@ test.serial('should pass header', (t) => {
     );
 });
 
+test.serial('should encode query string', (t) => {
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+
+  return funtch
+    .url('/')
+    .query({ q: 'funtch' })
+    .get()
+    .then(() =>
+      t.is(
+        stubFuntch.calledWith(
+          '/?q=funtch',
+          sinon.match({
+            method: 'GET',
+          }),
+        ),
+        true,
+      ),
+    );
+});
+
+test.serial('should append query string', (t) => {
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
+
+  return funtch
+    .url('/?q=funtch')
+    .query({ page: 1 })
+    .get({ v: 'q=funtch', t: 'valid' })
+    .then(() =>
+      t.is(
+        stubFuntch.calledWith(
+          '/?q=funtch&page=1&v=q%3Dfuntch&t=valid',
+          sinon.match({
+            method: 'GET',
+          }),
+        ),
+        true,
+      ),
+    );
+});
+
 test.serial('should pass pre-configured header', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 

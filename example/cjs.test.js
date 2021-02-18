@@ -18,6 +18,15 @@ funtch
   .then((data) => global.console.log('Simple GET', data, '\n'));
 
 /**
+ * GET with query params
+ */
+funtch
+  .url('https://api.vibioh.fr/dump/')
+  .query({ v: '2.4.0', q: 'funtch' })
+  .get()
+  .then((data) => global.console.log('GET w/ query params', data, '\n'));
+
+/**
  * GET with custom content reader (e.g. prefixing, wrapping, deserialization)
  */
 funtch
