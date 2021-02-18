@@ -42,18 +42,19 @@ funtch.get('https://api.github.com').then((data) => doSomething(data));
 
 You can send HTTP requests from common verbs by invoking the following methods from `funtch`:
 
-| Methode name | Params                           | Description                                                           |
-| ------------ | -------------------------------- | --------------------------------------------------------------------- |
-| `get`        | `url: String`                    | Perform a GET                                                         |
-| `post`       | `url: String` <br /> `body: Any` | Perform a POST with given body and `Content-type` guessed from param  |
-| `put`        | `url: String` <br /> `body: Any` | Perform a PUT with given body and `Content-type` guessed from param   |
-| `patch`      | `url: String` <br /> `body: Any` | Perform a PATCH with given body and `Content-type` guessed from param |
-| `delete`     | `url: String`                    | Perform a DELETE                                                      |
+| Methode name | Params                                   | Description                                                           |
+| ------------ | ---------------------------------------- | --------------------------------------------------------------------- |
+| `get`        | `url: String` <br /> `query: Object/Map` | Perform a GET with optional query params                              |
+| `post`       | `url: String` <br /> `body: Any`         | Perform a POST with given body and `Content-type` guessed from param  |
+| `put`        | `url: String` <br /> `body: Any`         | Perform a PUT with given body and `Content-type` guessed from param   |
+| `patch`      | `url: String` <br /> `body: Any`         | Perform a PATCH with given body and `Content-type` guessed from param |
+| `delete`     | `url: String`                            | Perform a DELETE                                                      |
 
 If default pattern doesn't match your needs, you can build a step by step request by invoking `funtch.url(url: String)` and applying following methods:
 
 | Method name        | Params                                           | Description                                                                                          |
 | ------------------ | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `query`            | `query: Object/Map`                              | Append query params when requesting                                                                  |
 | `header`           | `key: String` <br /> `value: String`             | Add HTTP header                                                                                      |
 | `auth`             | `value: String`                                  | Add Authorization Header with given value                                                            |
 | `onAbort`          | `callback: func(error)`                          | Callback method when request is aborted                                                              |

@@ -16,7 +16,7 @@ export default class funtch {
 
     return {
       url: (url) => configuredBuilder().url(url),
-      get: (url) => configuredBuilder().url(url).get(),
+      get: (url, query) => configuredBuilder().url(url).get(query),
       post: (url, body) => configuredBuilder().url(url).post(body),
       put: (url, body) => configuredBuilder().url(url).put(body),
       patch: (url, body) => configuredBuilder().url(url).patch(body),
