@@ -125,7 +125,7 @@ export default class Builder {
    * @param  {Object} query URL Params as Object / Map
    * @return {Object} instance
    */
-  query(query) {
+  query(query = {}) {
     this.queryParams = {
       ...this.queryParams,
       ...query,

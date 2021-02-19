@@ -38,8 +38,8 @@ export default class funtch {
    * @param  {String} url Requested URL
    * @return {Promise} Fetch result
    */
-  static get(url) {
-    return new Builder().url(url).get();
+  static get(url, query) {
+    return new Builder().url(url).get(query);
   }
 
   /**
