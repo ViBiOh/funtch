@@ -344,6 +344,8 @@ export default class Builder {
   abort() {
     if (this.controller) {
       this.controller.abort();
+    } else {
+      console.warn('cannot abort fetch: no AbortController available.');
     }
   }
 }
