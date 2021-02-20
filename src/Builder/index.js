@@ -46,12 +46,16 @@ function encode(params) {
  */
 export default class Builder {
   constructor(options) {
-    this.controller = new AbortController();
+    let signal;
+    if (typeof AbortController !== 'undefined') {
+      this.controller = new AbortController();
+      signal = this.controller.signal;
+    }
 
     this.queryParams = {};
     this.params = {
       headers: {},
-      signal: this.controller.signal,
+      signal,
     };
 
     if (!options) {
