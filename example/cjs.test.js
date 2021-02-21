@@ -5,6 +5,7 @@ const { JSDOM } = require('jsdom');
 const {
   default: funtch,
   readContent,
+  readContentFull,
   errorHandler,
   MEDIA_TYPE_JSON,
   CONTENT_TYPE_HEADER,
@@ -25,6 +26,15 @@ funtch
   .query({ v: '2.4.0', q: 'funtch' })
   .get()
   .then((data) => global.console.log('GET w/ query params', data, '\n'));
+
+/**
+ * GET with full content reader
+ */
+funtch
+  .url('https://api.vibioh.fr/hello/funtch')
+  .content(readContentFull)
+  .get()
+  .then((data) => global.console.log('Get with full content', data, '\n'));
 
 /**
  * GET with custom content reader (e.g. prefixing, wrapping, deserialization)

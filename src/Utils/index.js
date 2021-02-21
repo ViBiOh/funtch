@@ -45,6 +45,23 @@ export function readContent(response) {
 }
 
 /**
+ * Read content witht status and header from response according to ContentType Header (text or JSON)
+ * @param  {Object} response Fetch response
+ * @return {Promise<Object>} Promise with full content in corresponding shape
+ */
+export function readContentFull(response) {
+  return new Promise((resolve) => {
+    readContent(response).then((data) => {
+      resolve({
+        status: response.status,
+        headers: readHeaders(response),
+        data,
+      });
+    });
+  });
+}
+
+/**
  * Identify and handle error from response
  * @param  {Object} response   Fetch response
  * @param  {Function} content Content reader of response
