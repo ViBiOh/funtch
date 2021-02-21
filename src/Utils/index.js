@@ -33,11 +33,28 @@ export function readHeaders(response) {
 }
 
 /**
+ * Format a full content response, with status and headers
+ * @param  {Promise} The fetch response
+ * @param  {Function} The read content method
+ * @param  {Function} The method to call when object is ready
+ * @return {Promise}
+ */
+export function fullContent(response, reader, callback) {
+  return reader(response).then((data) => {
+    callback({
+      status: response.status,
+      headers: readHeaders(response),
+      data,
+    });
+  });
+}
+
+/**
  * Read content from response according to ContentType Header (text or JSON)
  * @param  {Object} response Fetch response
  * @return {Promise<Object>} Promise with content in corresponding shape
  */
-export function readContent(response) {
+export function contentHandler(response) {
   if (CONTENT_TYPE_JSON.test(response.headers.get(CONTENT_TYPE_HEADER))) {
     return response.json();
   }
@@ -49,16 +66,8 @@ export function readContent(response) {
  * @param  {Object} response Fetch response
  * @return {Promise<Object>} Promise with full content in corresponding shape
  */
-export function readContentFull(response) {
-  return new Promise((resolve) => {
-    readContent(response).then((data) => {
-      resolve({
-        status: response.status,
-        headers: readHeaders(response),
-        data,
-      });
-    });
-  });
+export function getReadContentFull(content = contentHandler) {
+  return (response) => new Promise((resolve) => fullContent(response, content, resolve));
 }
 
 /**
@@ -68,22 +77,12 @@ export function readContentFull(response) {
  * @return {Promise<Object>} Promise with error description if HTTP status greater or equal 400,
  * resonse otherwise
  */
-export function errorHandler(response, content = readContent) {
+export function errorHandler(response, content = contentHandler) {
   if (response.status < 400) {
     return Promise.resolve(response);
   }
 
-  return new Promise((_, reject) =>
-    // eslint-disable-next-line implicit-arrow-linebreak
-    content(response).then((data) => {
-      // eslint-disable-next-line prefer-promise-reject-errors
-      reject({
-        status: response.status,
-        headers: readHeaders(response),
-        message: data,
-      });
-    }),
-  );
+  return new Promise((_, reject) => fullContent(response, content, reject));
 }
 
 /**

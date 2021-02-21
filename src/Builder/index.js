@@ -6,23 +6,30 @@ import {
   MEDIA_TYPE_JSON,
   MEDIA_TYPE_TEXT,
 } from '../Constants';
-import { readContent, errorHandler, stringify, isJson } from '../Utils/index';
+import {
+  contentHandler,
+  errorHandler,
+  getReadContentFull,
+  stringify,
+  isJson,
+} from '../Utils/index';
 
 /**
  * Perform fetch operation from given params.
- * @param  {String}   url     URL to fetch
- * @param  {Object}   params Fetch params
- * @param  {Function} error   Error handling method, first called method with raw response.
- * @param  {Function} content Content handling method, called with output of error handling
- * @return {Promise}          Promise of fetching to bind to.
+ * @param  {String}   url            URL to fetch
+ * @param  {Object}   params         Fetch params
+ * @param  {Function} contentHandler Content handling method, called with output of error handling
+ * @param  {Function} errorHandler   Error handling method, first called method with raw response.
+ * @param  {Function} abortHandler   Callback for handling aborted request
+ * @return {Promise} Promise of fetching to bind to.
  */
-function doFetch(url, params, onAbort, error = errorHandler, content = readContent) {
+function doFetch(url, params, abortHandler, content = contentHandler, error = errorHandler) {
   return fetch(url, params)
     .then((response) => error(response, content))
     .then(content)
     .catch((e) => {
-      if (e.name === 'AbortError' && onAbort) {
-        onAbort(e);
+      if (e.name === 'AbortError' && abortHandler) {
+        abortHandler(e);
         return;
       }
       throw e;
@@ -52,6 +59,7 @@ export default class Builder {
       signal = this.controller.signal;
     }
 
+    this.full = false;
     this.queryParams = {};
     this.params = {
       headers: {},
@@ -96,16 +104,20 @@ export default class Builder {
       this.query(options.query);
     }
 
-    if (options.onAbort) {
-      this.onAbort(options.onAbort);
-    }
-
     if (typeof options.contentHandler === 'function') {
-      this.content(options.contentHandler);
+      this.contentHandler(options.contentHandler);
     }
 
     if (typeof options.errorHandler === 'function') {
-      this.error(options.errorHandler);
+      this.errorHandler(options.errorHandler);
+    }
+
+    if (options.abortHandler) {
+      this.abortHandler(options.abortHandler);
+    }
+
+    if (options.fullResponse) {
+      this.fullResponse();
     }
   }
 
@@ -209,8 +221,8 @@ export default class Builder {
    * and should return a Promise with content
    * @return {Object} instance
    */
-  content(handler) {
-    this.readContent = handler;
+  contentHandler(handler) {
+    this.content = handler;
 
     return this;
   }
@@ -221,8 +233,8 @@ export default class Builder {
    * and should check and handle if response in an error or not. Should return Promise.
    * @return {Object} instance
    */
-  error(handler) {
-    this.errorHandler = handler;
+  errorHandler(handler) {
+    this.error = handler;
 
     return this;
   }
@@ -232,8 +244,18 @@ export default class Builder {
    * @param {Function} handler Function that will receive the error when request in aborted
    * @return {Object} instance
    */
-  onAbort(handler) {
-    this.abortHandler = handler;
+  abortHandler(handler) {
+    this.abort = handler;
+
+    return this;
+  }
+
+  /**
+   * Enable full content response
+   * @return {Object} instance
+   */
+  fullResponse() {
+    this.full = true;
 
     return this;
   }
@@ -320,7 +342,7 @@ export default class Builder {
    * @return {Promise} Reponse's promise
    */
   send() {
-    let { url } = this;
+    let { url, content } = this;
 
     if (this.queryParams) {
       const queryString = encode(this.queryParams);
@@ -335,7 +357,11 @@ export default class Builder {
       }
     }
 
-    return doFetch(url, this.params, this.abortHandler, this.errorHandler, this.readContent);
+    if (this.full) {
+      content = getReadContentFull(content);
+    }
+
+    return doFetch(url, this.params, this.abort, content, this.error);
   }
 
   /**

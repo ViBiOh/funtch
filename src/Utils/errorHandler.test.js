@@ -17,7 +17,7 @@ test('should reject promise with message if bad status', (t) =>
   })
     .then(() => t.fail())
     .catch((data) => {
-      t.is(data.message, 'Hello world');
+      t.is(data.data, 'Hello world');
       t.is(data.status, 400);
       t.deepEqual(data.headers, {
         header: 'value',
@@ -34,4 +34,4 @@ test('should reject promise with custom message ', (t) =>
     () => Promise.resolve('custom message reader'),
   )
     .then(() => t.fail())
-    .catch((data) => t.is(data.message, 'custom message reader')));
+    .catch((data) => t.is(data.data, 'custom message reader')));

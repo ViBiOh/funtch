@@ -47,6 +47,29 @@ test('should return text when asked', (t) => {
   return funtch.get('/').then((data) => t.is(data, 'Test JS'));
 });
 
+test('should return full response when asked', (t) => {
+  global.fetch = () =>
+    Promise.resolve({
+      status: 200,
+      headers: new Map().set(CONTENT_TYPE_HEADER, MEDIA_TYPE_TEXT),
+      text: () => Promise.resolve('Test JS'),
+    });
+
+  return funtch
+    .url('/')
+    .fullResponse()
+    .get()
+    .then((data) =>
+      t.deepEqual(data, {
+        data: 'Test JS',
+        headers: {
+          [CONTENT_TYPE_HEADER]: MEDIA_TYPE_TEXT,
+        },
+        status: 200,
+      }),
+    );
+});
+
 test('should return json when asked', (t) => {
   global.fetch = () =>
     Promise.resolve({
@@ -65,6 +88,33 @@ test('should return json when asked', (t) => {
   );
 });
 
+test('should return pre-configured full response when asked', (t) => {
+  global.fetch = () =>
+    Promise.resolve({
+      status: 200,
+      headers: new Map().set(CONTENT_TYPE_HEADER, MEDIA_TYPE_JSON),
+      json: () =>
+        Promise.resolve({
+          result: 'Test JS',
+        }),
+    });
+
+  return funtch
+    .withDefault({ fullResponse: true })
+    .get('/')
+    .then((data) =>
+      t.deepEqual(data, {
+        data: {
+          result: 'Test JS',
+        },
+        headers: {
+          [CONTENT_TYPE_HEADER]: MEDIA_TYPE_JSON,
+        },
+        status: 200,
+      }),
+    );
+});
+
 test('should return error when 400 or more with headers', (t) => {
   global.fetch = () =>
     Promise.resolve({
@@ -77,7 +127,7 @@ test('should return error when 400 or more with headers', (t) => {
     .get('/')
     .then(() => t.fail())
     .catch((data) => {
-      t.is(data.message, 'Test JS Error');
+      t.is(data.data, 'Test JS Error');
       t.deepEqual(data.headers, {
         [CONTENT_TYPE_HEADER]: 'text/plain',
       });
@@ -99,7 +149,7 @@ test('should return jsonError when 400 or more', (t) => {
     .get('/')
     .then(() => t.fail())
     .catch((data) => {
-      t.deepEqual(data.message, { error: 'Test JS Error' });
+      t.deepEqual(data.data, { error: 'Test JS Error' });
     });
 });
 
@@ -629,7 +679,7 @@ test('should use given content handler', (t) => {
 
   return funtch
     .url('/')
-    .content(customContentHandler)
+    .contentHandler(customContentHandler)
     .get()
     .then(() => {
       t.deepEqual(result, {
@@ -674,7 +724,7 @@ test('should use given error handler', (t) => {
 
   return funtch
     .url('/')
-    .error(customErrorHandler)
+    .errorHandler(customErrorHandler)
     .get()
     .then(() => t.fail())
     .catch(() => t.is(result, 'Failed'));

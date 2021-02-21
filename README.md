@@ -57,14 +57,15 @@ If default pattern doesn't match your needs, you can build a step by step reques
 | `query`            | `query: Object/Map`                              | Append query params when requesting                                                                  |
 | `header`           | `key: String` <br /> `value: String`             | Add HTTP header                                                                                      |
 | `auth`             | `value: String`                                  | Add Authorization Header with given value                                                            |
-| `onAbort`          | `callback: func(error)`                          | Callback method when request is aborted                                                              |
 | `contentJson`      |                                                  | Add `Content-type: application/json` header                                                          |
 | `contentText`      |                                                  | Add `Content-type: text/plain` header                                                                |
 | `guessContentType` | `body: Any`                                      | Guess content type by checking if body is a JSON. If true, content is set to JSON, otherwise to text |
 | `acceptJson`       |                                                  | Add `Accept: application/json` header                                                                |
 | `acceptText`       |                                                  | Add `Accept: text/plain` header                                                                      |
-| `content`          |                                                  | See [content handler](#custom-content-handler)                                                       |
-| `error`            |                                                  | See [error handler](#error-handling)                                                                 |
+| `contentHandler`   | `callback: func(response)`                       | See [content handler](#custom-content-handler)                                                       |
+| `errorHandler`     | `callback: func(response, contentHandler)`       | See [error handler](#error-handling)                                                                 |
+| `abortHandler`     | `callback: func(error)`                          | Callback method when request is aborted                                                              |
+| `fullResponse`     |                                                  | Return complete response with `{status, headers, data}`, instead of just raw data by default         |
 | `body`             | `body: Any` <br /> `guess: Boolean default true` | Set body content of request, and guessing content on the fly                                         |
 | `get`              |                                                  | Set method to `GET` and send request                                                                 |
 | `post`             | `body: Any`                                      | Set method to `POST`, add body if provided with content guess and send request                       |
@@ -75,7 +76,7 @@ If default pattern doesn't match your needs, you can build a step by step reques
 | `send`             |                                                  | Send request as it                                                                                   |
 | `abort`            |                                                  | Abort request                                                                                        |
 
-All these methods, except `abort`, are chainable and once send, the result is a Promise.
+All these methods, except `abort`, are chainable and once `send` is called, the result is a Promise.
 
 ```js
 const fetchPromise = funtch
@@ -95,27 +96,31 @@ Cancelable request can be done this way.
 ```js
 const fetchRequest = funtch
   .url('https://api.vibioh.fr/delay/10') // 10 seconds delay
-  .onAbort(() => console.warn('Aborted'));
+  .abortHandler((e) => console.warn(`Request was aborted: ${e.name}`));
 
 fetchRequest.get();
 fetchRequest.abort();
 ```
 
-You can create a pre-configured builder, in order to avoid repeating yourself, by passing an object to the `withDefault` method. `content` and `error` are named `contentHandler` and `errorHandler` respectively, all others properties have the same name as above.
+You can create a pre-configured builder, in order to avoid repeating yourself, by passing an object to the `withDefault` method with keys as the config function name.
 
 ```js
 const funtcher = funtch.withDefault({
   baseURL: 'https://api.github.com',
   auth: 'github SecretToken',
+  fullResponse: true,
+  contentJson: true,
 });
 
-funtcher.get('/user/keys').then((data) => doSomething(data));
-funtcher.post('/user/keys', 'my-ssh-key').then((data) => doSomething(data));
+funtcher.get('/user/keys').then((response) => doSomething(response.data));
+funtcher
+  .post('/user/keys', 'my-ssh-key')
+  .then((response) => doSomething(response.data));
 ```
 
 ## Error Handling
 
-By default, **funtch** will rejects promise with an object describing error if HTTP status is greater or equal than 400. This object contains HTTP status, response headers and content (in plain text or JSON, according to [content handler](#custom-content-handler)).
+By default, **funtch** will rejects promise with a full response describing error if HTTP status is greater or equal than 400. This object contains HTTP status, response headers and data (in plain text or JSON, according to [content handler](#custom-content-handler)).
 
 ```js
 {
@@ -127,7 +132,7 @@ By default, **funtch** will rejects promise with an object describing error if H
     'x-content-type-options': 'nosniff',
     connection: 'close'
   },
-  content: '404 page not found',
+  data: '404 page not found',
 }
 ```
 
@@ -172,7 +177,7 @@ funtch
 
 By default, **fetch** returns a valid Promise without considering http status. **Funtch** error handler is called first, in this way, you can identify an error response and `reject` the Promise. By default, if HTTP status is greather or equal than 400, it's considered as error.
 
-You can easyly override default error handler by calling `error()` on the builder. The error handler method [accepts a response and return a Promise](https://doc.esdoc.org/github.com/ViBiOh/funtch/function/index.html#static-function-errorHandler). You can reimplement it completely or adding behavior of the default one.
+You can easyly override default error handler by calling `errorHandler()` on the builder. The error handler method [accepts a response and a content handler, and return a Promise](https://doc.esdoc.org/github.com/ViBiOh/funtch/function/index.html#static-function-errorHandler). You can reimplement it completely or adding behavior of the default one.
 
 Below an example that add a `toString()` behavior.
 
@@ -199,7 +204,7 @@ function errorWithToString(response) {
 
 funtch
   .url('https://api.github.com')
-  .error(errorWithToString)
+  .errorHandler(errorWithToString)
   .get()
   .catch((err) => console.log(String(err)));
 ```

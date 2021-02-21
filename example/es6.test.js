@@ -1,87 +1,67 @@
-import funtch, {
-  readContent,
-  errorHandler,
-  MEDIA_TYPE_JSON,
-  CONTENT_TYPE_HEADER,
-} from '../index';
+import funtch, { errorHandler } from '../index';
 
-const { JSDOM } = require('jsdom');
+async function example() {
+  let output;
+  /**
+   * Simple GET
+   */
+  output = await funtch.get('https://api.vibioh.fr/hello/funtch');
+  global.console.log('GET', output, '\n');
 
-/**
- * Simple GET
- */
-funtch
-  .get('https://api.vibioh.fr/hello/funtch')
-  .then(data => global.console.log('Simple GET', data, '\n'));
+  /**
+   * GET with query params
+   */
+  output = await funtch
+    .url('https://api.vibioh.fr/dump/')
+    .query({ v: '2.4.0', q: 'funtch' })
+    .get();
+  global.console.log('GET w/ query params', output, '\n');
 
-/**
- * GET with custom content reader (e.g. prefixing, wrapping, deserialization)
- */
-funtch
-  .url('https://api.vibioh.fr/hello/funtch')
-  .content(response => {
-    const wrap = (resolve, data) =>
-      resolve({
-        status: response.status,
-        payload: data,
-      });
+  /**
+   * GET with full content reader
+   */
+  output = await funtch
+    .url('https://api.vibioh.fr/hello/funtch')
+    .fullResponse()
+    .get();
+  global.console.log('Get w/ fullResponse', output, '\n');
 
-    return new Promise(resolve =>
-      readContent(response).then(data => wrap(resolve, data)),
-    );
-  })
-  .get()
-  .then(data =>
-    global.console.log('GET with custom content reader', data, '\n'),
-  );
+  /**
+   * GET with error
+   */
+  try {
+    await funtch.get('https://api.vibioh.fr/not_found');
+  } catch (err) {
+    global.console.error('GET with error', err, '\n');
+  }
 
-/**
- * GET with custom content reader (e.g. prefixing, wrapping, deserialization)
- */
-const contentTypeJsonRegex = new RegExp(MEDIA_TYPE_JSON, 'i');
-const contentTypeXmlRegex = /application\/xml/i;
+  /**
+   * Aborted request
+   */
+  const fetchRequest = funtch
+    .url('https://api.vibioh.fr/delay/1')
+    .abortHandler(() => global.console.warn('Aborted')); // 10 second delay
 
-funtch
-  .url('https://vibioh.fr/sitemap.xml')
-  .content(response => {
-    if (contentTypeJsonRegex.test(response.headers.get(CONTENT_TYPE_HEADER))) {
-      return response.json();
-    }
+  fetchRequest.get().catch((e) => global.console.error(e));
+  fetchRequest.abort(); // Request is canceled and will throw an error unless you have setted `onAbort(callback)`
 
-    return new Promise(resolve => {
-      response.text().then(data => {
-        if (
-          contentTypeXmlRegex.test(response.headers.get(CONTENT_TYPE_HEADER))
-        ) {
-          resolve(new JSDOM(data));
+  /**
+   * GET with custom error handler (e.g. perform a redirect)
+   */
+  try {
+    output = await funtch
+      .url('https://api.github.com/repositories/ViBiOh/infra')
+      .errorHandler((response) => {
+        if (response.status === 401) {
+          global.console.log('Login required, redirection to /login');
         }
-        resolve(data);
-      });
-    });
-  })
-  .get()
-  .then(data => global.console.log('GET with XML content reader', data, '\n'));
 
-/**
- * GET with error
- */
-funtch
-  .get('https://api.vibioh.fr/')
-  .catch(err => global.console.error('GET with error', err, '\n'));
+        return errorHandler(response); // using default behavior for continuing process
+      })
+      .get();
+  } catch (err) {
+    global.console.error('GET with custom error handler', err, '\n');
+  }
+}
 
-/**
- * GET with custom error handler (e.g. perform a redirect)
- */
-funtch
-  .url('https://api.vibioh.fr/auth/')
-  .error(response => {
-    if (response.status === 401) {
-      global.console.log('Login required, redirection to /login');
-    }
-
-    return errorHandler(response); // using default behavior for continuing process
-  })
-  .get()
-  .catch(err =>
-    global.console.error('GET with custom error handler', err, '\n'),
-  );
+example();
