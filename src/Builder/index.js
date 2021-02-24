@@ -12,6 +12,7 @@ import {
   getReadContentFull,
   stringify,
   isJson,
+  encode,
 } from '../Utils/index';
 
 /**
@@ -34,18 +35,6 @@ function doFetch(url, params, abortHandler, content = contentHandler, error = er
       }
       throw e;
     });
-}
-
-/**
- * Encode given params into query string.
- * @param {Object} params URL Query params as object
- * @return {String} Query string encoded
- */
-function encode(params) {
-  return Object.entries(params)
-    .filter(([, value]) => Boolean(value))
-    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-    .join('&');
 }
 
 /**

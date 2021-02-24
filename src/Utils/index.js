@@ -33,6 +33,18 @@ export function readHeaders(response) {
 }
 
 /**
+ * Encode given params into query string.
+ * @param {Object} params URL Query params as object
+ * @return {String} Query string encoded
+ */
+export function encode(params) {
+  return Object.entries(params)
+    .filter(([, value]) => Boolean(value))
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join('&');
+}
+
+/**
  * Format a full content response, with status and headers
  * @param  {Promise} The fetch response
  * @param  {Function} The read content method

@@ -489,6 +489,24 @@ test.serial('should pass pre-configured accept for text', (t) => {
   );
 });
 
+test.serial('should concat pre-configured query with get', (t) => {
+  stubFuntch = sinon.stub(global, 'fetch').callsFake(() => jsonPromise);
+
+  const funtcher = funtch.withDefault({ query: { key: 'secret' } });
+
+  return funtcher.get('/', { ids: ['abc', 'def'] }).then(() =>
+    t.is(
+      stubFuntch.calledWith(
+        '/?key=secret&ids=abc%2Cdef',
+        sinon.match({
+          method: 'GET',
+        }),
+      ),
+      true,
+    ),
+  );
+});
+
 test.serial('should pass body', (t) => {
   stubFuntch = sinon.stub(global, 'fetch').callsFake(() => textPromise);
 
