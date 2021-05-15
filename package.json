@@ -55,7 +55,7 @@
     "eslint-plugin-import": "2.22.1",
     "jsdom": "16.5.3",
     "nyc": "15.1.0",
-    "prettier": "2.2.1",
+    "prettier": "2.3.0",
     "rollup": "2.48.0",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-uglify": "6.0.4",
