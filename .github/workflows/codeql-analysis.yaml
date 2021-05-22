@@ -27,6 +27,10 @@ jobs:
         uses: github/codeql-action/init@v1
         with:
           languages: ${{ matrix.language }}
+      - name: Setup NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
       - name: Autobuild
         run: npm ci && npm run build
       - name: CodeQL
