@@ -37,7 +37,6 @@ jobs:
 
   sonarcloud:
     name: SonarCloud
-    if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
