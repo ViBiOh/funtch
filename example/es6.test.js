@@ -49,7 +49,7 @@ async function example() {
    * GET with custom error handler (e.g. perform a redirect)
    */
   try {
-    output = await funtch
+    await funtch
       .url('https://api.github.com/repositories/ViBiOh/infra')
       .errorHandler((response) => {
         if (response.status === 401) {
