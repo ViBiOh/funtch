@@ -44,7 +44,7 @@
     "@babel/register": "7.14.5",
     "ava": "3.15.0",
     "babel-eslint": "10.1.0",
-    "esdoc": "1.0.4",
+    "esdoc": "1.1.0",
     "esdoc-coverage-plugin": "1.1.0",
     "esdoc-ecmascript-proposal-plugin": "1.0.0",
     "esdoc-jsx-plugin": "1.0.0",
