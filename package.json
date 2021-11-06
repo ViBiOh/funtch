@@ -38,12 +38,12 @@
   "devDependencies": {
     "@babel/cli": "7.16.0",
     "@babel/core": "7.16.0",
+    "@babel/eslint-parser": "7.16.0",
     "@babel/node": "7.16.0",
     "@babel/preset-env": "7.16.0",
     "@babel/preset-react": "7.16.0",
     "@babel/register": "7.16.0",
     "ava": "3.15.0",
-    "babel-eslint": "10.1.0",
     "esdoc": "1.1.0",
     "esdoc-coverage-plugin": "1.1.0",
     "esdoc-ecmascript-proposal-plugin": "1.0.0",
