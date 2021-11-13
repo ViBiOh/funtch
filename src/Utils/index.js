@@ -46,19 +46,16 @@ export function encode(params) {
 
 /**
  * Format a full content response, with status and headers
- * @param  {Promise} The fetch response
- * @param  {Function} The read content method
- * @param  {Function} The method to call when object is ready
- * @return {Promise}
+ * @param  {Object} The response
+ * @param  {Object} The data returned
+ * @return {Object}
  */
-export function fullContent(response, reader, callback) {
-  return reader(response).then((data) => {
-    callback({
-      status: response.status,
-      headers: readHeaders(response),
-      data,
-    });
-  });
+export function fullContent(response, data) {
+  return {
+    status: response.status,
+    headers: readHeaders(response),
+    data,
+  };
 }
 
 /**
@@ -79,7 +76,7 @@ export function contentHandler(response) {
  * @return {Promise<Object>} Promise with full content in corresponding shape
  */
 export function getReadContentFull(content = contentHandler) {
-  return (response) => new Promise((resolve) => fullContent(response, content, resolve));
+  return (response) => content(response).then((data) => fullContent(response, data));
 }
 
 /**
@@ -94,7 +91,9 @@ export function errorHandler(response, content = contentHandler) {
     return Promise.resolve(response);
   }
 
-  return new Promise((_, reject) => fullContent(response, content, reject));
+  return content(response).then((data) => {
+    throw fullContent(response, data);
+  });
 }
 
 /**
