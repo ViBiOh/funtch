@@ -11,19 +11,13 @@ async function example() {
   /**
    * GET with query params
    */
-  output = await funtch
-    .url('https://api.vibioh.fr/dump/')
-    .query({ v: '2.4.0', q: 'funtch' })
-    .get();
+  output = await funtch.url('https://api.vibioh.fr/dump/').query({ v: '2.4.0', q: 'funtch' }).get();
   global.console.log('GET w/ query params', output, '\n');
 
   /**
    * GET with full content reader
    */
-  output = await funtch
-    .url('https://api.vibioh.fr/hello/funtch')
-    .fullResponse()
-    .get();
+  output = await funtch.url('https://api.vibioh.fr/hello/funtch').fullResponse().get();
   global.console.log('Get w/ fullResponse', output, '\n');
 
   /**
@@ -40,10 +34,10 @@ async function example() {
    */
   const fetchRequest = funtch
     .url('https://api.vibioh.fr/delay/1')
-    .abortHandler(() => global.console.warn('Aborted')); // 10 second delay
+    .abortHandler(() => global.console.warn('Aborted request')); // 10 second delay
 
-  fetchRequest.get().catch((e) => global.console.error(e));
-  fetchRequest.abort(); // Request is canceled and will throw an error unless you have setted `onAbort(callback)`
+  fetchRequest.get();
+  fetchRequest.abort(); // Request is canceled and will throw an error unless you have setted `abortHandler(callback)`
 
   /**
    * GET with custom error handler (e.g. perform a redirect)
