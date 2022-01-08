@@ -3,5 +3,8 @@
   "extends": ["airbnb-base", "prettier"],
   "env": {
     "browser": true
+  },
+  "settings": {
+    "import/core-modules": ["ava"]
   }
 }
