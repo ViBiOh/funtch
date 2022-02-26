@@ -51,7 +51,7 @@
     "esdoc-publish-html-plugin": "1.1.2",
     "eslint": "8.9.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-prettier": "8.3.0",
+    "eslint-config-prettier": "8.4.0",
     "eslint-plugin-import": "2.25.4",
     "jsdom": "19.0.0",
     "nyc": "15.1.0",
