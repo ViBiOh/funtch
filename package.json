@@ -56,7 +56,7 @@
     "jsdom": "19.0.0",
     "nyc": "15.1.0",
     "prettier": "2.5.1",
-    "rollup": "2.70.0",
+    "rollup": "2.70.1",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-uglify": "6.0.4",
     "sinon": "13.0.1",
