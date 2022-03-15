@@ -42,7 +42,7 @@
     "@babel/node": "7.16.8",
     "@babel/preset-env": "7.16.11",
     "@babel/preset-react": "7.16.7",
-    "@babel/register": "7.17.0",
+    "@babel/register": "7.17.7",
     "ava": "4.1.0",
     "esdoc": "1.1.0",
     "esdoc-coverage-plugin": "1.1.0",
