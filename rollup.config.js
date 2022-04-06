@@ -1,5 +1,5 @@
 import babel from 'rollup-plugin-babel';
-import { uglify } from 'rollup-plugin-uglify';
+import { terser } from 'rollup-plugin-terser';
 
 export default {
   input: 'src/index.js',
@@ -10,5 +10,22 @@ export default {
     exports: 'named',
   },
   external: ['isomorphic-fetch'],
-  plugins: [babel(), uglify()],
+  plugins: [
+    babel(),
+    terser({
+      ecma: 2020,
+      mangle: {
+        toplevel: true,
+      },
+      compress: {
+        module: true,
+        toplevel: true,
+        unsafe_arrows: true,
+        drop_debugger: true,
+      },
+      output: {
+        quote_style: 1,
+      },
+    }),
+  ],
 };
