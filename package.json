@@ -43,7 +43,7 @@
     "@babel/preset-env": "7.18.2",
     "@babel/preset-react": "7.17.12",
     "@babel/register": "7.17.7",
-    "ava": "4.2.0",
+    "ava": "4.3.0",
     "esdoc": "1.1.0",
     "esdoc-coverage-plugin": "1.1.0",
     "esdoc-ecmascript-proposal-plugin": "1.0.0",
